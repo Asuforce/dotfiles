@@ -40,9 +40,11 @@ set nocompatible               " be iMproved
 filetype off                   " required!
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+
 " let Vundle manage Vundle
 " required!
 Bundle 'gmarik/vundle'
+
 " My Bundles here:
 "
 " original repos on github
@@ -52,11 +54,13 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'tpope/vim-rails.git'
 Bundle 'Townk/vim-autoclose'
 Bundle 'vim-scripts/mru.vim'
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/unite.vim'
+Bundle 'thinca/vim-ref'
+Bundle 'thinca/vim-quickrun'
 " vim-scripts repos
 Bundle 'L9'
 Bundle 'FuzzyFinder'
-" non github repos
-Bundle 'git://git.wincent.com/command-t.git'
 " ...
 filetype plugin indent on     " required!
 "
