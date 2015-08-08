@@ -51,7 +51,7 @@ NeoBundle 'Shougo/neobundle.vim'
 " My Bundles here:
 "
 " original repos on github
-NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-fugitive' " Gitを使う
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'tpope/vim-rails.git'
@@ -61,7 +61,15 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'nanotech/jellybeans.vim' " jellybeansカラースキーマ
+NeoBundle 'scrooloose/nerdtree' " ファイルをtree表示
+NeoBundle 'tpope/vim-rails' " Rails向けコマンドの提供
+NeoBundle 'tpope/vim-endwise' " Ruby向けのend自動挿入
+NeoBundle 'tomtom/tcomment_vim' " コメントのON/OFFを手軽に実現
+NeoBundle 'nathanaelkane/vim-indent-guides' " インデントに色付け
+let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
+NeoBundle 'vim-scripts/AnsiEsc.vim' " logファイルをカラーリング
+NeoBundle 'bronson/vim-trailing-whitespace' " ホワイトスペースの可視化
 
 " vim-scripts repos
 NeoBundle 'L9'
@@ -75,4 +83,8 @@ filetype indent on
 
 " カラースキーマ
 set t_Co=256
-colorscheme jellybeans
+let g:hybrid_use_iTerm_colors = 1
+colorscheme hybrid
+
+" ショートカットキー
+nnoremap <silent><C-e> :NERDTreeToggle<CR> " nerdtreeを'ctrl + e'で起動
