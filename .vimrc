@@ -11,7 +11,7 @@ set wildmenu
 " タイプ途中のコマンドを画面最下位に表示
 set showcmd
 
-" オートインデント、開業、インサートモード開始直後にBackSpaceで削除
+" オートインデント、改行、インサートモード開始直後にBackSpaceで削除
 set backspace=indent,eol,start
 
 " オートインデント
@@ -34,6 +34,9 @@ set tabstop=2
 
 " ビジュアルベル
 set visualbell
+
+" タブを空白入力に置き換える
+set expandtab
 
 " NeoBundle
 set nocompatible               " be iMproved
