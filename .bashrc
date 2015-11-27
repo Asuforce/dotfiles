@@ -33,3 +33,7 @@ export PATH=./vendor/bin:$PATH
 MAUDE_LIB=/usr/local/maude
 export MAUDE_LIB
 alias maude="/usr/local/maude/maude.darwin64"
+
+# GO PATH
+export GOPATH=$HOME/.go
+export PATH=$HOME/.go/bin:$PATH
