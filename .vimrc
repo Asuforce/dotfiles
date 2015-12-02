@@ -38,6 +38,8 @@ set visualbell
 " タブを空白入力に置き換える
 set expandtab
 
+" 検索結果をハイライト
+set hlsearch
 " NeoBundle
 set nocompatible               " be iMproved
 filetype off                   " required!
