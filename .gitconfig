@@ -1,0 +1,8 @@
+[push]
+	default = simple
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+[user]
+	name = Shun Nishitsuji
+	email = asuforcegt@hotmail.co.jp

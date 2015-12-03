@@ -40,6 +40,7 @@ set expandtab
 
 " 検索結果をハイライト
 set hlsearch
+
 " NeoBundle
 set nocompatible               " be iMproved
 filetype off                   " required!

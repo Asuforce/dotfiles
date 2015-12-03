@@ -17,7 +17,7 @@ alias gdc='git diff --cached'
 alias gad='git add'
 alias gco='git checkout'
 
-# rbenv
+# fot bundle
 alias be='bundle exec'
 
 # export
@@ -34,6 +34,14 @@ MAUDE_LIB=/usr/local/maude
 export MAUDE_LIB
 alias maude="/usr/local/maude/maude.darwin64"
 
-# GO PATH
+# GO
 export GOPATH=$HOME/.go
 export PATH=$HOME/.go/bin:$PATH
+
+# rbenv
+#export PATH="$PATH:$HOME/.rbenv/shims"
+#eval "$(rbenv init -)"
+
+# phpenv
+export PATH="$HOME/.phpenv/bin:$PATH"
+eval "$(phpenv init -)"
