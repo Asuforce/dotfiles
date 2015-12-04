@@ -77,7 +77,7 @@ let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
 NeoBundle 'vim-scripts/AnsiEsc.vim' " logファイルをカラーリング
 NeoBundle 'bronson/vim-trailing-whitespace' " ホワイトスペースの可視化
 NeoBundle 'junegunn/vim-easy-align'
-NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'nanotech/jellybeans.vim'
 
 " vim-scripts repos
 NeoBundle 'L9'
@@ -91,9 +91,8 @@ filetype indent on
 
 " カラースキーマ
 set t_Co=256
-let g:hybrid_use_Xresources = 1
 set background=dark
-colorscheme hybrid
+colorscheme jellybeans
 
 " NERDTree関連
 let NERDTreeShowHidden = 1
