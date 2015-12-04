@@ -1,5 +1,5 @@
 if [ -f ~/.bashrc ]; then
-	. ~/.bashrc
+  . ~/.bashrc
 fi
 
 if [[ -s ~/.nvm/nvm.sh ]];
