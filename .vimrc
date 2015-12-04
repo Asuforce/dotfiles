@@ -65,6 +65,7 @@ NeoBundle 'Townk/vim-autoclose'
 NeoBundle 'vim-scripts/mru.vim'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'nanotech/jellybeans.vim' " jellybeansカラースキーマ
@@ -77,7 +78,7 @@ let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
 NeoBundle 'vim-scripts/AnsiEsc.vim' " logファイルをカラーリング
 NeoBundle 'bronson/vim-trailing-whitespace' " ホワイトスペースの可視化
 NeoBundle 'junegunn/vim-easy-align'
-NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle "ctrlpvim/ctrlp.vim"
 
 " vim-scripts repos
 NeoBundle 'L9'
@@ -94,10 +95,20 @@ set t_Co=256
 set background=dark
 colorscheme jellybeans
 
-" NERDTree関連
+" NERDTree
 let NERDTreeShowHidden = 1
 autocmd VimEnter * execute 'NERDTree'
 nnoremap <silent><C-e> :NERDTreeToggle<CR> " nerdtreeを'ctrl + e'で起動
+
+" Unite
+let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable =1
+let g:unite_source_file_mru_limit = 200
+nnoremap <silent> ,uy :<C-u>Unite history/yank<CR>
+nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> ,uu :<C-u>Unite file_mru buffer<CR>
 
 " タブページの管理
 nnoremap s <Nop>
