@@ -38,10 +38,15 @@ alias maude="/usr/local/maude/maude.darwin64"
 export GOPATH=$HOME/.go
 export PATH=$HOME/.go/bin:$PATH
 
-# rbenv
-#export PATH="$PATH:$HOME/.rbenv/shims"
-#eval "$(rbenv init -)"
-
 # phpenv
-export PATH="$HOME/.phpenv/bin:$PATH"
+export PHPENV_ROOT="$HOME/.phpenv"
+export PATH="$PHPENV_ROOT/bin:$PATH"
 eval "$(phpenv init -)"
+
+# rbenv
+export RBENV_ROOT="$HOME/.rbenv"
+export PATH="$RBENV_ROOT/bin:$PATH"
+eval "$(rbenv init -)"
+
+# composer
+export PATH="$PATH:$HOME/.composer/vendor/bin"

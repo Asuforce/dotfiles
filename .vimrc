@@ -76,6 +76,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides' " インデントに色付け
 let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
 NeoBundle 'vim-scripts/AnsiEsc.vim' " logファイルをカラーリング
 NeoBundle 'bronson/vim-trailing-whitespace' " ホワイトスペースの可視化
+NeoBUndle 'junegunn/vim-easy-align'
 
 " vim-scripts repos
 NeoBundle 'L9'
