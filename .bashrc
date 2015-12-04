@@ -20,12 +20,13 @@ alias gco='git checkout'
 # fot bundle
 alias be='bundle exec'
 
-# export
+# Homebrew
 export PATH=~/bin:$PATH
 export PATH=/usr/local/sbin:$PATH # for Homebrew
 export PATH=/usr/local/bin:$PATH  # for Homebrew
 export PATH=/usr/bin:$PATH
 export PATH=/Users/Shun/pear/bin:$PATH
+export HOMEBREW_GITHUB_API_TOKEN=c33c9f6119effedfb68a1c148d958acc73b69984
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
