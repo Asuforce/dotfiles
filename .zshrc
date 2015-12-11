@@ -1,7 +1,7 @@
 # oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+export ZSH=/Users/usr0600407/.oh-my-zsh
 ZSH_THEME="wedisagree"
-
+plugins=(git)
 
 # 環境変数
 export LANG=ja_JP.UTF-8
@@ -135,13 +135,9 @@ alias gco='git checkout'
 # fot bundle
 alias be='bundle exec'
 
-# Homebrew
-export PATH=~/bin:$PATH
-export PATH=/usr/local/sbin:$PATH # for Homebrew
-export PATH=/usr/local/bin:$PATH  # for Homebrew
-export PATH=/usr/bin:$PATH
-export PATH=/Users/Shun/pear/bin:$PATH
-export HOMEBREW_GITHUB_API_TOKEN=c33c9f6119effedfb68a1c148d958acc73b69984
+# for vagrant
+alias vu='vagrant up'
+alias vs='vagrant ssh'
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -164,6 +160,34 @@ export RBENV_ROOT="$HOME/.rbenv"
 export PATH="$RBENV_ROOT/bin:$PATH"
 eval "$(rbenv init -)"
 
+# Homebrew
+alias brew="env PATH=${PATH/\/Users\/usr0600407\/\.phpenv\/shims\/php-config:/} brew"
+export PATH=~/bin:$PATH
+export PATH=/usr/local/sbin:$PATH # for Homebrew
+export PATH=/usr/local/bin:$PATH  # for Homebrew
+export PATH=/usr/bin:$PATH
+export PATH=$HOME/pear/bin:$PATH
+export HOMEBREW_GITHUB_API_TOKEN=c33c9f6119effedfb68a1c148d958acc73b69984
+
 # composer
 export PATH="$PATH:$HOME/.composer/vendor/bin"
+
+# peco
+function peco-z-search
+{
+    which peco z > /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Please install peco and z"
+        return 1
+    fi
+    local res=$(z | sort -rn | cut -c 12- | peco)
+    if [ -n "$res" ]; then
+        BUFFER+="cd $res"
+        zle accept-line
+    else
+        return 1
+    fi
+}
+zle -N peco-z-search
+bindkey '^f' peco-z-search
 
