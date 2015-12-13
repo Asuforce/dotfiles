@@ -5,6 +5,18 @@ plugins=(git)
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 source $ZSH/oh-my-zsh.sh
 
+# tmux auto load
+if [ -z "$PS1" ]; then return ; fi
+
+if [ -z $TMUX ] ; then
+    if [ -z `tmux ls` ] ; then
+        tmux
+    else
+        tmux attach
+    fi
+fi
+
+
 # 環境変数
 export LANG=ja_JP.UTF-8
 
@@ -183,3 +195,4 @@ function peco-z-search
 zle -N peco-z-search
 bindkey '^f' peco-z-search
 
+source ~/.zsh.d/z.sh
