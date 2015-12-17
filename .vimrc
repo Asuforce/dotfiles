@@ -18,7 +18,7 @@ set backspace=indent,eol,start
 set autoindent
 
 " オートインデント幅
-set shiftwidth=4
+set shiftwidth=2
 
 " 画面最下位にルーラー
 set ruler
