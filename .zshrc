@@ -195,4 +195,4 @@ function peco-z-search
 zle -N peco-z-search
 bindkey '^f' peco-z-search
 
-source ~/.zsh.d/z.sh
+source ~/z/z.sh
