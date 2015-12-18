@@ -18,7 +18,7 @@ set backspace=indent,eol,start
 set autoindent
 
 " オートインデント幅
-set shiftwidth=4
+set shiftwidth=2
 
 " 画面最下位にルーラー
 set ruler
@@ -30,7 +30,7 @@ set laststatus=2
 set number
 
 " インデント
-set tabstop=4
+set tabstop=2
 
 " ビジュアルベル
 set visualbell
