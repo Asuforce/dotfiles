@@ -2,7 +2,6 @@
 export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="wedisagree"
 plugins=(git)
-export PATH=$HOME/bin:/usr/local/bin:$PATH
 source $ZSH/oh-my-zsh.sh
 
 # tmux auto load
@@ -93,10 +92,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # ../ の後は今いるディレクトリを補完しない
 zstyle ':completion:*' ignore-parents parent pwd ..
-
-# sudo の後ろでコマンド名を補完する
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
-                   /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
@@ -191,16 +186,23 @@ alias be='bundle exec'
 alias vu='vagrant up'
 alias vs='vagrant ssh'
 
+# PATH
+export PATH="/usr/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH" # for Homebrew
+export PATH="/usr/local/bin:$PATH"  # for Homebrew
+export HOMEBREW_GITHUB_API_TOKEN=c33c9f6119effedfb68a1c148d958acc73b69984
+
+# Homebrew 直ってない
+export BREW_ENV="$HOME/.phpenv/shims/php-config"
+alias brew="env PATH=${PATH/\/$BREW_ENV:} brew"
+
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
-export PATH=./vendor/bin:$PATH
-MAUDE_LIB=/usr/local/maude
-export MAUDE_LIB
-alias maude="/usr/local/maude/maude.darwin64"
+export PATH="./vendor/bin:$PATH"
 
 # GO
-export GOPATH=$HOME/.go
-export PATH=$HOME/.go/bin:$PATH
+export GOPATH="$HOME/.go"
+export PATH="$HOME/.go/bin:$PATH"
 
 # phpenv
 export PHPENV_ROOT="$HOME/.phpenv"
@@ -212,19 +214,11 @@ export RBENV_ROOT="$HOME/.rbenv"
 export PATH="$RBENV_ROOT/bin:$PATH"
 eval "$(rbenv init -)"
 
-# Homebrew
-alias brew="env PATH=${PATH/\/Users\/usr0600407\/\.phpenv\/shims\/php-config:/} brew"
-export PATH=~/bin:$PATH
-export PATH=/usr/local/sbin:$PATH # for Homebrew
-export PATH=/usr/local/bin:$PATH  # for Homebrew
-export PATH=/usr/bin:$PATH
-export HOMEBREW_GITHUB_API_TOKEN=c33c9f6119effedfb68a1c148d958acc73b69984
-
 # pear
-export PATH=$HOME/pear/bin:$PATH
+export PATH="$HOME/pear/bin:$PATH"
 
 # composer
-export PATH="$PATH:$HOME/.composer/vendor/bin"
+export PATH="$HOME/.composesr/vendor/bin:$PATH"
 
 # peco
 function peco-z-search
