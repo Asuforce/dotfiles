@@ -130,6 +130,7 @@ setopt auto_cd
 
 # cd したら自動的にpushdする
 setopt auto_pushd
+
 # 重複したディレクトリを追加しない
 setopt pushd_ignore_dups
 
@@ -188,34 +189,26 @@ alias vs='vagrant ssh'
 
 # PATH
 export PATH="/usr/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH" # for Homebrew
-export PATH="/usr/local/bin:$PATH"  # for Homebrew
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN=c33c9f6119effedfb68a1c148d958acc73b69984
-
-# Homebrew 直ってない
-export BREW_ENV="$HOME/.phpenv/shims/php-config"
-alias brew="env PATH=${PATH/\/$BREW_ENV:} brew"
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="./vendor/bin:$PATH"
 
 # GO
-export GOPATH="$HOME/.go"
-export PATH="$HOME/.go/bin:$PATH"
-
-# phpenv
-export PHPENV_ROOT="$HOME/.phpenv"
-export PATH="$PHPENV_ROOT/bin:$PATH"
-eval "$(phpenv init -)"
+export GOPATH="/usr/local/bin/go"
 
 # rbenv
-export RBENV_ROOT="$HOME/.rbenv"
+export RBENV_ROOT="/usr/local/rbenv"
 export PATH="$RBENV_ROOT/bin:$PATH"
 eval "$(rbenv init -)"
 
-# pear
-export PATH="$HOME/pear/bin:$PATH"
+# phpenv
+export PHPENV_ROOT="/usr/local/phpenv"
+export PATH="$PATH:$PHPENV_ROOT/bin"
+eval "$(phpenv init -)"
 
 # composer
 export PATH="$HOME/.composesr/vendor/bin:$PATH"
@@ -240,3 +233,6 @@ zle -N peco-z-search
 bindkey '^f' peco-z-search
 
 source ~/z/z.sh
+
+# 重複パスを登録しない
+typeset -U path cdpath fpath manpath
