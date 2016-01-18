@@ -180,6 +180,9 @@ alias gdc='git diff --cached'
 alias gad='git add'
 alias gco='git checkout'
 
+# fir brew
+alias brew="env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew"
+
 # fot bundle
 alias be='bundle exec'
 
@@ -232,7 +235,7 @@ function peco-z-search
 zle -N peco-z-search
 bindkey '^f' peco-z-search
 
-source ~/z/z.sh
+source ~/.z_lib/z.sh
 
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
