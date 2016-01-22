@@ -79,6 +79,9 @@ NeoBundle 'vim-scripts/AnsiEsc.vim' " logファイルをカラーリング
 NeoBundle 'bronson/vim-trailing-whitespace' " ホワイトスペースの可視化
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle "ctrlpvim/ctrlp.vim"
+NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'tyru/open-browser.vim'
 
 " vim-scripts repos
 NeoBundle 'L9'
@@ -109,6 +112,10 @@ nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
 nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> ,uu :<C-u>Unite file_mru buffer<CR>
+
+" for markdown file
+au BufRead,BufNewFile *.md set filetype=markdown
+let g:previm_open_cmd = 'open -a Firefox'
 
 " タブページの管理
 nnoremap s <Nop>
