@@ -19,10 +19,12 @@ function tmux_automatically_attach_session()
     ! is_exists 'tmux' && return 1
 
     if is_tmux_runnning; then
-      echo "${fg_bold[green]}   ____  __  __  _  __   ______  __  ___  __  __  _  __ ${reset_color}"
-      echo "${fg_bold[green]}  / __/ / / / / / |/ /  /_  __/ /  |/  / / / / / | |/_/ ${reset_color}"
-      echo "${fg_bold[green]} _\ \  / /_/ / /    /    / /   / /|_/ / / /_/ / _>  <   ${reset_color}"
-      echo "${fg_bold[green]}/___/  \____/ /_/|_/    /_/   /_/  /_/  \____/ /_/|_|   ${reset_color}"
+      echo "${fg_bold[green]}███████╗██╗   ██╗███╗   ██╗    ████████╗███╗   ███╗██╗   ██╗██╗  ██╗${reset_color}"
+      echo "${fg_bold[green]}██╔════╝██║   ██║████╗  ██║    ╚══██╔══╝████╗ ████║██║   ██║╚██╗██╔╝${reset_color}"
+      echo "${fg_bold[green]}███████╗██║   ██║██╔██╗ ██║       ██║   ██╔████╔██║██║   ██║ ╚███╔╝ ${reset_color}"
+      echo "${fg_bold[green]}╚════██║██║   ██║██║╚██╗██║       ██║   ██║╚██╔╝██║██║   ██║ ██╔██╗ ${reset_color}"
+      echo "${fg_bold[green]}███████║╚██████╔╝██║ ╚████║       ██║   ██║ ╚═╝ ██║╚██████╔╝██╔╝ ██╗${reset_color}"
+      echo "${fg_bold[green]}╚══════╝ ╚═════╝ ╚═╝  ╚═══╝       ╚═╝   ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝${reset_color}"
     elif is_screen_running; then
       echo "This is on screen."
     fi
