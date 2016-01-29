@@ -1,5 +1,6 @@
 /vimfiles/bundle/
 *.swp
+*.swo
 .DS_Store
 *~
 .php_cs.cache
