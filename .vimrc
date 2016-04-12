@@ -41,54 +41,35 @@ set expandtab
 " 検索結果をハイライト
 set hlsearch
 
-" NeoBundle
-set nocompatible               " be iMproved
-filetype off                   " required!
+" dein
+let s:dein_dir = expand('~/.vim/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
-if has('vim_starting')
-	set runtimepath+=~/.vim/bundle/neobundle.vim
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
-call neobundle#begin(expand('~/.vim/bundle/'))
-let g:neobundle_default_git_protocol='https'
 
-" let NeoBundle manage NeoBundle
-NeoBundle 'Shougo/neobundle.vim'
+call dein#begin(s:dein_dir)
+let s:toml = '~/.vim/rc/dein.toml'
+let s:lazy_toml = '~/.vim/rc/dein_lazy.toml'
 
-" My Bundles here:
-"
-" original repos on github
-NeoBundle 'tpope/vim-fugitive' " Gitを使う
-NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-NeoBundle 'tpope/vim-rails.git'
-NeoBundle 'Townk/vim-autoclose'
-NeoBundle 'vim-scripts/mru.vim'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'nanotech/jellybeans.vim' " jellybeansカラースキーマ
-NeoBundle 'scrooloose/nerdtree' " ファイルをtree表示
-NeoBundle 'tpope/vim-rails' " Rails向けコマンドの提供
-NeoBundle 'tpope/vim-endwise' " Ruby向けのend自動挿入
-NeoBundle 'tomtom/tcomment_vim' " コメントのON/OFFを手軽に実現
-NeoBundle 'nathanaelkane/vim-indent-guides' " インデントに色付け
+if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
+  call dein#load_toml(s:toml, {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call dein#save_cache()
+endif
+
+
+call dein#end()
+
+if dein#check_install()
+  call dein#install()
+endif
+
 let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
-NeoBundle 'vim-scripts/AnsiEsc.vim' " logファイルをカラーリング
-NeoBundle 'bronson/vim-trailing-whitespace' " ホワイトスペースの可視化
-NeoBundle 'junegunn/vim-easy-align'
-NeoBundle "ctrlpvim/ctrlp.vim"
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
-
-" vim-scripts repos
-NeoBundle 'L9'
-NeoBundle 'FuzzyFinder'
-
-NeoBundleCheck
-call neobundle#end()
 
 filetype plugin indent on
 filetype indent on
