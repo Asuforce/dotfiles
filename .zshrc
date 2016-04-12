@@ -154,6 +154,9 @@ setopt extended_glob
 # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey '^R' history-incremental-pattern-search-backward
 
+# custom command
+function mkcd() { mkdir -p $1 && cd $1; }
+
 # alias
 alias cp='cp -i'
 alias mv='mv -i'
