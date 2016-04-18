@@ -73,7 +73,6 @@ export LANG=ja_JP.UTF-8
 
 # 色を使用出来るようにする
 autoload -Uz colors
-colors
 
 # ヒストリの設定
 HISTFILE=~/.zsh_history
@@ -188,7 +187,7 @@ alias gco='git checkout'
 # fir brew
 alias brew="env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew"
 
-# fot bundle
+# for bundle
 alias be='bundle exec'
 
 # for vagrant
@@ -199,7 +198,7 @@ alias vs='vagrant ssh'
 export PATH="/usr/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=c33c9f6119effedfb68a1c148d958acc73b69984
+export HOMEBREW_GITHUB_API_TOKEN=32c12d8b776c08f0baefe9d3427ba81cdfcccd54
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -220,6 +219,9 @@ eval "$(phpenv init -)"
 
 # composer
 export PATH="$HOME/.composesr/vendor/bin:$PATH"
+
+# nvim
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # peco
 function peco-z-search
