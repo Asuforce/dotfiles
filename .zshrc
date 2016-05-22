@@ -198,7 +198,7 @@ alias vs='vagrant ssh'
 export PATH="/usr/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=32c12d8b776c08f0baefe9d3427ba81cdfcccd54
+export HOMEBREW_GITHUB_API_TOKEN=bd1cc2d939f0be5274ffa6b6bc4d2a26e3c2597d
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -207,15 +207,14 @@ export PATH="./vendor/bin:$PATH"
 # GO
 export GOPATH="/usr/local/bin/go"
 
-# rbenv
-export RBENV_ROOT="/usr/local/rbenv"
-export PATH="$RBENV_ROOT/bin:$PATH"
-eval "$(rbenv init -)"
-
-# phpenv
-export PHPENV_ROOT="/usr/local/phpenv"
-export PATH="$PATH:$PHPENV_ROOT/bin"
-eval "$(phpenv init -)"
+if [ -d $HOME/.anyenv ] ; then
+    export PATH="$HOME/.anyenv/bin:$PATH"
+    eval "$(anyenv init -)"
+    for D in `ls $HOME/.anyenv/envs`
+    do
+      export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
+    done
+fi
 
 # composer
 export PATH="$HOME/.composesr/vendor/bin:$PATH"
