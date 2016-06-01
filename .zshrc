@@ -184,7 +184,7 @@ alias gdc='git diff --cached'
 alias gad='git add'
 alias gco='git checkout'
 
-# fir brew
+# for brew
 alias brew="env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew"
 
 # for bundle
