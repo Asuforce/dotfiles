@@ -176,13 +176,7 @@ alias vi='vim'
 alias v='vim'
 
 # for git
-alias gst='git status'
-alias gci='git commit'
-alias gca='git commit --amend'
-alias gdf='git diff'
-alias gdc='git diff --cached'
-alias gad='git add'
-alias gco='git checkout'
+alias g='git'
 
 # for brew
 alias brew="env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew"
@@ -198,7 +192,7 @@ alias vs='vagrant ssh'
 export PATH="/usr/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=bd1cc2d939f0be5274ffa6b6bc4d2a26e3c2597d
+export HOMEBREW_GITHUB_API_TOKEN=289540fb3dd02bab5069985370b41fb6201fabef
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -245,3 +239,6 @@ source ~/.z_lib/z.sh
 
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
+
+# added by travis gem
+[ -f /Users/usr0600439/.travis/travis.sh ] && source /Users/usr0600439/.travis/travis.sh
