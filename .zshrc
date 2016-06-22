@@ -233,7 +233,7 @@ function peco-z-search
     fi
 }
 zle -N peco-z-search
-bindkey '^f' peco-z-search
+bindkey '^v' peco-z-search
 
 source ~/.z_lib/z.sh
 
