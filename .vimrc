@@ -35,11 +35,14 @@ set tabstop=2
 " ビジュアルベル
 set visualbell
 
-" タブを空白入力に置き換える
+" タブをスペースに置き換える
 set expandtab
 
 " 検索結果をハイライト
 set hlsearch
+
+" clipbordを使用
+set clipboard=unnamed
 
 " dein
 let s:dein_dir = expand('~/.vim/dein')

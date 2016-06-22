@@ -72,3 +72,9 @@ repo = 'kannokanno/previm'
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
+
+[[plugins]]
+repo = 'vim-scripts/closetag.vim'
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
