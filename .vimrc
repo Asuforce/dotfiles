@@ -2,9 +2,6 @@
 set encoding=utf-8
 set fileencodings=iso2022-jp,utf-8,sjis,euc-jp
 
-" コードの色分け
-syntax on
-
 " コマンドライン補完を便利に
 set wildmenu
 
@@ -66,8 +63,6 @@ if dein#load_state(s:dein_dir)
   call dein#save_state()
 endif
 
-
-
 if dein#check_install()
   call dein#install()
 endif
@@ -128,3 +123,6 @@ nnoremap sq :<C-u>q<CR>
 nnoremap sQ :<C-u>bd<CR>
 nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
 nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
+
+" コードの色分け
+syntax on
