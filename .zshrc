@@ -176,7 +176,15 @@ alias vi='vim'
 alias v='vim'
 
 # for git
+function current_branch() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || \
+    ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
+}
+
 alias g='git'
+alias ggpu='git pull origin $(current_branch)'
+alias ggpush='git push --set-upstream origin $(current_branch)'
 
 # for brew
 alias brew="env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew"
