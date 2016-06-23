@@ -41,9 +41,6 @@ repo = 'nanotech/jellybeans.vim'
 repo = 'scrooloose/nerdtree'
 
 [[plugins]]
-repo = 'tpope/vim-rails'
-
-[[plugins]]
 repo = 'tpope/vim-endwise'
 
 [[plugins]]
@@ -78,3 +75,7 @@ repo = 'vim-scripts/closetag.vim'
 
 [[plugins]]
 repo = 'mattn/emmet-vim'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
