@@ -26,10 +26,9 @@
   precommit = diff --cached -w --word-diff=color --word-diff-regex='[^[:space:]<>]+'
   uncommit = reset --mixed HEAD~
   unstage = reset -q HEAD --
-  invert = revert
   last = log -1 HEAD --format=format:"%Cred%H"
   graph = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %ar) %Cred%d' --date-order
-  history = log -10 --format=format:'%Cgreen%h %Creset• %s (%cN, %ar)'
+  history = log -20 --format=format:'%Cgreen%h %Creset• %s (%cN, %ar)'
   branches = branch -a
   stashes = stash list
   tags = tag
@@ -43,3 +42,4 @@
   rewrite = rebase -i
   contributors = shortlog -s -n
   nevermind = !git reset --hard HEAD && git clean -d -f
+  delete-merged-branch = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|master'|xargs git branch -d; };f"
