@@ -1,5 +1,5 @@
 [push]
-	default = simple
+adefault = simple
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
@@ -7,6 +7,7 @@
 	name = sun
 	email = shun.nishitsuji@pepabo.com
 [alias]
+  pl = pull
   ci = commit
   ca = commit -a
   ad = add
