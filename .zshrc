@@ -188,7 +188,7 @@ alias ggpush='git push --set-upstream origin $(current_branch)'
 
 # for brew
 alias brew='env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew'
-alias bfp='brew update && brew upgrade && brew cleanup'
+alias bfu='brew update && brew upgrade && brew cleanup'
 
 # for bundle
 alias be='bundle exec'
