@@ -21,7 +21,7 @@ adefault = simple
   summary = status -u -s
   discard = checkout --
   back = checkout "-"
-  branchout = checkout -b
+  bout = checkout -b
   unmerged = diff --name-only --diff-filter=U
   prestage = diff -w --word-diff=color
   precommit = diff --cached -w --word-diff=color --word-diff-regex='[^[:space:]<>]+'
