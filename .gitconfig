@@ -32,13 +32,13 @@ adefault = simple
   history = log -20 --format=format:'%Cgreen%h %Creset• %s (%cN, %ar)'
   branches = branch -a
   stashes = stash list
+  unstash = stash pop
   tags = tag
   remotes = remote -v
   move = mv
   remove = rm
   untrack = rm -r --cached
   unmerged = branch --no-merged
-  unstash = stash pop
   what = show -w
   rewrite = rebase -i
   contributors = shortlog -s -n
