@@ -185,10 +185,12 @@ function current_branch() {
 alias g='git'
 alias ggpu='git pull origin $(current_branch)'
 alias ggpush='git push --set-upstream origin $(current_branch)'
+alias gconfig='git config --local user.email asuforcegt@hotmail.co.jp && git config --local user.name asuforce'
 
 # for brew
 alias brew='env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew'
 alias bfu='brew update && brew upgrade && brew cleanup'
+export HOMEBREW_GITHUB_API_TOKEN=46d4ffac3de79592953af7b2cd3f5227dc7bfdd8
 
 # for bundle
 alias be='bundle exec'
