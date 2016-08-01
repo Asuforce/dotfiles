@@ -1,7 +1,7 @@
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="wedisagree"
-plugins=(git)
+plugins=(git ruby osx bundler brew rails emoji-clock)
 source $ZSH/oh-my-zsh.sh
 
 # tmux auto load
@@ -209,6 +209,9 @@ export PATH="./vendor/bin:$PATH"
 
 # GO
 export GOPATH="/usr/local/bin/go"
+
+# Docker
+alias de="docker exec"
 
 if [ -d $HOME/.anyenv ] ; then
     export PATH="$HOME/.anyenv/bin:$PATH"
