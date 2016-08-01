@@ -80,4 +80,4 @@ repo = 'mattn/emmet-vim'
 repo = 'tpope/vim-surround'
 
 [[plugins]]
-repo = 'thinca/vim-singleton'
+repo = 'Lokaltog/vim-powerline'

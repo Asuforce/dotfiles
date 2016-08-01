@@ -38,6 +38,9 @@ set expandtab
 " 検索結果をハイライト
 set hlsearch
 
+" clipbord
+set clipboard+=unnamed
+
 " dein
 let s:dein_dir = expand('~/.vim/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
@@ -63,11 +66,6 @@ endif
 if dein#check_install()
   call dein#install()
 endif
-
-" singlton
-if has('clientserver')
-  call singleton#enable()
-end
 
 let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
 
