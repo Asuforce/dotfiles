@@ -15,6 +15,7 @@ adefault = simple
   df = diff
   cia = commit --allow-empty
   co = checkout
+  st = status
 
   save = commit -m
   amend = commit --amend
