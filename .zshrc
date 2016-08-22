@@ -200,7 +200,8 @@ export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="./vendor/bin:$PATH"
 
 # GO
-export GOPATH="/usr/local/bin/go"
+export GOPATH="$HOME/.go"
+export PATH=$PATH:$GOPATH/bin
 
 # Docker
 alias de="docker exec"
