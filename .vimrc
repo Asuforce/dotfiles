@@ -107,7 +107,8 @@ let g:previm_open_cmd = 'open -a Firefox'
 let g:user_emmet_leader_key='<c-y>'
 
 " タブページの管理
-imap <c-j> <esc>
+noremap <c-j> <esc>
+noremap! <c-j> <esc>
 nnoremap s <Nop>
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
