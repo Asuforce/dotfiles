@@ -1,0 +1,8 @@
+set hlsearch
+set ignorecase
+set smartcase
+
+imap <C-l> <Right>
+imap <C-h> <Left>
+imap <C-k> <Up>
+imap <C-j> <Down>
