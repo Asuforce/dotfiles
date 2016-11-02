@@ -1,3 +1,6 @@
+" filetype on
+filetype plugin indent on
+
 " エンコード
 set encoding=utf-8
 set fileencodings=iso2022-jp,utf-8,sjis,euc-jp

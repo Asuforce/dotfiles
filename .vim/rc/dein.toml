@@ -81,3 +81,6 @@ repo = 'tpope/vim-surround'
 
 [[plugins]]
 repo = 'Lokaltog/vim-powerline'
+
+[[plugins]]
+repo = 'tpope/vim-obsession'

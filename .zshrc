@@ -1,9 +1,3 @@
-# oh-my-zsh
-export ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="wedisagree"
-plugins=(git ruby osx bundler brew rails emoji-clock)
-source $ZSH/oh-my-zsh.sh
-
 # tmux auto load
 function is_exists() { type "$1" >/dev/null 2>&1; return $?; }
 function is_osx() { [[ $OSTYPE == darwin* ]]; }
@@ -189,11 +183,6 @@ alias be='bundle exec'
 alias vu='vagrant up'
 alias vs='vagrant ssh'
 
-# PATH
-export PATH="/usr/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=289540fb3dd02bab5069985370b41fb6201fabef
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -220,6 +209,12 @@ export PATH="$HOME/.composesr/vendor/bin:$PATH"
 
 # nvim
 export XDG_CONFIG_HOME="$HOME/.config"
+
+# PATH
+export PATH="/usr/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export HOMEBREW_GITHUB_API_TOKEN=289540fb3dd02bab5069985370b41fb6201fabef
 
 # peco
 function peco-z-search
