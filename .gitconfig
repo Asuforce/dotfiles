@@ -6,6 +6,7 @@ adefault = simple
 [user]
 	name = sun
 	email = shun.nishitsuji@pepabo.com
+	siginingkey = 8FC29E15
 [alias]
   pl = pull
   ci = commit
@@ -45,3 +46,10 @@ adefault = simple
   contributors = shortlog -s -n
   nevermind = !git reset --hard HEAD && git clean -d -f
   delete-merged-branch = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|master'|xargs git branch -d; };f"
+[merge "mergepbx"]
+	name = Xcode project files merger
+	driver = mergepbx %O %A %B
+[gpg]
+	program = gpg2
+[commit]
+	gpgsign = false
