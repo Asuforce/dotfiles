@@ -6,8 +6,8 @@ do
     ln -s $HOME/dotfiles/$file $HOME/$file
 done
 
-# install oh-my-zsh
-[ ! -d ~/.oh-my-zsh ] && git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+# install prezto
+[ ! -d ~/.zprezto ] && git clone --recursive https://github.com/sorin-ionescu/prezto.git ~/.zprezto
 
 # install z
 [ ! -d ~/.z_lib  ] && git clone git://github.com/rupa/z ~/.z_lib
