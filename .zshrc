@@ -255,6 +255,38 @@ export CPATH=/usr/local/opt/openssl/include:$LD_LIBRARY_PATH
 # direnv
 eval "$(direnv hook zsh)"
 
+# ssh
+function set_term_bgcolor() {
+  local R=${1}*65535/255
+  local G=${2}*65535/255
+  local B=${3}*65535/255
+
+  /usr/bin/osascript <<EOF
+  tell application "iTerm2"
+    tell current session of current window
+      set background color to {$R, $G, $B}
+    end tell
+  end tell
+EOF
+}
+
+function myssh() {
+  local R=0
+  local G=0
+  local B=0
+  case $1 in
+    "dev" ) R=40 G=0; B=0; shift ;;
+    "pro" ) R=0; G=40; B=0; shift ;;
+    "warn") R=40 G=40; B=0; shift ;;
+    *) R=0; G=0; B=30 ;;
+  esac
+  set_term_bgcolor $R $G $B
+  \ssh $@
+  set_term_bgcolor 0 0 0
+}
+
+alias ssh='myssh'
+
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
 
