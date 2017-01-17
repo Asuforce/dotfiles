@@ -142,6 +142,9 @@ setopt extended_glob
 # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey '^R' history-incremental-pattern-search-backward
 
+# ctrl系の操作
+bindkey -e
+
 # custom command
 function mkcd() { mkdir -p $1 && cd $1; }
 
@@ -179,7 +182,7 @@ alias gconfig='git config --local user.email asuforcegt@hotmail.co.jp && git con
 # for brew
 alias brew='env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew'
 alias bfu='brew update && brew upgrade && brew cleanup'
-export HOMEBREW_GITHUB_API_TOKEN=46d4ffac3de79592953af7b2cd3f5227dc7bfdd8
+export HOMEBREW_GITHUB_API_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
 
 # for bundle
 alias be='bundle exec'
@@ -188,6 +191,10 @@ alias be='bundle exec'
 alias vu='vagrant up'
 alias vs='vagrant ssh'
 
+# PATH
+export PATH="/usr/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH"
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -200,13 +207,17 @@ export PATH=$PATH:$GOPATH/bin
 # Docker
 alias de="docker exec"
 
+# Platinum Searcher
+alias ptg='pt —vcs-ignore=""'
+
+# anyenv
 if [ -d $HOME/.anyenv ] ; then
-    export PATH="$HOME/.anyenv/bin:$PATH"
-    eval "$(anyenv init -)"
-    for D in `ls $HOME/.anyenv/envs`
-    do
-      export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
-    done
+  export PATH="$HOME/.anyenv/bin:$PATH"
+  eval "$(anyenv init -)"
+  for D in `ls $HOME/.anyenv/envs`
+  do
+    export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
+  done
 fi
 
 # composer
@@ -215,32 +226,34 @@ export PATH="$HOME/.composesr/vendor/bin:$PATH"
 # nvim
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# PATH
-export PATH="/usr/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=289540fb3dd02bab5069985370b41fb6201fabef
-
 # peco
 function peco-z-search
 {
-    which peco z > /dev/null
-    if [ $? -ne 0 ]; then
-        echo "Please install peco and z"
-        return 1
-    fi
-    local res=$(z | sort -rn | cut -c 12- | peco)
-    if [ -n "$res" ]; then
-        BUFFER+="cd $res"
-        zle accept-line
-    else
-        return 1
-    fi
+  which peco z > /dev/null
+  if [ $? -ne 0 ]; then
+      echo "Please install peco and z"
+      return 1
+  fi
+  local res=$(z | sort -rn | cut -c 12- | peco)
+  if [ -n "$res" ]; then
+      BUFFER+="cd $res"
+      zle accept-line
+  else
+      return 1
+  fi
 }
 zle -N peco-z-search
 bindkey '^v' peco-z-search
 
 source ~/.z_lib/z.sh
+
+# openssl
+export PATH=/usr/local/opt/openssl/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH
+export CPATH=/usr/local/opt/openssl/include:$LD_LIBRARY_PATH
+
+# direnv
+eval "$(direnv hook zsh)"
 
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath

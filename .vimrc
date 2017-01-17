@@ -3,7 +3,7 @@ filetype plugin indent on
 
 " エンコード
 set encoding=utf-8
-set fileencodings=iso2022-jp,utf-8,sjis,euc-jp
+set fileencodings=utf-8,iso-2022-jp,cp932,sjis,euc-jp
 
 " コマンドライン補完を便利に
 set wildmenu
@@ -42,7 +42,6 @@ set expandtab
 set hlsearch
 
 " clipbord
-set clipboard+=unnamed
 set clipboard=unnamed
 
 " 検索で大文字と小文字の区別しない
@@ -50,6 +49,12 @@ set ignorecase
 
 " 検索文字列に大小文字列が混在した場合、区別して検索
 set smartcase
+
+" ctags
+set tags=./tags;
+
+" Sessionを自動保存
+au VimLeave * mks!  < file>
 
 " dein
 let s:dein_dir = expand('~/.vim/dein')
@@ -141,3 +146,20 @@ nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
 
 " コードの色分け
 syntax on
+
+" ファイルタイプ毎 & gitリポジトリ毎にtagsの読み込みpathを変える
+function! ReadTags(type)
+  try
+    execute "set tags=".$HOME."/dotfiles/tags_files/".
+          \ system("cd " . expand('%:p:h') . "; basename `git rev-parse --show-toplevel` | tr -d '\n'").
+          \ "/" . a:type . "_tags"
+  catch
+    execute "set tags=./tags/" . a:type . "_tags;"
+  endtry
+endfunction
+
+augroup TagsAutoCmd
+  autocmd!
+  autocmd BufEnter * :call ReadTags(&filetype)
+augroup END
+

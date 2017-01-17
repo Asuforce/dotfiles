@@ -84,3 +84,6 @@ repo = 'Lokaltog/vim-powerline'
 
 [[plugins]]
 repo = 'tpope/vim-obsession'
+
+[[plugins]]
+repo = 'slim-template/vim-slim'

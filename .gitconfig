@@ -2,7 +2,7 @@
 adefault = simple
 [core]
 	editor = vim
-	excludesfile = ~/.gitignore
+	excludesfile = /Users/usr0600439/.gitignore
 [user]
 	name = sun
 	email = shun.nishitsuji@pepabo.com
@@ -46,6 +46,7 @@ adefault = simple
   contributors = shortlog -s -n
   nevermind = !git reset --hard HEAD && git clean -d -f
   delete-merged-branch = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|master'|xargs git branch -d; };f"
+  showpr = !"f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
 [merge "mergepbx"]
 	name = Xcode project files merger
 	driver = mergepbx %O %A %B
@@ -53,3 +54,4 @@ adefault = simple
 	program = gpg2
 [commit]
 	gpgsign = false
+	template = /Users/usr0600439/.stCommitMsg
