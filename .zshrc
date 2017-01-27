@@ -181,7 +181,7 @@ alias gconfig='git config --local user.email asuforcegt@hotmail.co.jp && git con
 
 # for brew
 alias brew='env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew'
-alias bfu='brew update && brew upgrade && brew cleanup'
+alias bu='brew upgrade --force-bottle --cleanup'
 export HOMEBREW_GITHUB_API_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
 
 # for bundle
