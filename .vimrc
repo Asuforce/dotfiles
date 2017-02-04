@@ -94,7 +94,6 @@ colorscheme jellybeans
 
 " NERDTree
 let NERDTreeShowHidden = 1
-autocmd VimEnter * execute 'NERDTree'
 nnoremap <silent><C-e> :NERDTreeToggle<CR> " nerdtreeを'ctrl + e'で起動
 
 " Unite
