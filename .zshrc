@@ -135,15 +135,19 @@ bindkey -e
 # custom command
 function mkcd() { mkdir -p $1 && cd $1; }
 
-# alias
+# PATH
+export PATH="/usr/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/Cellar/perl/5.24.0_1/bin:$PATH"
+
+# 重複パスを登録しない
+typeset -U path cdpath fpath manpath
+
+# alias 上書きファイルの問い合わせ
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
-alias sudo='sudo '
-
-# グローバルエイリアス
-alias -g L='| less'
-alias -g G='| grep'
 
 # for shortcut
 alias up='cd ..'
@@ -151,6 +155,8 @@ alias upp='cd ../..'
 alias uppp='cd ../../..'
 alias ls='ls -GwF'
 alias la='ls -alh'
+
+# for vim
 alias vi='vim'
 alias v='vim'
 
@@ -178,27 +184,22 @@ alias be='bundle exec'
 alias vu='vagrant up'
 alias vs='vagrant ssh'
 
-# PATH
-export PATH="/usr/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/Cellar/perl/5.24.0_1/bin:$PATH"
 
-# Added by the Heroku Toolbelt
+# for heroku
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="./vendor/bin:$PATH"
 
-# GO
+# for go
 export GOPATH="$HOME/.go"
 export PATH=$PATH:$GOPATH/bin
 
-# Docker
+# for Docker
 alias de="docker exec"
 
-# Platinum Searcher
+# for Platinum Searcher
 alias ptg='pt —vcs-ignore=""'
 
-# anyenv
+# for anyenv
 if [ -d $HOME/.anyenv ] ; then
   export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init -)"
@@ -208,13 +209,13 @@ if [ -d $HOME/.anyenv ] ; then
   done
 fi
 
-# composer
+# for composer
 export PATH="$HOME/.composesr/vendor/bin:$PATH"
 
-# nvim
+# for nvim
 export XDG_CONFIG_HOME="$HOME/.config"
 
-# peco
+# for peco
 function peco-z-search
 {
   which peco z > /dev/null
@@ -235,15 +236,15 @@ bindkey '^v' peco-z-search
 
 source ~/.z_lib/z.sh
 
-# openssl
+# for openssl
 export PATH=/usr/local/opt/openssl/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH
 export CPATH=/usr/local/opt/openssl/include:$LD_LIBRARY_PATH
 
-# direnv
+# for direnv
 eval "$(direnv hook zsh)"
 
-# ssh
+# for ssh
 function set_term_bgcolor() {
   local R=${1}*65535/255
   local G=${2}*65535/255
@@ -259,24 +260,12 @@ EOF
 }
 
 function myssh() {
-  local R=0
-  local G=0
-  local B=0
-  case $1 in
-    "dev" ) R=40 G=0; B=0; shift ;;
-    "pro" ) R=0; G=40; B=0; shift ;;
-    "warn") R=40 G=40; B=0; shift ;;
-    *) R=0; G=0; B=30 ;;
-  esac
-  set_term_bgcolor $R $G $B
+  set_term_bgcolor 0 0 30
   \ssh $@
   set_term_bgcolor 0 0 0
 }
 
 alias ssh='myssh'
 
-# 重複パスを登録しない
-typeset -U path cdpath fpath manpath
-
-# added by travis gem
+# for travis
 [ -f /Users/usr0600439/.travis/travis.sh ] && source /Users/usr0600439/.travis/travis.sh

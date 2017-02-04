@@ -106,13 +106,6 @@ nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> ,uu :<C-u>Unite file_mru buffer<CR>
 
-" for markdown file
-au BufRead,BufNewFile *.md set filetype=markdown
-let g:previm_open_cmd = 'open -a Firefox'
-
-" emmet
-let g:user_emmet_leader_key='<c-y>'
-
 " タブページの管理
 noremap <c-j> <esc>
 noremap! <c-j> <esc>
@@ -145,20 +138,3 @@ nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
 
 " コードの色分け
 syntax on
-
-" ファイルタイプ毎 & gitリポジトリ毎にtagsの読み込みpathを変える
-function! ReadTags(type)
-  try
-    execute "set tags=".$HOME."/dotfiles/tags_files/".
-          \ system("cd " . expand('%:p:h') . "; basename `git rev-parse --show-toplevel` | tr -d '\n'").
-          \ "/" . a:type . "_tags"
-  catch
-    execute "set tags=./tags/" . a:type . "_tags;"
-  endtry
-endfunction
-
-augroup TagsAutoCmd
-  autocmd!
-  autocmd BufEnter * :call ReadTags(&filetype)
-augroup END
-
