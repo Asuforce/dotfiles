@@ -176,6 +176,7 @@ alias gconfig='git config --local user.email asuforcegt@hotmail.co.jp && git con
 alias brew='env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew'
 alias bu='brew upgrade --force-bottle --cleanup'
 export HOMEBREW_GITHUB_API_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
+export GITHUB_ACCESS_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
 
 # for bundle
 alias be='bundle exec'
@@ -269,3 +270,6 @@ alias ssh='myssh'
 
 # for travis
 [ -f /Users/usr0600439/.travis/travis.sh ] && source /Users/usr0600439/.travis/travis.sh
+
+# for itunes
+alias itunes='itunes-remote'
