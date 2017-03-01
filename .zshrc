@@ -180,6 +180,7 @@ export GITHUB_ACCESS_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
 
 # for bundle
 alias be='bundle exec'
+alias bi='bundle install --path vender/bundle'
 
 # for vagrant
 alias vu='vagrant up'
