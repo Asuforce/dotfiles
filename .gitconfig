@@ -9,8 +9,8 @@ adefault = simple
   signingkey = 227D20EE
 [alias]
   pl = pull
-  ci = commit
-  ca = commit -a
+  ci = commit -v
+  ca = commit -av
   ad = add
   aa = add -A
   df = diff
