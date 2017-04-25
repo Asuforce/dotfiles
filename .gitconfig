@@ -2,7 +2,7 @@
 adefault = simple
 [core]
   editor = vim
-  excludesfile = /Users/usr0600439/.gitignore
+  excludesfile = ~/.gitignore
 [user]
   name = sun
   email = shun.nishitsuji@pepabo.com
@@ -54,4 +54,7 @@ adefault = simple
   program = gpg2
 [commit]
   gpgsign = true
-  template = /Users/usr0600439/.stCommitMsg
+  template = ~/.stCommitMsg
+[ghq]
+  root = ~/workspace
+
