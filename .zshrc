@@ -180,7 +180,7 @@ export GITHUB_ACCESS_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
 
 # for bundle
 alias be='bundle exec'
-alias bi='bundle install --path vender/bundle'
+alias bi='bundle install -j4 --path vendor/bundle'
 
 # for vagrant
 alias vu='vagrant up'
@@ -236,6 +236,31 @@ function peco-z-search
 zle -N peco-z-search
 bindkey '^v' peco-z-search
 
+
+function peco-src
+{
+  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-src
+bindkey '^j' peco-src
+
+function peco-history
+{
+  local selected_dir=$(history | tr -s ' ' | cut -d' ' -f3- | peco)
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-history
+bindkey '^]' peco-history
+
 source ~/.z_lib/z.sh
 
 # for openssl
@@ -274,3 +299,14 @@ alias ssh='myssh'
 
 # for itunes
 alias itunes='itunes-remote'
+
+# for vagrant
+alias vu='vagrant up'
+alias vd='vagrant destroy'
+alias vp='vagrant provision'
+alias vs='vagrant status'
+alias vssh='vagrant ssh'
+
+# nyah-cli
+alias ne='nyah-exec'
+
