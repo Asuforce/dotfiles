@@ -7,3 +7,7 @@
 Session.vim
 tags
 .envrc
+.ruby-version
+.env*
+/sscript/
+
