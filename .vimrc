@@ -53,6 +53,9 @@ set smartcase
 " ctags
 set tags=./tags;
 
+" for crontab
+set backupskip=/tmp/*,/private/tmp/*
+
 " Sessionを自動保存
 au VimLeave * mks!  < file>
 
