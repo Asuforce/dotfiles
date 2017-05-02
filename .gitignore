@@ -10,4 +10,5 @@ tags
 .ruby-version
 .env*
 /sscript/
+vendor/
 
