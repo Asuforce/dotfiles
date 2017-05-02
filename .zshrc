@@ -251,11 +251,8 @@ bindkey '^j' peco-src
 
 function peco-history
 {
-  local selected_dir=$(history | tr -s ' ' | cut -d' ' -f3- | peco)
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
+  BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+  CURSOR=$#BUFFER
   zle clear-screen
 }
 zle -N peco-history
@@ -309,4 +306,5 @@ alias vssh='vagrant ssh'
 
 # nyah-cli
 alias ne='nyah-exec'
+
 
