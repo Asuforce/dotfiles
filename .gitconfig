@@ -8,11 +8,9 @@ adefault = simple
   email = shun.nishitsuji@pepabo.com
   signingkey = 227D20EE
 [alias]
-  pl = pull
   ci = commit -v
   ca = commit -av
   ad = add
-  aa = add -A
   df = diff
   cia = commit --allow-empty
   co = checkout
@@ -57,4 +55,6 @@ adefault = simple
   template = ~/.stCommitMsg
 [ghq]
   root = ~/workspace
+ [fetch]
+  prune = true
 
