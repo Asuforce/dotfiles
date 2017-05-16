@@ -42,7 +42,7 @@ set expandtab
 set hlsearch
 
 " clipbord
-set clipboard=unnamed
+set clipboard+=unnamed
 
 " 検索で大文字と小文字の区別しない
 set ignorecase
