@@ -170,7 +170,6 @@ function current_branch() {
 alias g='git'
 alias ggpu='git pull origin $(current_branch)'
 alias ggpush='git push --set-upstream origin $(current_branch)'
-alias gconfig='git config --local user.email asuforcegt@hotmail.co.jp && git config --local user.name asuforce'
 
 # for brew
 alias brew='env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew'
@@ -192,7 +191,7 @@ export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="./vendor/bin:$PATH"
 
 # for go
-export GOPATH="$HOME/.go"
+export GOPATH="$HOME/go"
 export PATH=$PATH:$GOPATH/bin
 
 # for Docker
@@ -236,7 +235,6 @@ function peco-z-search
 zle -N peco-z-search
 bindkey '^v' peco-z-search
 
-
 function peco-src
 {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
@@ -258,6 +256,18 @@ function peco-history
 zle -N peco-history
 bindkey '^]' peco-history
 
+function peco-mkr-roles() {
+  local selected_role=$(mkr services | jq -rM '[.[] | .name as $name | .roles // [] | map("\($name) \(.)")] | flatten | .[]' | peco)
+  if [ -n "${selected_role}" ]; then
+    local BUFFER="xpanes --ssh \`roles "${selected_role}"\`"
+    zle accept-line // 好みでコメントアウトを外す
+  fi
+  zle clear-screen
+}
+zle -N peco-mkr-roles
+bindkey '^w' peco-mkr-roles
+
+# for z_lib
 source ~/.z_lib/z.sh
 
 # for openssl
@@ -304,7 +314,15 @@ alias vp='vagrant provision'
 alias vs='vagrant status'
 alias vssh='vagrant ssh'
 
-# nyah-cli
+# for nyah-cli
 alias ne='nyah-exec'
 
+# for tmux-xpanes
+source ~/workspace/github.com/greymd/tmux-xpanes/activate.sh
+
+# for mkr
+export MACKEREL_APIKEY=cJ92HeIpWFe6OGyOqqUz3RivGGfFmAhzNesc5VdDt6E=
+
+# for vscode
+code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
