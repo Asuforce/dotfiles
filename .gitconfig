@@ -1,12 +1,11 @@
 [push]
-adefault = simple
+  adefault = simple
 [core]
   editor = vim
   excludesfile = ~/.gitignore
 [user]
-  name = sun
-  email = shun.nishitsuji@pepabo.com
-  signingkey = 227D20EE
+  name = asuforce
+  email = asuforcegt@hotmail.co.jp
 [alias]
   ci = commit -v
   ca = commit -av
@@ -48,13 +47,13 @@ adefault = simple
 [merge "mergepbx"]
   name = Xcode project files merger
   driver = mergepbx %O %A %B
-[gpg]
-  program = gpg2
 [commit]
-  gpgsign = true
   template = ~/.stCommitMsg
+	gpgsign = false
 [ghq]
   root = ~/workspace
- [fetch]
+[fetch]
   prune = true
+[includeIf "gitdir:~/workspace/git.pepabo.com/"]
+    path = ~/dotfiles/.gitconfig-work
 
