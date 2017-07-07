@@ -1,0 +1,3 @@
+mkr
+nyah-cli
+tmux-xpanes
