@@ -172,10 +172,8 @@ alias ggpu='git pull origin $(current_branch)'
 alias ggpush='git push --set-upstream origin $(current_branch)'
 
 # for brew
-alias brew='env PATH=${PATH/\/usr\/local\/\phpenv\/shims:/} brew'
 alias bu='brew upgrade --force-bottle --cleanup'
-export HOMEBREW_GITHUB_API_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
-export GITHUB_ACCESS_TOKEN=aa139de7f08303a72d829ad0446bcf7239332ae0
+export HOMEBREW_GITHUB_API_TOKEN=9afbe05d9087c47fd838e0d1ce715ab7c9010b23
 
 # for bundle
 alias be='bundle exec'
@@ -324,5 +322,5 @@ source ~/workspace/github.com/greymd/tmux-xpanes/activate.sh
 export MACKEREL_APIKEY=cJ92HeIpWFe6OGyOqqUz3RivGGfFmAhzNesc5VdDt6E=
 
 # for vscode
-code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+vscode () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
