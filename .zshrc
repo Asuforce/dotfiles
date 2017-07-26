@@ -198,7 +198,7 @@ alias ptg='pt —vcs-ignore=""'
 if [ -d $HOME/.anyenv ] ; then
   export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init -)"
-  for D in `ls $HOME/.anyenv/envs`
+  for D in `ls $HOME/.anyenv/envs | sed 's/\///g'`
   do
     export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
   done
