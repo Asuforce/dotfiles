@@ -179,11 +179,6 @@ export HOMEBREW_GITHUB_API_TOKEN=9afbe05d9087c47fd838e0d1ce715ab7c9010b23
 alias be='bundle exec'
 alias bi='bundle install -j4 --path vendor/bundle'
 
-# for vagrant
-alias vu='vagrant up'
-alias vs='vagrant ssh'
-
-
 # for heroku
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="./vendor/bin:$PATH"
@@ -193,7 +188,8 @@ export GOPATH="$HOME/go"
 export PATH=$PATH:$GOPATH/bin
 
 # for Docker
-alias de="docker exec"
+alias de='docker exec'
+alias d-c='docker-compose'
 
 # for Platinum Searcher
 alias ptg='pt —vcs-ignore=""'
@@ -313,7 +309,7 @@ alias vs='vagrant status'
 alias vssh='vagrant ssh'
 
 # for nyah-cli
-alias ne='nyah-exec'
+alias ne='OS_REGION_NAME=NoVPN nyah-exec -O mitaka'
 
 # for tmux-xpanes
 source ~/workspace/github.com/greymd/tmux-xpanes/activate.sh
