@@ -1,9 +1,9 @@
 #!/bin/bash
-DOT_FILES=(.zshrc .gitconfig .gitignore .vimrc .tmux.conf .xvimrc)
+DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc)
 
 for file in ${DOT_FILES[@]}
 do
-    ln -s $HOME/dotfiles/$file $HOME/$file
+    ln -fs $HOME/workspace/github.com/Asuforce/dotfiles/$file $HOME/$file
 done
 
 # install prezto
@@ -12,21 +12,14 @@ done
 # install z
 [ ! -d ~/.z_lib  ] && git clone git://github.com/rupa/z ~/.z_lib
 
-# sshフォルダ作成
+# create ssh directory
 mkdir ~/.ssh
 
-# brew導入
+# install brew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-# 各ソフト導入
-brew install zsh
-brew install tmux
-brew install vim
-brew install git
-brew install peco
-brew install tig
-brew install go
+# add package from brew
+cat brew.txt | xargs brew install
 
-# シェルを再起動
+# restart shell
 exec -l $SHELL
-
