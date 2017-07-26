@@ -14,6 +14,7 @@
   cia = commit --allow-empty
   co = checkout
   st = status
+  cp = cherry-pick
 
   save = commit -m
   amend = commit --amend
@@ -49,11 +50,11 @@
   driver = mergepbx %O %A %B
 [commit]
   template = ~/.stCommitMsg
-	gpgsign = false
+  gpgsign = false
 [ghq]
   root = ~/workspace
 [fetch]
   prune = true
 [includeIf "gitdir:~/workspace/git.pepabo.com/"]
-    path = ~/dotfiles/.gitconfig-work
+  path = ~/dotfiles/.gitconfig-work
 
