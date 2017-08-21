@@ -318,5 +318,6 @@ source ~/workspace/github.com/greymd/tmux-xpanes/activate.sh
 export MACKEREL_APIKEY=cJ92HeIpWFe6OGyOqqUz3RivGGfFmAhzNesc5VdDt6E=
 
 # for vscode
-vscode () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+open_editor () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+alias e='open_editor'
 
