@@ -4,6 +4,7 @@ ffmpeg
 ghq
 git
 go
+gnu-sed
 jq
 mysql
 node
