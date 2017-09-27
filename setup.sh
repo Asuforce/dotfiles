@@ -1,9 +1,17 @@
 #!/bin/bash
+REPO_PATH="$HOME/workspace/github.com/Asuforce/dotfiles"
+
 DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc)
+DEIN_FILES=(dein.toml dein_lazy.toml)
 
 for file in ${DOT_FILES[@]}
 do
-    ln -fs $HOME/workspace/github.com/Asuforce/dotfiles/$file $HOME/$file
+    ln -fs $REPO_PATH/$file $HOME/$file
+done
+
+for file in ${DEIN_FILES[@]}
+do
+    ln -fs $REPO_PATH/.vim/dein/$file $HOME/.vim/dein/$file
 done
 
 # install prezto
