@@ -70,8 +70,8 @@ if &runtimepath !~# '/dein.vim'
   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
-let s:toml = '~/dotfiles/.vim/rc/dein.toml'
-let s:lazy_toml = '~/dotfiles/.vim/rc/dein_lazy.toml'
+let s:toml = '~/.vim/dein/dein.toml'
+let s:lazy_toml = '~/.vim/dein/dein_lazy.toml'
 
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
