@@ -60,6 +60,9 @@ tmux_automatically_attach_session
 # 環境変数
 export LANG=ja_JP.UTF-8
 
+# editor
+export EDITOR=/usr/local/bin/vim
+
 # 色を使用出来るようにする
 autoload -Uz colors
 
@@ -243,9 +246,8 @@ bindkey '^j' peco-src
 
 function peco-history
 {
-  BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+  BUFFER=`history -n 1 | sort -k1,1nr | sort | uniq | peco`
   CURSOR=$#BUFFER
-  zle clear-screen
 }
 zle -N peco-history
 bindkey '^]' peco-history
@@ -309,7 +311,7 @@ alias vs='vagrant status'
 alias vssh='vagrant ssh'
 
 # for nyah-cli
-alias ne='OS_REGION_NAME=NoVPN nyah-exec -O mitaka'
+alias ne='nyah-exec -O mitaka'
 
 # for tmux-xpanes
 source ~/workspace/github.com/greymd/tmux-xpanes/activate.sh
@@ -320,4 +322,7 @@ export MACKEREL_APIKEY=cJ92HeIpWFe6OGyOqqUz3RivGGfFmAhzNesc5VdDt6E=
 # for vscode
 open_editor () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 alias e='open_editor'
+
+# for gnu-sed
+alias sed='gsed'
 
