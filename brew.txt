@@ -2,6 +2,7 @@ direnv
 elasticsearch
 ffmpeg
 ghq
+gifsicle
 git
 go
 gnu-sed
