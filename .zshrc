@@ -57,7 +57,25 @@ function tmux_automatically_attach_session()
 }
 tmux_automatically_attach_session
 
-# 環境変数
+# notify
+function notify_precmd {
+  prev_command_status=$?
+
+  if [[ "$TTYIDLE" -gt 1 ]]; then
+    notify_title=$([ "$prev_command_status" -eq 0 ] && echo "Command succeeded \U1F646" || echo "Command failed \U1F645")
+    osascript -e "display notification \"$prev_command\" with title \"$notify_title\""
+  fi
+}
+
+function store_command {
+  prev_command=$2
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec store_command
+add-zsh-hook precmd notify_precmd
+
+# language
 export LANG=ja_JP.UTF-8
 
 # editor
