@@ -205,7 +205,7 @@ export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="./vendor/bin:$PATH"
 
 # for go
-export GOPATH="$HOME/go"
+export GOPATH="$HOME/local"
 export PATH=$PATH:$GOPATH/bin
 
 # for Docker
@@ -332,7 +332,7 @@ alias vssh='vagrant ssh'
 alias ne='nyah-exec -O mitaka'
 
 # for tmux-xpanes
-source ~/workspace/github.com/greymd/tmux-xpanes/activate.sh
+source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
 
 # for mkr
 export MACKEREL_APIKEY=cJ92HeIpWFe6OGyOqqUz3RivGGfFmAhzNesc5VdDt6E=
