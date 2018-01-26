@@ -2,82 +2,28 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'tpope/vim-fugitive'
-
-[[plugins]]
 repo = 'Lokaltog/vim-easymotion'
-
-[[plugins]]
-repo = 'rstacruz/sparkup'
-
-[[plugins]]
-repo = 'tpope/vim-rails.git'
-
-[[plugins]]
-repo = 'Townk/vim-autoclose'
-
-[[plugins]]
-repo = 'vim-scripts/mru.vim'
 
 [[plugins]]
 repo = 'Shougo/neocomplcache'
 
 [[plugins]]
-repo = 'Shougo/unite.vim'
-
-[[plugins]]
-repo = 'Shougo/neomru.vim'
-
-[[plugins]]
-repo = 'thinca/vim-ref'
-
-[[plugins]]
-repo = 'thinca/vim-quickrun'
-
-[[plugins]]
 repo = 'nanotech/jellybeans.vim'
-
-[[plugins]]
-repo = 'scrooloose/nerdtree'
 
 [[plugins]]
 repo = 'tpope/vim-endwise'
 
 [[plugins]]
-repo = 'tomtom/tcomment_vim'
-
-[[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 
 [[plugins]]
-repo = 'vim-scripts/AnsiEsc.vim'
-
-[[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
-
-[[plugins]]
-repo = 'junegunn/vim-easy-align'
 
 [[plugins]]
 repo = "ctrlpvim/ctrlp.vim"
 
 [[plugins]]
 repo = 'plasticboy/vim-markdown'
-
-[[plugins]]
-repo = 'kannokanno/previm'
-
-[[plugins]]
-repo = 'tyru/open-browser.vim'
-
-[[plugins]]
-repo = 'vim-scripts/closetag.vim'
-
-[[plugins]]
-repo = 'mattn/emmet-vim'
-
-[[plugins]]
-repo = 'tpope/vim-surround'
 
 [[plugins]]
 repo = 'Lokaltog/vim-powerline'
