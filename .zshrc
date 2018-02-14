@@ -79,7 +79,7 @@ add-zsh-hook precmd notify_precmd
 export LANG=ja_JP.UTF-8
 
 # editor
-export EDITOR=/usr/local/bin/vim
+export EDITOR=/usr/bin/vim
 
 # 色を使用出来るようにする
 autoload -Uz colors
@@ -136,6 +136,7 @@ setopt pushd_ignore_dups
 setopt share_history
 
 # 同じコマンドをヒストリに残さない
+setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 
 # スペースから始まるコマンド行はヒストリに残さない
