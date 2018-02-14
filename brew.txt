@@ -18,7 +18,6 @@ redis
 sqlite
 the_platinum_searcher
 tmux
-vim
 wget
 yarn
 xz
