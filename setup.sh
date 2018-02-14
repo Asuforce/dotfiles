@@ -1,5 +1,5 @@
 #!/bin/bash
-REPO_PATH="$HOME/workspace/github.com/Asuforce/dotfiles"
+REPO_PATH="$HOME/local/src/github.com/Asuforce/dotfiles"
 
 DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc)
 DEIN_FILES=(dein.toml dein_lazy.toml)
