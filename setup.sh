@@ -20,6 +20,9 @@ done
 # install z
 [ ! -d ~/.z_lib  ] && git clone git://github.com/rupa/z ~/.z_lib
 
+# install anyenv
+[ ! -d ~/.anyenv  ] && git clone https://github.com/riywo/anyenv ~/.anyenv
+
 # create ssh directory
 mkdir ~/.ssh
 
