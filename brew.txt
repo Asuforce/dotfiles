@@ -1,5 +1,4 @@
 direnv
-elasticsearch
 ffmpeg
 ghq
 gifsicle
