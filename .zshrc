@@ -1,3 +1,8 @@
+# auto compile
+if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
+   zcompile ~/.zshrc
+fi
+
 # prezto conf
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
