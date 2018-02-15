@@ -29,6 +29,12 @@ done
 # install brew
 [ ! -e /usr/local/bin/brew ] && /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
+# install mkr
+if [ ! -e /usr/local/bin/mkr ] ; then
+  brew tap mackerelio/mackerel-agent
+  brew install mkr
+fi
+
 # add package from brew
 cat brew.txt | xargs brew install
 
