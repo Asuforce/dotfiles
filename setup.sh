@@ -24,7 +24,7 @@ done
 [ ! -d ~/.anyenv  ] && git clone https://github.com/riywo/anyenv ~/.anyenv
 
 # create ssh directory
-mkdir ~/.ssh
+[ ! -d ~/.ssh  ] && mkdir ~/.ssh/conf.d
 
 # install brew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
