@@ -27,7 +27,7 @@ done
 [ ! -d ~/.ssh  ] && mkdir ~/.ssh/conf.d
 
 # install brew
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+[ ! -e /usr/local/bin/brew ] && /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # add package from brew
 cat brew.txt | xargs brew install
