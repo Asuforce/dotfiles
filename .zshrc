@@ -200,7 +200,6 @@ alias ggpush='git push --set-upstream origin $(current_branch)'
 
 # for brew
 alias bu='brew upgrade --force-bottle --cleanup'
-export HOMEBREW_GITHUB_API_TOKEN=9afbe05d9087c47fd838e0d1ce715ab7c9010b23
 
 # for bundle
 alias be='bundle exec'
@@ -339,9 +338,6 @@ alias ne='nyah-exec -O mitaka'
 
 # for tmux-xpanes
 source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
-
-# for mkr
-export MACKEREL_APIKEY=cJ92HeIpWFe6OGyOqqUz3RivGGfFmAhzNesc5VdDt6E=
 
 # for vscode
 open_editor () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
