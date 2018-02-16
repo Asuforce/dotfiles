@@ -80,12 +80,6 @@ autoload -Uz add-zsh-hook
 add-zsh-hook preexec store_command
 add-zsh-hook precmd notify_precmd
 
-# language
-export LANG=ja_JP.UTF-8
-
-# editor
-export EDITOR=/usr/bin/vim
-
 # 色を使用出来るようにする
 autoload -Uz colors
 
@@ -162,12 +156,6 @@ bindkey -e
 # custom command
 function mkcd() { mkdir -p $1 && cd $1; }
 
-# PATH
-export PATH="/usr/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/Cellar/perl/5.24.0_1/bin:$PATH"
-
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
 
@@ -205,36 +193,12 @@ alias bu='brew upgrade --force-bottle --cleanup'
 alias be='bundle exec'
 alias bi='bundle install -j4 --path vendor/bundle'
 
-# for heroku
-export PATH="/usr/local/heroku/bin:$PATH"
-export PATH="./vendor/bin:$PATH"
-
-# for go
-export GOPATH="$HOME/local"
-export PATH=$PATH:$GOPATH/bin
-
 # for Docker
 alias de='docker exec'
 alias d-c='docker-compose'
 
 # for Platinum Searcher
 alias ptg='pt —vcs-ignore=""'
-
-# for anyenv
-if [ -d $HOME/.anyenv ] ; then
-  export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(anyenv init - --no-rehash)"
-  for D in `ls $HOME/.anyenv/envs | sed 's/\///g'`
-  do
-    export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
-  done
-fi
-
-# for composer
-export PATH="$HOME/.composesr/vendor/bin:$PATH"
-
-# for nvim
-export XDG_CONFIG_HOME="$HOME/.config"
 
 # for peco
 function peco-z-search
@@ -289,10 +253,6 @@ bindkey '^w' peco-mkr-roles
 # for z_lib
 source ~/.z_lib/z.sh
 
-# for openssl
-export PATH=/usr/local/opt/openssl/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH
-export CPATH=/usr/local/opt/openssl/include:$LD_LIBRARY_PATH
 
 # for direnv
 eval "$(direnv hook zsh)"
