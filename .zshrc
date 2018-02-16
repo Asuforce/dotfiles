@@ -353,7 +353,7 @@ autoload -Uz vcs_info
 # %b ブランチ情報
 # %a アクション名(mergeなど)
 zstyle ':vcs_info:*' formats '%b'
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
+zstyle ':vcs_info:*' actionformats '%b( %a )'
 precmd () {
   psvar=()
   LANG=en_US.UTF-8 vcs_info
