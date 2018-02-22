@@ -1,12 +1,14 @@
 # auto compile
-if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
-   zcompile ~/.zshrc
-fi
+[ ~/.zshrc -nt ~/.zshrc.zwc ] && zcompile ~/.zshrc
 
 # prezto conf
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ] && source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+
+# for tmux-xpanes
+[ -f ~/local/src/github.com/greymd/tmux-xpanes/activate.sh ] && source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
+
+# for z_lib
+[ -f ~/.z_lib/z.sh ] && source ~/.z_lib/z.sh
 
 # tmux auto load
 function is_exists() { type "$1" >/dev/null 2>&1; return $?; }
@@ -66,7 +68,7 @@ tmux_automatically_attach_session
 function notify_precmd {
   prev_command_status=$?
 
-  if [[ "$TTYIDLE" -gt 1 ]]; then
+  if [ "$TTYIDLE" -gt 1 ]; then
     notify_title=$([ "$prev_command_status" -eq 0 ] && echo "Command succeeded \U1F646" || echo "Command failed \U1F645")
     osascript -e "display notification \"$prev_command\" with title \"$notify_title\""
   fi
@@ -250,10 +252,6 @@ function peco-mkr-roles() {
 zle -N peco-mkr-roles
 bindkey '^w' peco-mkr-roles
 
-# for z_lib
-source ~/.z_lib/z.sh
-
-
 # for direnv
 eval "$(direnv hook zsh)"
 
@@ -280,12 +278,6 @@ function myssh() {
 
 alias ssh='myssh'
 
-# for travis
-[ -f /Users/usr0600439/.travis/travis.sh ] && source /Users/usr0600439/.travis/travis.sh
-
-# for itunes
-alias itunes='itunes-remote'
-
 # for vagrant
 alias vu='vagrant up'
 alias vd='vagrant destroy'
@@ -296,11 +288,8 @@ alias vssh='vagrant ssh'
 # for nyah-cli
 alias ne='nyah-exec -O mitaka'
 
-# for tmux-xpanes
-source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
-
 # for vscode
-open_editor () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+function open_editor() { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 alias e='open_editor'
 
 # for gnu-sed
@@ -308,7 +297,7 @@ alias sed='gsed'
 
 # VCSの情報を取得するzshの便利関数 vcs_infoを使う
 autoload -Uz vcs_info
-#
+
 # 表示フォーマットの指定
 # %b ブランチ情報
 # %a アクション名(mergeなど)
