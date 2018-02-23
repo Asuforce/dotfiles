@@ -21,16 +21,24 @@ do
 done
 
 # install prezto
-[ ! -d ~/.zprezto ] && git clone --recursive https://github.com/sorin-ionescu/prezto.git ~/.zprezto
+if [ ! -d ~/.zprezto ]; then
+  git clone --recursive https://github.com/sorin-ionescu/prezto.git ~/.zprezto
+fi
 
 # install z
-[ ! -d ~/.z_lib  ] && git clone git://github.com/rupa/z ~/.z_lib
+if [ ! -d ~/.z_lib ]; then
+  git clone git://github.com/rupa/z ~/.z_lib
+fi
 
 # install anyenv
-[ ! -d ~/.anyenv  ] && git clone https://github.com/riywo/anyenv ~/.anyenv
+if [ ! -d ~/.anyenv ]; then
+  git clone https://github.com/riywo/anyenv ~/.anyenv
+fi
 
 # create ssh directory
-[ ! -d ~/.ssh  ] && mkdir ~/.ssh/conf.d
+if [ ! -d ~/.ssh  ]; then
+  mkdir ~/.ssh/conf.d
+fi
 
 # install brew and package
 if [ ! -e /usr/local/bin/brew ]; then
