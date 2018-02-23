@@ -20,6 +20,7 @@ if [ ! -d $REPO_PATH ]; then
   ghq get https://github.com/Asuforce/dotfiles.git
 fi
 
+# link dotfiles
 readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
 readonly DEIN_FILES=(dein.toml dein_lazy.toml)
 
