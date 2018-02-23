@@ -17,7 +17,12 @@ fi
 readonly REPO_PATH="$GITHUB_ROOT/Asuforce/dotfiles"
 
 if [ ! -d $REPO_PATH ]; then
+  cat <<'__EOT__' >> $HOME/.gitconfig
+[ghq]
+  root = ~/local/src
+__EOT__
   ghq get https://github.com/Asuforce/dotfiles.git
+  rm $HOME/.gitconfig
 fi
 
 # link dotfiles
