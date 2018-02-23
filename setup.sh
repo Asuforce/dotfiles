@@ -7,14 +7,14 @@ if [ ! -e /usr/local/bin/brew ]; then
 fi
 
 # create GOPATH directory
-readonly GHQ_ROOT="$GOPATH/src"
+readonly GITHUB_ROOT="$GOPATH/src/github.com"
 
 if [ ! -d $HOME/local/src  ]; then
   mkdir $HOME/local/src
 fi
 
 # install dotfiles
-readonly REPO_PATH="$GHQ_ROOT/github.com/Asuforce/dotfiles"
+readonly REPO_PATH="$GITHUB_ROOT/Asuforce/dotfiles"
 
 if [ ! -d $REPO_PATH ]; then
   ghq get https://github.com/Asuforce/dotfiles.git
