@@ -7,16 +7,16 @@ if [ ! -e /usr/local/bin/brew ]; then
 fi
 
 # create GOPATH directory
-readonly GITHUB_ROOT="$GOPATH/src/github.com"
+readonly GITHUB_DIR="$GOPATH/src/github.com"
 
 if [ ! -d $HOME/local/src  ]; then
   mkdir $HOME/local/src
 fi
 
 # install dotfiles
-readonly REPO_PATH="$GITHUB_ROOT/Asuforce/dotfiles"
+readonly REPO_DIR="$GITHUB_DIR/Asuforce/dotfiles"
 
-if [ ! -d $REPO_PATH ]; then
+if [ ! -d $REPO_DIR ]; then
   cat <<'__EOT__' >> $HOME/.gitconfig
 [ghq]
   root = ~/local/src
@@ -33,7 +33,7 @@ for file in ${DOT_FILES[@]}
 do
   dest_file=$HOME/$file
   if [ -e $dest_file ]; then
-    ln -fs $REPO_PATH/$file $dest_file
+    ln -fs $REPO_DIR/$file $dest_file
   fi
 done
 
@@ -41,7 +41,7 @@ for file in ${DEIN_FILES[@]}
 do
   dest_file=$HOME/.vim/dein/$file
   if [ -e $dest_file ]; then
-    ln -fs $REPO_PATH/.vim/dein/$file $dest_file
+    ln -fs $REPO_DIR/.vim/dein/$file $dest_file
   fi
 done
 
