@@ -6,6 +6,13 @@ if [ ! -e /usr/local/bin/brew ]; then
   cat brew.txt | xargs brew install
 fi
 
+# create GOPATH directory
+readonly GHQ_ROOT="$GOPATH/src"
+
+if [ ! -d $HOME/local/src  ]; then
+  mkdir $HOME/local/src
+fi
+
 readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
 readonly DEIN_FILES=(dein.toml dein_lazy.toml)
 
