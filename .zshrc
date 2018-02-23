@@ -1,14 +1,22 @@
 # auto compile
-[ ~/.zshrc -nt ~/.zshrc.zwc ] && zcompile ~/.zshrc
+if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
+  zcompile ~/.zshrc
+fi
 
 # prezto conf
-[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ] && source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+if [ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 
 # for tmux-xpanes
-[ -f ~/local/src/github.com/greymd/tmux-xpanes/activate.sh ] && source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
+if [ -f ~/local/src/github.com/greymd/tmux-xpanes/activate.sh ]; then
+  source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
+fi
 
 # for z_lib
-[ -f ~/.z_lib/z.sh ] && source ~/.z_lib/z.sh
+if [ -f ~/.z_lib/z.sh ]; then
+  source ~/.z_lib/z.sh
+fi
 
 # tmux auto load
 function is_exists() { type "$1" >/dev/null 2>&1; return $?; }
