@@ -26,17 +26,17 @@ done
 # create ssh directory
 [ ! -d ~/.ssh  ] && mkdir ~/.ssh/conf.d
 
-# install brew
-[ ! -e /usr/local/bin/brew ] && /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# install brew and package
+if [ ! -e /usr/local/bin/brew ]; then
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  cat brew.txt | xargs brew install
+fi
 
 # install mkr
 if [ ! -e /usr/local/bin/mkr ] ; then
   brew tap mackerelio/mackerel-agent
   brew install mkr
 fi
-
-# add package from brew
-cat brew.txt | xargs brew install
 
 # restart shell
 exec -l $SHELL
