@@ -1,30 +1,24 @@
 #!/bin/bash
 
-# install brew and package
-if [ ! -e /usr/local/bin/brew ]; then
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  cat brew.txt | xargs brew install
-  brew tap mackerelio/mackerel-agent
-  brew install mkr
-fi
-
-# create GOPATH directory
+# create GITHUB_DIR
 readonly GITHUB_DIR="$GOPATH/src/github.com"
 
-if [ ! -d $HOME/local/src  ]; then
-  mkdir $HOME/local/src
+if [ ! -d $GITHUB_DIR  ]; then
+  mkdir $GITHUB_DIR
 fi
 
 # install dotfiles
 readonly REPO_DIR="$GITHUB_DIR/Asuforce/dotfiles"
-
 if [ ! -d $REPO_DIR ]; then
-  cat <<'__EOT__' >> $HOME/.gitconfig
-[ghq]
-  root = ~/local/src
-__EOT__
-  ghq get https://github.com/Asuforce/dotfiles.git
-  rm $HOME/.gitconfig
+  git clone https://github.com/Asuforce/dotfiles.git $REPO_DIR
+fi
+
+# install brew and package
+if [ ! -e /usr/local/bin/brew ]; then
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  cat $REPO_DIR/brew.txt | xargs brew install
+  brew tap mackerelio/mackerel-agent
+  brew install mkr
 fi
 
 # link dotfiles
