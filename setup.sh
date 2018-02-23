@@ -1,6 +1,10 @@
 #!/bin/bash
 
-readonly REPO_PATH="$HOME/local/src/github.com/Asuforce/dotfiles"
+# install brew and package
+if [ ! -e /usr/local/bin/brew ]; then
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  cat brew.txt | xargs brew install
+fi
 
 readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
 readonly DEIN_FILES=(dein.toml dein_lazy.toml)
@@ -41,11 +45,6 @@ if [ ! -d ~/.ssh  ]; then
   mkdir ~/.ssh/conf.d
 fi
 
-# install brew and package
-if [ ! -e /usr/local/bin/brew ]; then
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  cat brew.txt | xargs brew install
-fi
 
 # install mkr
 if [ ! -e /usr/local/bin/mkr ] ; then
