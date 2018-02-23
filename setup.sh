@@ -4,6 +4,8 @@
 if [ ! -e /usr/local/bin/brew ]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   cat brew.txt | xargs brew install
+  brew tap mackerelio/mackerel-agent
+  brew install mkr
 fi
 
 # create GOPATH directory
@@ -63,12 +65,6 @@ fi
 # create ssh directory
 if [ ! -d ~/.ssh  ]; then
   mkdir ~/.ssh/conf.d
-fi
-
-# install mkr
-if [ ! -e /usr/local/bin/mkr ] ; then
-  brew tap mackerelio/mackerel-agent
-  brew install mkr
 fi
 
 # restart shell
