@@ -1,8 +1,9 @@
 #!/bin/bash
-REPO_PATH="$HOME/local/src/github.com/Asuforce/dotfiles"
 
-DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
-DEIN_FILES=(dein.toml dein_lazy.toml)
+readonly REPO_PATH="$HOME/local/src/github.com/Asuforce/dotfiles"
+
+readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
+readonly DEIN_FILES=(dein.toml dein_lazy.toml)
 
 for file in ${DOT_FILES[@]}
 do
