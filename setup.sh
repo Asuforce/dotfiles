@@ -13,6 +13,13 @@ if [ ! -d $HOME/local/src  ]; then
   mkdir $HOME/local/src
 fi
 
+# install dotfiles
+readonly REPO_PATH="$GHQ_ROOT/github.com/Asuforce/dotfiles"
+
+if [ ! -d $REPO_PATH ]; then
+  ghq get https://github.com/Asuforce/dotfiles.git
+fi
+
 readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
 readonly DEIN_FILES=(dein.toml dein_lazy.toml)
 
