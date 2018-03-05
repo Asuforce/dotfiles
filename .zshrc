@@ -319,3 +319,13 @@ precmd () {
 
 # バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
 RPROMPT="%1(v|%F{green}%1v%f|)"
+
+# for anyenv
+if [ -d $HOME/.anyenv ]; then
+  export PATH="$HOME/.anyenv/bin:$PATH"
+  eval "$(anyenv init - --no-rehash)"
+  for D in `ls $HOME/.anyenv/envs | sed 's/\///g'`
+  do
+    export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
+  done
+fi
