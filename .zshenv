@@ -33,14 +33,4 @@ if [ -z $TMUX ]; then
   export PATH=/usr/local/opt/openssl/bin:$PATH
   export LD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH
   export CPATH=/usr/local/opt/openssl/include:$LD_LIBRARY_PATH
-
-  # for anyenv
-  if [ -d $HOME/.anyenv ]; then
-    export PATH="$HOME/.anyenv/bin:$PATH"
-    eval "$(anyenv init - --no-rehash)"
-    for D in `ls $HOME/.anyenv/envs | sed 's/\///g'`
-    do
-      export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
-    done
-  fi
 fi
