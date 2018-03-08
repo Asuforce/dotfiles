@@ -11,4 +11,5 @@ tags
 .env*
 /sscript/
 vendor/
+blog.md
 
