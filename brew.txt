@@ -19,6 +19,7 @@ sqlite
 the_platinum_searcher
 tmux
 tmux-xpanes
+vim
 wget
 yarn
 xz
