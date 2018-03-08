@@ -42,7 +42,7 @@ set expandtab
 set hlsearch
 
 " clipbord
-set clipboard+=unnamed
+set clipboard=unnamed,autoselect
 
 " 検索で大文字と小文字の区別しない
 set ignorecase
@@ -55,9 +55,6 @@ set tags=./tags;
 
 " for crontab
 set backupskip=/tmp/*,/private/tmp/*
-
-" Sessionを自動保存
-au VimLeave * mks!  < file>
 
 " dein
 let s:dein_dir = expand('~/.vim/dein')
