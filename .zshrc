@@ -18,6 +18,10 @@ if [ -f ~/.z_lib/z.sh ]; then
   source ~/.z_lib/z.sh
 fi
 
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
+
 # tmux auto load
 function is_exists() { type "$1" >/dev/null 2>&1; return $?; }
 function is_osx() { [[ $OSTYPE == darwin* ]]; }
