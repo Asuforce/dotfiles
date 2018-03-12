@@ -50,9 +50,6 @@ set ignorecase
 " 検索文字列に大小文字列が混在した場合、区別して検索
 set smartcase
 
-" ctags
-set tags=./tags;
-
 " for crontab
 set backupskip=/tmp/*,/private/tmp/*
 
