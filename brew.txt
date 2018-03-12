@@ -6,6 +6,7 @@ gifsicle
 git
 go
 gnu-sed
+ipcalc
 jq
 mysql
 node
