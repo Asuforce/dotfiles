@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # create GITHUB_DIR
-readonly GITHUB_DIR="$GOPATH/src/github.com"
+readonly GITHUB_DIR="$HOME/local/src/github.com"
 
 if [ ! -d $GITHUB_DIR  ]; then
   mkdir $GITHUB_DIR
