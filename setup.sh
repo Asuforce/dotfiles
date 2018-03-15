@@ -14,7 +14,7 @@ if [ ! -d $REPO_DIR ]; then
 fi
 
 # install brew and package
-if [ ! -e /usr/local/bin/brew ]; then
+if [ ! $commands[brew] ]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   cat $REPO_DIR/brew.txt | xargs brew install
   brew tap mackerelio/mackerel-agent
