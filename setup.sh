@@ -58,7 +58,7 @@ fi
 
 # create ssh directory
 if [ ! -d ~/.ssh  ]; then
-  mkdir ~/.ssh/conf.d
+  mkdir -p ~/.ssh/conf.d
 fi
 
 # restart shell
