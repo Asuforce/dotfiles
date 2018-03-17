@@ -4,7 +4,7 @@
 readonly GITHUB_DIR="$HOME/local/src/github.com"
 
 if [ ! -d $GITHUB_DIR  ]; then
-  mkdir $GITHUB_DIR
+  mkdir -p $GITHUB_DIR
 fi
 
 # install dotfiles
