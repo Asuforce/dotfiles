@@ -189,6 +189,7 @@ alias up='cd ..'
 alias upp='cd ../..'
 alias uppp='cd ../../..'
 alias ls='ls -GwF'
+alias ll='ls -l'
 alias la='ls -alh'
 
 # for vim
