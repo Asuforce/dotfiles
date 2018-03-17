@@ -41,14 +41,10 @@ do
   fi
 done
 
-# install prezto
-if [ ! -d ~/.zprezto ]; then
-  git clone --recursive https://github.com/sorin-ionescu/prezto.git ~/.zprezto
-fi
-
-# install z
-if [ ! -d ~/.z_lib ]; then
-  git clone git://github.com/rupa/z ~/.z_lib
+# install zgen
+readonly ZGEN_DIR="$HOME/.zgen"
+if [ ! -d $ZGEN_DIR ]; then
+  git clone https://github.com/tarjoilija/zgen.git $ZGEN_DIR
 fi
 
 # install anyenv
