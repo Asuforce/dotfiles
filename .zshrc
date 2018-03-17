@@ -3,19 +3,25 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
 
-# prezto conf
-if [ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# zgen conf
+ZGEN_FILE="$HOME/.zgen/zgen.zsh"
+. $ZGEN_FILE
+
+if ! zgen saved; then
+  zgen load zsh-users/zsh-completions
+  zgen load mollifier/cd-gitroot
+  zgen load b4b4r07/auto-fu.zsh
+  zgen load mafredri/zsh-async
+  zgen load rupa/z
+
+  zgen load agkozak/agkozak-zsh-theme
+
+  zgen save
 fi
 
 # for tmux-xpanes
 if [ -f ~/local/src/github.com/greymd/tmux-xpanes/activate.sh ]; then
   source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
-fi
-
-# for z_lib
-if [ -f ~/.z_lib/z.sh ]; then
-  source ~/.z_lib/z.sh
 fi
 
 if [ $commands[kubectl] ]; then
@@ -306,23 +312,6 @@ alias e='open_editor'
 
 # for gnu-sed
 alias sed='gsed'
-
-# VCSの情報を取得するzshの便利関数 vcs_infoを使う
-autoload -Uz vcs_info
-
-# 表示フォーマットの指定
-# %b ブランチ情報
-# %a アクション名(mergeなど)
-zstyle ':vcs_info:*' formats '%b'
-zstyle ':vcs_info:*' actionformats '%b( %a )'
-precmd () {
-  psvar=()
-  LANG=en_US.UTF-8 vcs_info
-  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-}
-
-# バージョン管理されているディレクトリにいれば表示，そうでなければ非表示
-RPROMPT="%1(v|%F{green}%1v%f|)"
 
 # for anyenv
 if [ -d $HOME/.anyenv ]; then
