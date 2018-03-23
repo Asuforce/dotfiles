@@ -7,6 +7,7 @@ git
 go
 gnu-sed
 heroku/brew/heroku
+hub
 ipcalc
 jq
 mysql
