@@ -16,10 +16,17 @@ fi
 # install brew and package
 if [ ! $commands[brew] ]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  cat $REPO_DIR/brew.txt | xargs brew install
   brew tap mackerelio/mackerel-agent
   brew install mkr
 fi
+
+# install packges
+while read pkg
+do
+  if [ ! -d "/usr/local/Cellar/$pkg" ]; then
+    brew install $pkg
+  fi
+done < $REPO_DIR/brew.txt
 
 # link dotfiles
 readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
