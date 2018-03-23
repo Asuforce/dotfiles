@@ -25,5 +25,4 @@ tmux-xpanes
 vim
 wget
 yarn
-xz
 zsh
