@@ -16,6 +16,10 @@ fi
 # install brew and package
 if [ ! $commands[brew] ]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+# install mkr
+if [ ! -d "/usr/local/Cellar/mkr" ]; then
   brew tap mackerelio/mackerel-agent
   brew install mkr
 fi
