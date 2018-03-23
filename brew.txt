@@ -6,7 +6,7 @@ gifsicle
 git
 go
 gnu-sed
-heroku/brew/heroku
+heroku
 hub
 ipcalc
 jq
