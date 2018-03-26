@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# create ssh directory
+if [ ! -d ~/.ssh  ]; then
+  mkdir -p ~/.ssh/conf.d
+fi
+
 # create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/local/src/github.com"
 
@@ -69,11 +74,6 @@ if [ ! -d ~/.anyenv ]; then
 
   anyenv install rbenv
   anyenv install goenv
-fi
-
-# create ssh directory
-if [ ! -d ~/.ssh  ]; then
-  mkdir -p ~/.ssh/conf.d
 fi
 
 # restart shell
