@@ -39,8 +39,6 @@ done < $REPO_DIR/brew.txt
 
 # link dotfiles
 readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
-readonly DEIN_FILES=(dein.toml dein_lazy.toml)
-
 for file in ${DOT_FILES[@]}
 do
   dest_file="$HOME/$file"
@@ -49,6 +47,8 @@ do
   fi
 done
 
+# link dein files
+readonly DEIN_FILES=(dein.toml dein_lazy.toml)
 for file in ${DEIN_FILES[@]}
 do
   dest_file="$HOME/.vim/dein/$file"
