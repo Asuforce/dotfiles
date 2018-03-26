@@ -64,6 +64,11 @@ if [ ! -d ~/.anyenv ]; then
 
   mkdir ~/.anyenv/plugins
   git clone https://github.com/znz/anyenv-update.git ~/.anyenv/plugins/anyenv-update
+
+  exec -l $SHELL
+
+  anyenv install rbenv
+  anyenv install goenv
 fi
 
 # create ssh directory
