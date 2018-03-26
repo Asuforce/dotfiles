@@ -269,7 +269,7 @@ function peco-mkr-roles() {
   zle clear-screen
 }
 zle -N peco-mkr-roles
-bindkey '^w' peco-mkr-roles
+bindkey '^q' peco-mkr-roles
 
 # for direnv
 eval "$(direnv hook zsh)"
