@@ -21,11 +21,11 @@ fi
 
 # for tmux-xpanes
 if [ -f ~/local/src/github.com/greymd/tmux-xpanes/activate.sh ]; then
-  source ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
+  . ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
 fi
 
 if [ $commands[kubectl] ]; then
-  source <(kubectl completion zsh)
+  . <(kubectl completion zsh)
 fi
 
 # tmux auto load
@@ -226,15 +226,15 @@ function peco-z-search
 {
   which peco z > /dev/null
   if [ $? -ne 0 ]; then
-      echo "Please install peco and z"
-      return 1
+    echo "Please install peco and z"
+    return 1
   fi
   local res=$(z | sort -rn | cut -c 12- | peco)
   if [ -n "$res" ]; then
-      BUFFER+="cd $res"
-      zle accept-line
+    BUFFER+="cd $res"
+    zle accept-line
   else
-      return 1
+    return 1
   fi
 }
 zle -N peco-z-search
