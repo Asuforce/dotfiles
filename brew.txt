@@ -5,6 +5,7 @@ ghq
 gifsicle
 git
 gnu-sed
+grep --with-default-names
 heroku
 hub
 ipcalc
