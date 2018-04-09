@@ -18,22 +18,20 @@ if [ ! -d $REPO_DIR ]; then
   git clone https://github.com/Asuforce/dotfiles.git $REPO_DIR
 fi
 
-# install brew and package
+# install brew
 if [ ! $commands[brew] ]; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# install mkr
-if [ ! -d "/usr/local/Cellar/mkr" ]; then
-  brew tap mackerelio/mackerel-agent
-  brew install mkr
-fi
-
 # install packges
-while read pkg
+while read pkg opt
 do
   if [ ! -d "/usr/local/Cellar/$pkg" ]; then
-    brew install $pkg
+    if [ $pkg == "mkr" ]; then
+      brew tap mackerelio/mackerel-agent
+    fi
+
+    brew install $pkg $opt
   fi
 done < $REPO_DIR/brew.txt
 
