@@ -19,11 +19,6 @@ if ! zgen saved; then
   zgen save
 fi
 
-# for tmux-xpanes
-if [ -f ~/local/src/github.com/greymd/tmux-xpanes/activate.sh ]; then
-  . ~/local/src/github.com/greymd/tmux-xpanes/activate.sh
-fi
-
 if [ $commands[kubectl] ]; then
   . <(kubectl completion zsh)
 fi
