@@ -10,6 +10,7 @@ heroku
 hub
 ipcalc
 jq
+mkr
 mysql
 node
 openssl
