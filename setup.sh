@@ -62,11 +62,12 @@ if [ ! -d $ZGEN_DIR ]; then
 fi
 
 # install anyenv
-if [ ! -d ~/.anyenv ]; then
-  git clone https://github.com/riywo/anyenv ~/.anyenv
+readonly ANYENV_DIR="$HOME/.anyenv"
+if [ ! -d $ANYENV_DIR ]; then
+  git clone https://github.com/riywo/anyenv $ANYENV_DIR
 
-  mkdir ~/.anyenv/plugins
-  git clone https://github.com/znz/anyenv-update.git ~/.anyenv/plugins/anyenv-update
+  mkdir $ANYENV_DIR/plugins
+  git clone https://github.com/znz/anyenv-update.git $ANYENV_DIR/plugins/anyenv-update
 
   exec -l $SHELL
 
