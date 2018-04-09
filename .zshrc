@@ -29,15 +29,15 @@ if [ $commands[kubectl] ]; then
 fi
 
 # tmux auto load
-function is_exists() { type "$1" >/dev/null 2>&1; return $?; }
-function is_osx() { [[ $OSTYPE == darwin* ]]; }
-function is_screen_running() { [ ! -z "$STY" ]; }
-function is_tmux_runnning() { [ ! -z "$TMUX" ]; }
-function is_screen_or_tmux_running() { is_screen_running || is_tmux_runnning; }
-function shell_has_started_interactively() { [ ! -z "$PS1" ]; }
-function is_ssh_running() { [ ! -z "$SSH_CONECTION" ]; }
+is_exists() { type "$1" >/dev/null 2>&1; return $?; }
+is_osx() { [[ $OSTYPE == darwin* ]]; }
+is_screen_running() { [ ! -z "$STY" ]; }
+is_tmux_runnning() { [ ! -z "$TMUX" ]; }
+is_screen_or_tmux_running() { is_screen_running || is_tmux_runnning; }
+shell_has_started_interactively() { [ ! -z "$PS1" ]; }
+is_ssh_running() { [ ! -z "$SSH_CONECTION" ]; }
 
-function tmux_automatically_attach_session()
+tmux_automatically_attach_session()
 {
   if is_screen_or_tmux_running; then
     ! is_exists 'tmux' && return 1
@@ -83,7 +83,7 @@ function tmux_automatically_attach_session()
 tmux_automatically_attach_session
 
 # notify
-function notify_precmd {
+notify_precmd() {
   prev_command_status=$?
 
   if [ "$TTYIDLE" -gt 1 ]; then
@@ -92,7 +92,7 @@ function notify_precmd {
   fi
 }
 
-function store_command {
+store_command() {
   prev_command=$2
 }
 
@@ -174,7 +174,7 @@ bindkey '^R' history-incremental-pattern-search-backward
 bindkey -e
 
 # custom command
-function mkcd() { mkdir -p $1 && cd $1; }
+mkcd() { mkdir -p $1 && cd $1; }
 
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
@@ -197,7 +197,7 @@ alias vi='vim'
 alias v='vim'
 
 # for git
-function current_branch() {
+current_branch() {
   ref=$(git symbolic-ref HEAD 2> /dev/null) || \
     ref=$(git rev-parse --short HEAD 2> /dev/null) || return
   echo ${ref#refs/heads/}
@@ -222,8 +222,7 @@ alias d-c='docker-compose'
 alias ptg='pt —vcs-ignore=""'
 
 # for peco
-function peco-z-search
-{
+peco-z-search() {
   which peco z > /dev/null
   if [ $? -ne 0 ]; then
     echo "Please install peco and z"
@@ -240,8 +239,7 @@ function peco-z-search
 zle -N peco-z-search
 bindkey '^v' peco-z-search
 
-function peco-src
-{
+peco-src() {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
     BUFFER="cd ${selected_dir}"
@@ -252,15 +250,14 @@ function peco-src
 zle -N peco-src
 bindkey '^j' peco-src
 
-function peco-history
-{
+peco-history() {
   BUFFER=`history -n 1 | sort -k1,1nr | sort | uniq | peco`
   CURSOR=$#BUFFER
 }
 zle -N peco-history
 bindkey '^]' peco-history
 
-function peco-mkr-roles() {
+peco-mkr-roles() {
   local selected_role=$(mkr services | jq -rM '[.[] | .name as $name | .roles // [] | map("\($name) \(.)")] | flatten | .[]' | peco)
   if [ -n "${selected_role}" ]; then
     local BUFFER="xpanes --ssh \`roles "${selected_role}"\`"
@@ -275,7 +272,7 @@ bindkey '^q' peco-mkr-roles
 eval "$(direnv hook zsh)"
 
 # for ssh
-function set_term_bgcolor() {
+set_term_bgcolor() {
   local R=${1}*65535/255
   local G=${2}*65535/255
   local B=${3}*65535/255
@@ -289,7 +286,7 @@ function set_term_bgcolor() {
 EOF
 }
 
-function myssh() {
+myssh() {
   set_term_bgcolor 0 0 30
   \ssh $@
   set_term_bgcolor 0 0 0
@@ -308,7 +305,7 @@ alias vssh='vagrant ssh'
 alias ne='nyah-exec -O mitaka'
 
 # for vscode
-function open_editor() { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+open_editor() { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 alias e='open_editor'
 
 # for gnu-sed
