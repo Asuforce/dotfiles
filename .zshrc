@@ -180,16 +180,12 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 
 # for shortcut
-alias up='cd ..'
-alias upp='cd ../..'
-alias uppp='cd ../../..'
 alias ls='ls -GwF'
 alias ll='ls -l'
 alias la='ls -alh'
 
 # for vim
 alias vi='vim'
-alias v='vim'
 
 # for git
 alias g='git'
@@ -287,9 +283,6 @@ alias vd='vagrant destroy'
 alias vp='vagrant provision'
 alias vs='vagrant status'
 alias vssh='vagrant ssh'
-
-# for nyah-cli
-alias ne='nyah-exec -O mitaka'
 
 # for vscode
 open_editor() { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
