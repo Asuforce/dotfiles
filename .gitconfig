@@ -5,7 +5,7 @@
   editor = vim
   excludesfile = ~/.gitignore
 [push]
-  adefault = simple
+  default = current
 [commit]
   template = ~/.stCommitMsg
   gpgsign = false
