@@ -19,6 +19,7 @@ if ! zgen saved; then
   zgen save
 fi
 
+# for kubernetes
 if [ $commands[kubectl] ]; then
   . <(kubectl completion zsh)
 fi
@@ -32,11 +33,9 @@ is_screen_or_tmux_running() { is_screen_running || is_tmux_runnning; }
 shell_has_started_interactively() { [ ! -z "$PS1" ]; }
 is_ssh_running() { [ ! -z "$SSH_CONECTION" ]; }
 
-tmux_automatically_attach_session()
-{
+tmux_automatically_attach_session() {
   if is_screen_or_tmux_running; then
     ! is_exists 'tmux' && return 1
-
   else
     if shell_has_started_interactively && ! is_ssh_running; then
       if ! is_exists 'tmux'; then
@@ -102,6 +101,9 @@ autoload -Uz colors
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
+
+# editor
+export EDITOR=vim
 
 # 単語の区切り文字を指定する
 autoload -Uz select-word-style
@@ -251,8 +253,6 @@ peco-mkr-roles() {
 zle -N peco-mkr-roles
 bindkey '^q' peco-mkr-roles
 
-# for direnv
-eval "$(direnv hook zsh)"
 
 # for ssh
 set_term_bgcolor() {
@@ -292,6 +292,8 @@ alias e='open_editor'
 alias sed='gsed'
 
 # for anyenv
+eval "$(direnv hook zsh)"
+
 if [ -d $HOME/.anyenv ]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init - --no-rehash)"
@@ -301,5 +303,3 @@ if [ -d $HOME/.anyenv ]; then
   done
 fi
 
-# editor
-export EDITOR=vim
