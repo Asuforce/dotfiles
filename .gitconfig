@@ -44,6 +44,6 @@
   showpr = !"f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
 [ghq]
   root = ~/local/src
-[includeIf "gitdir:~/workspace/git.pepabo.com/"]
+[includeIf "gitdir:~/local/src/git.pepabo.com/"]
   path = ~/.gitconfig-work
 
