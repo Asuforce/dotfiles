@@ -13,7 +13,6 @@ jq
 kubectl
 mkr
 mysql
-node
 openssl
 peco
 postgresql
