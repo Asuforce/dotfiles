@@ -73,6 +73,7 @@ if [ ! -d $ANYENV_DIR ]; then
 
   anyenv install rbenv
   anyenv install goenv
+  anyenv install ndenv
 fi
 
 # restart shell
