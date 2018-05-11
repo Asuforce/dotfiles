@@ -11,7 +11,7 @@ heroku
 hub
 ipcalc
 jq
-kubectl
+kubernetes-cli
 mkr
 mysql
 openssl
