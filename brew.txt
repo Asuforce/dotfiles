@@ -1,3 +1,4 @@
+curl
 direnv
 envchain
 ffmpeg
