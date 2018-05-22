@@ -19,11 +19,6 @@ if ! zgen saved; then
   zgen save
 fi
 
-# for kubernetes
-if [ $commands[kubectl] ]; then
-  . <(kubectl completion zsh)
-fi
-
 # tmux auto load
 is_exists() { type "$1" >/dev/null 2>&1; return $?; }
 is_osx() { [[ $OSTYPE == darwin* ]]; }
@@ -302,4 +297,11 @@ if [ -d $HOME/.anyenv ]; then
     export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
   done
 fi
+
+# for kubernetes
+if [ $commands[kubectl] ]; then
+  . <(kubectl completion zsh)
+fi
+
+alias kube='kubectl'
 
