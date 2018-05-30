@@ -1,0 +1,20 @@
+1Password
+Alfred
+Amazon Drive
+AppCleaner
+Display Menu
+Docker
+Dropbox
+Firefox
+Google Chrome
+HD Cleaner
+Karabiner-Elements
+Kindle
+LINE
+Last.fm
+ShiftIt
+Slack
+The Unarchiver
+VirtualBox
+Visual Studio Code
+iTerm
