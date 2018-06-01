@@ -7,7 +7,6 @@
 [push]
   default = current
 [commit]
-  template = ~/.stCommitMsg
   gpgsign = false
 [fetch]
   prune = true
