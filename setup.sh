@@ -45,6 +45,10 @@ do
   fi
 done
 
+if [ ! -e "$HOME/.netrc" ]; then
+  cp .netrc $HOME
+fi
+
 # link dein files
 readonly DEIN_FILES=(dein.toml dein_lazy.toml)
 for file in ${DEIN_FILES[@]}
