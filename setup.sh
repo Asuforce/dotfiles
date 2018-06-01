@@ -6,7 +6,7 @@ if [ ! -d ~/.ssh  ]; then
 fi
 
 # create GITHUB_DIR
-readonly GITHUB_DIR="$HOME/local/src/github.com"
+readonly GITHUB_DIR="$HOME/dev/src/github.com"
 
 if [ ! -d $GITHUB_DIR  ]; then
   mkdir -p $GITHUB_DIR
