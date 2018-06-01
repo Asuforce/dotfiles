@@ -42,7 +42,7 @@
   delete-merged-branch = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|master'|xargs git branch -d; };f"
   showpr = !"f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
 [ghq]
-  root = ~/local/src
+  root = ~/dev/src
 [includeIf "gitdir:~/local/src/git.pepabo.com/"]
   path = ~/.gitconfig-work
 
