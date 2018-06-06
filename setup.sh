@@ -93,5 +93,12 @@ if [ ! -d $ANYENV_DIR ]; then
   anyenv install ndenv
 fi
 
+# set default shell
+readonly ZSH_DIR="/usr/local/bin/zsh"
+readonly SHELL_FILE="/etc/shells"
+if ! grep $ZSH_DIR $SHELL_FILE > /dev/null; then
+  echo $ZSH_DIR | sudo tee -a $SHELL_FILE
+fi
+
 # restart shell
 exec -l $SHELL
