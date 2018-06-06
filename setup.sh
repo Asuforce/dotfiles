@@ -84,12 +84,6 @@ if [ ! -d $ANYENV_DIR ]; then
 
   mkdir $ANYENV_DIR/plugins
   git clone https://github.com/znz/anyenv-update.git $ANYENV_DIR/plugins/anyenv-update
-
-  exec -l $SHELL
-
-  anyenv install rbenv
-  anyenv install goenv
-  anyenv install ndenv
 fi
 
 # set default shell
