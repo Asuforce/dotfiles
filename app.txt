@@ -1,14 +1,14 @@
-Alfred
+Alfred 3
 AppCleaner
 Docker
 Dropbox
 Firefox
-Google-Chrome
+Google Chrome
 Karabiner-Elements
 Kindle
 ShiftIt
 Slack
-The-Unarchiver
+The Unarchiver
 VirtualBox
-Visual-Studio-Code
+Visual Studio Code
 iTerm

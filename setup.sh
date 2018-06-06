@@ -39,12 +39,11 @@ done < $REPO_DIR/brew.txt
 while read name
 do
   case $name in
-    "Alfred" ) check="Alfred 3" ;;
-    Karabiner* ) check="Karabiner-Elements" ;;
-    * ) check="$(echo $name | sed -e "s/-/ /g")" ;;
+    Alfred* ) app="alfred" ;;
+    * ) app="$(echo $name | sed -e "s/ /-/g")" ;;
   esac
-  if [ ! -d "/Applications/$check.app" ]; then
-    brew cask install $name
+  if [ ! -d "/Applications/$name.app" ]; then
+    brew cask install $app
   fi
 done < $REPO_DIR/app.txt
 
