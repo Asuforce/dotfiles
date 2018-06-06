@@ -59,7 +59,7 @@ do
 done
 
 if [ ! -e "$HOME/.netrc" ]; then
-  cp .netrc $HOME
+  cp $REPO_DIR/.netrc $HOME
 fi
 
 # link dein files
