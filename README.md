@@ -17,4 +17,7 @@ chsh -s /usr/local/bin/zsh
 
 # set token
 vi ~/.netrc
+
+# generate key
+ssh-keygen -t ed25519 -C '<my-email-address>'
 ```
