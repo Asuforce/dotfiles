@@ -5,7 +5,7 @@
 ## Usage
 
 ```sh
-# xoce setting
+# xcode setting
 xcode-select --install
 sudo xcodebuild -license accept
 
