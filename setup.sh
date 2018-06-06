@@ -35,6 +35,19 @@ do
   fi
 done < $REPO_DIR/brew.txt
 
+# install applications
+while read name
+do
+  case $name in
+    "Alfred" ) check="Alfred 3" ;;
+    Karabiner* ) check="Karabiner-Elements" ;;
+    * ) check="$(echo $name | sed -e "s/-/ /g")" ;;
+  esac
+  if [ ! -d "/Applications/$check.app" ]; then
+    brew cask install $name
+  fi
+done < $REPO_DIR/app.txt
+
 # link dotfiles
 readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
 for file in ${DOT_FILES[@]}
