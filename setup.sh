@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# create ssh directory
-if [ ! -d ~/.ssh  ]; then
-  mkdir -p ~/.ssh/conf.d
-fi
-
 # create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/dev/src/github.com"
 
@@ -91,6 +86,15 @@ readonly ZSH_DIR="/usr/local/bin/zsh"
 readonly SHELL_FILE="/etc/shells"
 if ! grep $ZSH_DIR $SHELL_FILE > /dev/null; then
   echo $ZSH_DIR | sudo tee -a $SHELL_FILE
+fi
+
+# create ssh directory
+readonly SSH_DIR="$HOME/.ssh"
+if [ ! -d $SSH_DIR  ]; then
+  mkdir -p $SSH_DIR/conf.d
+  chmod -R 700 $SSH_DIR
+  cp $REPO_DIR/.ssh_config $SSH_DIR/ssh_config
+  cp $REPO_DIR/.config $SSH_DIR/config
 fi
 
 # restart shell
