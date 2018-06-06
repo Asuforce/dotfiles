@@ -7,7 +7,7 @@
 ```sh
 # xoce setting
 xcode-select --install
-sudo xcodebuild -license
+sudo xcodebuild -license accept
 
 # do setup script
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Asuforce/dotfiles/master/setup.sh)"
