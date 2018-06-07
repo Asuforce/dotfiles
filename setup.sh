@@ -43,7 +43,7 @@ do
 done < $REPO_DIR/app.txt
 
 # link dotfiles
-readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .gitmodules .vimrc .tmux.conf .zshrc .zshenv)
+readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .vimrc .tmux.conf .zshrc .zshenv)
 for file in ${DOT_FILES[@]}
 do
   dest_file="$HOME/$file"
