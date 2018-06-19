@@ -57,14 +57,19 @@ if [ ! -e "$HOME/.netrc" ]; then
 fi
 
 # link dein files
-readonly DEIN_FILES=(dein.toml dein_lazy.toml)
-for file in ${DEIN_FILES[@]}
-do
-  dest_file="$HOME/.vim/dein/$file"
-  if [ ! -e $dest_file ]; then
-    ln -fs $REPO_DIR/.vim/dein/$file $dest_file
-  fi
-done
+readonly DEIN_DIR="$HOME/.vim/dein"
+if [ ! -e $DEIN_DIR ]; then
+  mkdir -p $DEIN_DIR
+
+  readonly DEIN_FILES=(dein.toml dein_lazy.toml)
+  for file in ${DEIN_FILES[@]}
+  do
+    dest_file="$HOME/.vim/dein/$file"
+    if [ ! -e $dest_file ]; then
+      ln -fs $REPO_DIR/.vim/dein/$file $dest_file
+    fi
+  done
+fi
 
 # install zgen
 readonly ZGEN_DIR="$HOME/.zgen"
