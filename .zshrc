@@ -4,6 +4,7 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
 fi
 
 # zgen conf
+AGKOZAK_MULTILINE=0
 ZGEN_FILE="$HOME/.zgen/zgen.zsh"
 . $ZGEN_FILE
 
