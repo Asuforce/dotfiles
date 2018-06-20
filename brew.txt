@@ -26,5 +26,6 @@ terraform
 tmux
 tmux-xpanes
 vim
+watch
 wget
 zsh
