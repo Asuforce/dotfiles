@@ -17,7 +17,7 @@ if [ -z $TMUX ]; then
   export EDITOR=/usr/bin/vim
 
   # for go
-  export GOPATH="$HOME/local"
+  export GOPATH="$HOME/dev"
   export PATH=$PATH:$GOPATH/bin
 
   # for heroku
