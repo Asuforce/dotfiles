@@ -6,6 +6,7 @@ Firefox
 Google Chrome
 Karabiner-Elements
 Kindle
+Last.fm
 ShiftIt
 Slack
 The Unarchiver
