@@ -44,7 +44,7 @@ do
 done < $REPO_DIR/app.txt
 
 # link dotfiles
-readonly DOT_FILES=(.gitconfig .gitconfig-work .gitignore .vimrc .tmux.conf .zshrc .zshenv)
+readonly DOT_FILES=(.gitconfig .gitignore .vimrc .tmux.conf .zshrc .zshenv)
 for file in ${DOT_FILES[@]}
 do
   dest_file="$HOME/$file"
@@ -52,6 +52,10 @@ do
     ln -fs $REPO_DIR/$file $dest_file
   fi
 done
+
+if [ ! -e "$HOME/.gitconfig-work" ]; then
+  cp $REPO_DIR/.gitconfig-work $HOME
+fi
 
 if [ ! -e "$HOME/.netrc" ]; then
   cp $REPO_DIR/.netrc $HOME
