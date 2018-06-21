@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/dev/src/github.com"
