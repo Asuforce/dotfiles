@@ -70,7 +70,10 @@ tmux_automatically_attach_session() {
     fi
   fi
 }
-tmux_automatically_attach_session
+
+if [ ! -n $TMUX ] && [ "$VSCODE_PID" == "" ] ; then
+  tmux_automatically_attach_session
+fi
 
 # notify
 notify_precmd() {
