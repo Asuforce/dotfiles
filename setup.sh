@@ -47,7 +47,7 @@ do
   if [ ! -d "$check_dir" ]; then
     brew cask install $app
   fi
-done < $REPO_DIR/app.txt
+done < $REPO_DIR/brew_cask.txt
 
 # link dotfiles
 readonly DOT_FILES=(.gitconfig .gitignore .vimrc .tmux.conf .zshrc .zshenv)
