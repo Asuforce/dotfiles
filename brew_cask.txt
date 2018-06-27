@@ -4,7 +4,6 @@ Docker
 Dropbox
 Firefox
 Google Chrome
-Java
 Karabiner-Elements
 Kindle
 Last.fm
