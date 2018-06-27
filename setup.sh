@@ -33,18 +33,13 @@ done < $REPO_DIR/brew.txt
 # install applications
 while read name
 do
-  check_dir="/Applications/$name.app"
-  if [ "$name" = "Java" ]; then
-    check_dir="/Library/Java/Home"
-  fi
-
   case $name in
     Alfred* ) app="alfred" ;;
     "Last.fm" ) app="lastfm" ;;
     * ) app="$(echo $name | sed -e "s/ /-/g")" ;;
   esac
 
-  if [ ! -d "$check_dir" ]; then
+  if [ ! -d "/Applications/$name.app" ]; then
     brew cask install $app
   fi
 done < $REPO_DIR/brew_cask.txt
