@@ -44,9 +44,9 @@ do
   fi
 done < $REPO_DIR/brew_cask.txt
 
-# link dotfiles
-readonly DOT_FILES=(.gitconfig .gitignore .vimrc .tmux.conf .zshrc .zshenv)
-for file in ${DOT_FILES[@]}
+# setup dotfiles
+readonly LINK_DOT_FILES=(.gitconfig .gitignore .vimrc .tmux.conf .zshrc .zshenv)
+for file in ${LINK_DOT_FILES[@]}
 do
   dest_file="$HOME/$file"
   if [ ! -e $dest_file ]; then
