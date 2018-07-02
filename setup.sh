@@ -54,13 +54,14 @@ do
   fi
 done
 
-if [ ! -e "$HOME/.gitconfig-work" ]; then
-  cp $REPO_DIR/.gitconfig-work $HOME
-fi
-
-if [ ! -e "$HOME/.netrc" ]; then
-  cp $REPO_DIR/.netrc $HOME
-fi
+readonly COPY_DOT_FILES=(.gitconfig-user .gitconfig-work .netrc)
+for file in ${COPY_DOT_FILES[@]}
+do
+  dest_file="$HOME/$file"
+  if [ ! -e $dest_file ]; then
+    cp $REPO_DIR/$file $dest_file
+  fi
+done
 
 # link dein files
 readonly DEIN_DIR="$HOME/.vim/dein"
