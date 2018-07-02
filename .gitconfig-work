@@ -1,3 +1,4 @@
-[user]
-  name  = <your-name>
-  email = <your-email>
+[includeIf "gitdir:<hoge>"]
+  path = ~/.gitconfig-user
+[includeIf "gitdir:<fuga>"]
+  path = ~/.gitconfig-user
