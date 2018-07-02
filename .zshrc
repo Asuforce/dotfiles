@@ -196,6 +196,7 @@ alias g='git'
 
 # for brew
 alias bu='brew upgrade --force-bottle --cleanup'
+alias bcu='brew cask upgrade && brew cask cleanup'
 
 # for bundle
 alias be='bundle exec'
