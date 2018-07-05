@@ -13,9 +13,6 @@ if [ -z $TMUX ]; then
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/usr/local/bin:$PATH"
 
-  # editor
-  export EDITOR=/usr/bin/vim
-
   # for go
   export GOPATH="$HOME/dev"
   export PATH=$PATH:$GOPATH/bin
