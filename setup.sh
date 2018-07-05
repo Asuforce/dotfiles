@@ -22,10 +22,6 @@ fi
 while read pkg opt
 do
   if [ ! -d "/usr/local/Cellar/$pkg" ]; then
-    if [ $pkg == "mkr" ]; then
-      brew tap mackerelio/mackerel-agent
-    fi
-
     brew install $pkg $opt
   fi
 done < $REPO_DIR/brew.txt

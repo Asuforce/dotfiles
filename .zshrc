@@ -245,18 +245,6 @@ peco-history() {
 zle -N peco-history
 bindkey '^]' peco-history
 
-peco-mkr-roles() {
-  local selected_role=$(mkr services | jq -rM '[.[] | .name as $name | .roles // [] | map("\($name) \(.)")] | flatten | .[]' | peco)
-  if [ -n "${selected_role}" ]; then
-    local BUFFER="xpanes --ssh \`roles "${selected_role}"\`"
-    zle accept-line // 好みでコメントアウトを外す
-  fi
-  zle clear-screen
-}
-zle -N peco-mkr-roles
-bindkey '^q' peco-mkr-roles
-
-
 # for ssh
 set_term_bgcolor() {
   local R=${1}*65535/255

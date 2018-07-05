@@ -13,7 +13,6 @@ ipcalc
 jq
 kubernetes-cli
 maven
-mkr
 mysql
 openssl
 peco
