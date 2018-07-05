@@ -297,7 +297,6 @@ fi
 # for kubernetes
 if [ $commands[kubectl] ]; then
   . <(kubectl completion zsh)
+  alias kube='kubectl'
 fi
-
-alias kube='kubectl'
 
