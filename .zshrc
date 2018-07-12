@@ -300,3 +300,15 @@ if [ $commands[kubectl] ]; then
   alias kube='kubectl'
 fi
 
+# for openssl
+if [ -d /usr/local/opt/openssl ]; then
+  export PATH="/usr/local/opt/openssl/bin:$PATH"
+  export LD_LIBRARY_PATH="/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH"
+  export CPATH="/usr/local/opt/openssl/include:$LD_LIBRARY_PATH"
+fi
+
+# for curl
+if [ -d /usr/local/opt/curl ]; then
+  export PATH="/usr/local/opt/curl/bin:$PATH"
+fi
+
