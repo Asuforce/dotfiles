@@ -295,7 +295,7 @@ if [ -d $HOME/.anyenv ]; then
 fi
 
 # for kubernetes
-if [ $commands[kubectl] ]; then
+if type kubectl > /dev/null 2>&1; then
   . <(kubectl completion zsh)
   alias kube='kubectl'
 fi
