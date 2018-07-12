@@ -10,6 +10,7 @@ Last.fm
 ShiftIt
 Slack
 The Unarchiver
+Vagrant
 VirtualBox
 Visual Studio Code
 iTerm
