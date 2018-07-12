@@ -30,4 +30,7 @@ if [ -z $TMUX ]; then
   export PATH=/usr/local/opt/openssl/bin:$PATH
   export LD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH
   export CPATH=/usr/local/opt/openssl/include:$LD_LIBRARY_PATH
+
+  # for curl
+  export PATH="/usr/local/opt/curl/bin:$PATH"
 fi
