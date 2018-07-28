@@ -195,8 +195,7 @@ alias vi='vim'
 alias g='git'
 
 # for brew
-alias bu='brew upgrade --force-bottle --cleanup'
-alias bcu='brew cask upgrade && brew cask cleanup'
+alias bu='brew upgrade --force-bottle --cleanup && brew cask upgrade && brew cask cleanup'
 
 # for bundle
 alias be='bundle exec'
