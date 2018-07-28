@@ -312,3 +312,8 @@ if [ -d /usr/local/opt/curl ]; then
   export PATH="/usr/local/opt/curl/bin:$PATH"
 fi
 
+# for java
+if [ -d `/usr/libexec/java_home -v "1.8"` ]; then
+  export JAVA_HOME=`/usr/libexec/java_home -v "1.8"`
+  export PATH="$JAVA_HOME/bin:$PATH"
+fi
