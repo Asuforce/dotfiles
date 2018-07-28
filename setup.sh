@@ -35,7 +35,12 @@ do
     * ) app="$(echo $name | sed -e "s/ /-/g")" ;;
   esac
 
-  if [ ! -d "/Applications/$name.app" ]; then
+  path="/Applications/$name.app"
+  if [ "$app" = "Vagrant" ]; then
+    path="/usr/local/bin/vagrant"
+  fi
+
+  if [ ! -e "$path" ]; then
     brew cask install $app
   fi
 done < $REPO_DIR/brew_cask.txt
