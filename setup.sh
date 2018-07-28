@@ -18,14 +18,6 @@ if ! type brew > /dev/null 2>&1; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# install packges
-while read pkg opt
-do
-  if [ ! -d "/usr/local/Cellar/$pkg" ]; then
-    brew install $pkg $opt
-  fi
-done < $REPO_DIR/brew.txt
-
 # install applications
 while read name
 do
@@ -35,15 +27,29 @@ do
     * ) app="$(echo $name | sed -e "s/ /-/g")" ;;
   esac
 
-  path="/Applications/$name.app"
-  if [ "$app" = "Vagrant" ]; then
-    path="/usr/local/bin/vagrant"
-  fi
+  case $app in
+    "Java8" ) path=`/usr/libexec/java_home -v "1.8"` ;;
+    "Vagrant" ) path="/usr/local/bin/vagrant" ;;
+    * ) path="/Applications/$name.app" ;;
+  esac
 
   if [ ! -e "$path" ]; then
+    if [ "$app" == "Java8" ]; then
+      brew tap caskroom/versions
+    fi
+
     brew cask install $app
   fi
 done < $REPO_DIR/brew_cask.txt
+
+# install packges
+while read pkg opt
+do
+  if [ ! -d "/usr/local/Cellar/$pkg" ]; then
+    brew install $pkg $opt
+  fi
+done < $REPO_DIR/brew.txt
+
 
 # setup dotfiles
 readonly LINK_DOT_FILES=(.gitconfig .gitignore .vimrc .tmux.conf .zshrc .zshenv)
