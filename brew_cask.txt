@@ -7,7 +7,6 @@ Google Chrome
 Java8
 Karabiner-Elements
 Kindle
-Last.fm
 ShiftIt
 Slack
 The Unarchiver
