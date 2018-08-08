@@ -28,6 +28,7 @@ do
 
   case $app in
     "Java8" ) path=`/usr/libexec/java_home -v "1.8"` ;;
+    "Minikube" ) path="/usr/local/bin/minikube" ;;
     "Vagrant" ) path="/usr/local/bin/vagrant" ;;
     * ) path="/Applications/$name.app" ;;
   esac
