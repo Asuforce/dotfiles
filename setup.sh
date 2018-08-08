@@ -23,7 +23,6 @@ while read name
 do
   case $name in
     Alfred* ) app="alfred" ;;
-    "Last.fm" ) app="lastfm" ;;
     * ) app="$(echo $name | sed -e "s/ /-/g")" ;;
   esac
 
