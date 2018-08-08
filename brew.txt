@@ -12,7 +12,6 @@ heroku
 hub
 ipcalc
 jq
-kubernetes-cli
 maven
 mysql
 openssl
