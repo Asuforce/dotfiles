@@ -195,7 +195,7 @@ alias vi='vim'
 alias g='git'
 
 # for brew
-alias bu='brew upgrade --fetch-HEAD --cleanup --ignore-pinned --display-times && brew cask upgrade && brew cask cleanup'
+alias bu='brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew cask upgrade && brew cleanup'
 
 # for bundle
 alias be='bundle exec'
