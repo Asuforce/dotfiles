@@ -32,6 +32,10 @@ do
     * ) path="/Applications/$name.app" ;;
   esac
 
+  if [ "$app" == "iTerm" ]; then
+    app="iterm2"
+  fi
+
   if [ ! -e "$path" ]; then
     if [ "$app" == "Java8" ]; then
       brew tap caskroom/versions
