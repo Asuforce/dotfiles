@@ -188,7 +188,7 @@ alias cat='bat'
 alias find='fd'
 
 # for exa alias & shortcut
-alias ls='exa -GwF'
+alias ls='exa -GF'
 alias ll='exa -l'
 alias la='exa -alh'
 
