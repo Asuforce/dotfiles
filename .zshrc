@@ -184,9 +184,13 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 
 # for shortcut
-alias ls='ls -GwF'
-alias ll='ls -l'
-alias la='ls -alh'
+alias cat='bat'
+alias find='fd'
+
+# for exa alias & shortcut
+alias ls='exa -GwF'
+alias ll='exa -l'
+alias la='exa -alh'
 
 # for vim
 alias vi='vim'
