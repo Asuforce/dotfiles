@@ -1,7 +1,10 @@
 ansible
+bat
 curl
 direnv
 envchain
+exa
+fd
 ffmpeg
 ghq
 gifsicle
@@ -19,6 +22,7 @@ peco
 postgresql
 readline
 redis
+ripgrep
 sqlite
 tig
 the_platinum_searcher
