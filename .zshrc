@@ -209,9 +209,6 @@ alias bi='bundle install -j4 --path vendor/bundle'
 alias de='docker exec'
 alias d-c='docker-compose'
 
-# for Platinum Searcher
-alias ptg='pt —vcs-ignore=""'
-
 # for peco
 peco-z-search() {
   which peco z > /dev/null
