@@ -25,7 +25,6 @@ redis
 ripgrep
 sqlite
 tig
-the_platinum_searcher
 terraform
 tmux
 tmux-xpanes
