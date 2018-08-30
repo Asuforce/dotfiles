@@ -15,6 +15,7 @@ if [ -z $TMUX ]; then
 
   # for go
   export GOPATH="$HOME/dev"
+  export GOROOT="$GOPATH"
   export PATH="$PATH:$GOPATH/bin"
 
   # for heroku
