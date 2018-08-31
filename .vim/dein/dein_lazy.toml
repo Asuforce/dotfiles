@@ -1,7 +1,0 @@
-[[plugins]]
-repo = 'scrooloose/nerdtree'
-on_cmd = 'NERDTreeToggle'
-
-[[plugins]]
-repo = 'puppetlabs/puppet-syntax-vim'
-on_ft = ['puppet']
