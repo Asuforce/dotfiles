@@ -96,9 +96,9 @@ if [ ! -e $DEIN_DIR ]; then
   readonly DEIN_FILES=(dein.toml dein_lazy.toml)
   for file in ${DEIN_FILES[@]}
   do
-    dest_file="$HOME/.vim/dein/$file"
+    dest_file="$DEIN_DIR/$file"
     if [ ! -e $dest_file ]; then
-      ln -fs $REPO_DIR/.vim/dein/$file $dest_file
+      ln -fs $REPO_DIR/$file $dest_file
     fi
   done
 fi
