@@ -53,6 +53,21 @@ do
   fi
 done < $REPO_DIR/brew.txt
 
+# install rustup
+if ! type rustup > /dev/null 2>&1; then
+  curl https://sh.rustup.rs -sSf | sh
+fi
+
+# install rust packages
+while read pkg opt
+do
+  if [ "$opt" != "" ]; then
+    pkg="$opt"
+  fi
+  if [ ! -e "$HOME/.cargo/bin/$pkg" ]; then
+    cargo install $pkg
+  fi
+done < $REPO_DIR/cargo.txt
 
 # setup dotfiles
 readonly LINK_DOT_FILES=(.gitconfig .gitignore .vimrc .tmux.conf .zshrc .zshenv)

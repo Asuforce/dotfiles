@@ -21,4 +21,7 @@ if [ -z $TMUX ]; then
   # for heroku
   export PATH="/usr/local/heroku/bin:$PATH"
   export PATH="./vendor/bin:$PATH"
+
+  #for rust
+  export PATH="$HOME/.cargo/bin:$PATH"
 fi
