@@ -21,23 +21,8 @@ fi
 # install applications
 while read name
 do
-  case $name in
-    Alfred* ) app="alfred" ;;
-    * ) app="$(echo $name | sed -e "s/ /-/g")" ;;
-  esac
-
-  case $app in
-    "Java8" ) path=`/usr/libexec/java_home -v "1.8"` ;;
-    "Vagrant" ) path="/usr/local/bin/vagrant" ;;
-    * ) path="/Applications/$name.app" ;;
-  esac
-
-  if [ "$app" == "iTerm" ]; then
-    app="iterm2"
-  fi
-
-  if [ ! -e "$path" ]; then
-    if [ "$app" == "Java8" ]; then
+  if [ ! -d "/usr/local/Caskroom/$name" ]; then
+    if [ "$app" == "java8" ]; then
       brew tap caskroom/versions
     fi
 
