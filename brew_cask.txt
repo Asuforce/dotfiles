@@ -1,17 +1,16 @@
-Alfred 3
-AppCleaner
-Docker
-Dropbox
-Firefox
-Google Chrome
-Java8
-Karabiner-Elements
-Kindle
-Notion
-ShiftIt
-Slack
-The Unarchiver
-Vagrant
-VirtualBox
-Visual Studio Code
-iTerm
+alfred
+appcleaner
+docker
+dropbox
+firefox
+iterm2
+java8
+karabiner-elements
+kindle
+notion
+shiftit
+slack
+the-unarchiver
+vagrant
+virtualbox
+visual-studio-code
