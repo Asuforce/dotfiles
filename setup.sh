@@ -46,10 +46,7 @@ fi
 # install rust packages
 while read pkg opt
 do
-  if [ "$opt" != "" ]; then
-    pkg="$opt"
-  fi
-  if [ ! -e "$HOME/.cargo/bin/$pkg" ]; then
+  if [ ! -e "$HOME/.cargo/bin/$opt" ]; then
     cargo install $pkg
   fi
 done < $REPO_DIR/cargo.txt
