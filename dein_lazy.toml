@@ -2,3 +2,6 @@
 repo = 'scrooloose/nerdtree'
 on_cmd = 'NERDTreeToggle'
 
+[[plugins]]
+repo = 'zerowidth/vim-copy-as-rtf'
+on_cmd = 'CopyRTF'
