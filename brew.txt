@@ -12,6 +12,7 @@ git
 gnu-sed
 grep --with-default-names
 heroku
+htop
 hub
 ipcalc
 jq
