@@ -1,7 +1,7 @@
 [user]
   name = asuforce
   email = owata.sn@gmail.com
-  signingkey = 56CFB2EA8EA3F1DB
+	signingkey = 8CBC44C6092F8975
 [gpg]
 	program = gpg
 [core]
