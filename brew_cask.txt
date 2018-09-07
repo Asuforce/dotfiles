@@ -3,6 +3,7 @@ appcleaner
 docker
 dropbox
 firefox
+gpg-suite
 iterm2
 java8
 karabiner-elements
