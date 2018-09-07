@@ -1,47 +1,50 @@
 [user]
-  name = asuforce
-  email = owata.sn@gmail.com
+	name = asuforce
+	email = owata.sn@gmail.com
+	signingkey = 8CBC44C6092F8975
+[gpg]
+	program = gpg
 [core]
-  editor = vim
-  excludesfile = ~/.gitignore
+	editor = vim
+	excludesfile = ~/.gitignore
 [push]
-  default = current
+	default = current
 [commit]
-  gpgsign = false
+	gpgsign = false
 [fetch]
-  prune = true
+	prune = true
 [alias]
-  ci = commit -v
-  ca = commit -av
-  ad = add
-  df = diff
-  cia = commit --allow-empty
-  co = checkout
-  st = status
-  cp = cherry-pick
+	ci = commit -v
+	ca = commit -av
+	ad = add
+	df = diff
+	cia = commit --allow-empty
+	co = checkout
+	st = status
+	cp = cherry-pick
 
-  save = commit -m
-  amend = commit --amend
-  summary = status -u -s
-  discard = checkout --
-  bout = checkout -b
-  unmerged = diff --name-only --diff-filter=U
-  prestage = diff -w --word-diff=color
-  uncommit = reset --mixed HEAD~
-  unstage = reset -q HEAD --
-  last = log -1 HEAD --format=format:"%Cred%H"
-  graph = log --graph --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %ar) %Cred%d' --date-order
-  history = log -20 --format=format:'%Cgreen%h %Creset• %s (%cN, %ar)'
-  stashes = stash list
-  unstash = stash pop
-  remotes = remote -v
-  untrack = rm -r --cached
-  unmerged = branch --no-merged
-  what = show -w
-  contributors = shortlog -s -n
-  delete-merged-branch = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|master'|xargs git branch -d; };f"
-  showpr = !"f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
+	save = commit -m
+	amend = commit --amend
+	summary = status -u -s
+	discard = checkout --
+	bout = checkout -b
+	unmerged = diff --name-only --diff-filter=U
+	prestage = diff -w --word-diff=color
+	uncommit = reset --mixed HEAD~
+	unstage = reset -q HEAD --
+	last = log -1 HEAD --format=format:"%Cred%H"
+	graph = log --graph --branches --remotes --tags	--format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %ar) %Cred%d' --date-order
+	history = log -20 --format=format:'%Cgreen%h %Creset• %s (%cN, %ar)'
+	stashes = stash list
+	unstash = stash pop
+	remotes = remote -v
+	untrack = rm -r --cached
+	unmerged = branch --no-merged
+	what = show -w
+	contributors = shortlog -s -n
+	delete-merged-branch = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|master'|xargs git branch -d; };f"
+	showpr = !"f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
 [ghq]
-  root = ~/dev/src
+	root = ~/dev/src
 [include]
-  path = ~/.gitconfig-work
+	path = ~/.gitconfig-work
