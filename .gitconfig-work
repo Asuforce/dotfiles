@@ -1,4 +1,4 @@
 [includeIf "gitdir:<hoge>"]
-  path = ~/.gitconfig-user
+	path = ~/.gitconfig-user
 [includeIf "gitdir:<fuga>"]
-  path = ~/.gitconfig-user
+	path = ~/.gitconfig-user

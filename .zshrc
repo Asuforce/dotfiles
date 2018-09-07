@@ -276,8 +276,7 @@ alias vs='vagrant status'
 alias vssh='vagrant ssh'
 
 # for vscode
-open_editor() { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
-alias e='open_editor'
+alias e='code'
 
 # for gnu-sed
 alias sed='gsed'
