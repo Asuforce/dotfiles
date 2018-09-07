@@ -1,6 +1,7 @@
 [user]
   name  = <your-name>
   email = <your-email>
+  signingkey = <your-sigingkey>
 [hub]
   host = <your-ghe-hostname>
 
