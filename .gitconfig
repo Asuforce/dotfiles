@@ -1,6 +1,9 @@
 [user]
   name = asuforce
   email = owata.sn@gmail.com
+  signingkey = 56CFB2EA8EA3F1DB
+[gpg]
+	program = gpg
 [core]
   editor = vim
   excludesfile = ~/.gitignore
