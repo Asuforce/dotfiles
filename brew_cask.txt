@@ -4,6 +4,7 @@ docker
 dropbox
 firefox
 gpg-suite
+hyper
 iterm2
 java8
 karabiner-elements
