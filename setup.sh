@@ -19,14 +19,16 @@ if ! type brew > /dev/null 2>&1; then
 fi
 
 # install applications
-while read name
+while read pkg
 do
-  if [ ! -d "/usr/local/Caskroom/$name" ]; then
-    if [ "$app" == "java8" ]; then
+  if [ ! -d "/usr/local/Caskroom/$pkg" ]; then
+    if [ "$pkg" == "java8" ]; then
       brew tap caskroom/versions
     fi
 
-    brew cask install $app
+    echo $pkg
+
+    brew cask install $pkg
   fi
 done < $REPO_DIR/brew_cask.txt
 
