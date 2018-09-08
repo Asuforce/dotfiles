@@ -9,9 +9,9 @@ if [ -z $TMUX ]; then
   export LANG=ja_JP.UTF-8
 
   # PATH
-  export PATH="/usr/bin:$PATH"
-  export PATH="/usr/local/sbin:$PATH"
-  export PATH="/usr/local/bin:$PATH"
+  export PATH="$PATH:/usr/bin:"
+  export PATH="$PATH:/usr/local/sbin"
+  export PATH="$PATH:/usr/local/bin"
 
   # for go
   export GOPATH="$HOME/dev"
