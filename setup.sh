@@ -54,19 +54,19 @@ do
 done < $REPO_DIR/cargo.txt
 
 # setup dotfiles
-readonly LINK_DOT_FILES=(.gitconfig .gitignore .hyper.js .tmux.conf .vimrc  .zshrc .zshenv)
+readonly LINK_DOT_FILES=(gitconfig gitignore hyper.js tmux.conf vimrc  zshrc zshenv)
 for file in ${LINK_DOT_FILES[@]}
 do
-  dest_file="$HOME/$file"
+  dest_file="$HOME/.$file"
   if [ ! -e $dest_file ]; then
     ln -fs $REPO_DIR/$file $dest_file
   fi
 done
 
-readonly COPY_DOT_FILES=(.gitconfig-user .gitconfig-work .netrc)
+readonly COPY_DOT_FILES=(gitconfig-user gitconfig-work netrc)
 for file in ${COPY_DOT_FILES[@]}
 do
-  dest_file="$HOME/$file"
+  dest_file="$HOME/.$file"
   if [ ! -e $dest_file ]; then
     cp $REPO_DIR/$file $dest_file
   fi
