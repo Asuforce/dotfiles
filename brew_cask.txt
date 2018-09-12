@@ -9,6 +9,7 @@ iterm2
 java8
 karabiner-elements
 kindle
+nanowallet
 notion
 shiftit
 slack
