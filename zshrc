@@ -5,8 +5,7 @@ fi
 
 # zgen conf
 AGKOZAK_MULTILINE=0
-ZGEN_FILE="$HOME/.zgen/zgen.zsh"
-. $ZGEN_FILE
+source "${HOME}/.zgen/zgen.zsh"
 
 if ! zgen saved; then
   zgen load zsh-users/zsh-completions
@@ -284,3 +283,4 @@ fi
 
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
+
