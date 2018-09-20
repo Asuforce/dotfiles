@@ -18,10 +18,6 @@ if [ -z $TMUX ]; then
   export GOROOT="$GOPATH"
   export PATH="$PATH:$GOPATH/bin"
 
-  # for heroku
-  export PATH="/usr/local/heroku/bin:$PATH"
-  export PATH="./vendor/bin:$PATH"
-
   #for rust
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
