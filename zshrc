@@ -146,7 +146,6 @@ alias mkdir='mkdir -p'
 
 # for shortcut
 alias cat='bat'
-alias find='fd'
 
 # for exa alias & shortcut
 alias ls='exa -GF'
