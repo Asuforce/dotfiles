@@ -284,3 +284,8 @@ fi
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
 
+# Use zprof
+if (which zprof > /dev/null) ;then
+  zprof | less
+fi
+

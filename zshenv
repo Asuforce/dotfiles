@@ -1,3 +1,6 @@
+# Use zprof
+#zmodload zsh/zprof && zprof
+
 # Defines environment variables.
 
 if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
