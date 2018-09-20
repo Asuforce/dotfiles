@@ -199,6 +199,7 @@ alias vi='vim'
 alias g='git'
 
 # for brew
+alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
 alias bu='brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew cask upgrade && brew cleanup'
 
 # for bundle
