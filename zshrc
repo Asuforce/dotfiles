@@ -17,6 +17,10 @@ if ! zgen saved; then
   zgen load agkozak/agkozak-zsh-theme
 
   zgen save
+
+  for f in `find "${HOME}/.zgen" -name "*.zsh"`; do
+    zcompile $f
+  done
 fi
 
 # tmux auto load
