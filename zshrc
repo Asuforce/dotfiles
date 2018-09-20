@@ -175,9 +175,6 @@ bindkey -e
 # custom command
 mkcd() { mkdir -p $1 && cd $1; }
 
-# 重複パスを登録しない
-typeset -U path cdpath fpath manpath
-
 # alias 上書きファイルの問い合わせ
 alias cp='cp -i'
 alias mv='mv -i'
@@ -318,3 +315,6 @@ if [ -d ${JAVA_HOME} ]; then
   export JAVA_HOME=${JAVA_HOME}
   export PATH="$JAVA_HOME/bin:$PATH"
 fi
+
+# 重複パスを登録しない
+typeset -U path cdpath fpath manpath
