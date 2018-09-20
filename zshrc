@@ -248,12 +248,46 @@ eval "$(direnv hook zsh)"
 
 if [ -d $HOME/.anyenv ]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(anyenv init - --no-rehash zsh)"
   for D in `ls $HOME/.anyenv/envs | sed 's/\///g'`
   do
     export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
   done
 fi
+
+anyenv_all() {
+  unset -f goenv
+  unset -f plenv
+  unset -f pyenv
+  unset -f ndenv
+  unset -f rbenv
+
+  eval "$(anyenv init - --no-rehash)"
+}
+
+goenv() {
+  anyenv_all
+  goenv "$@"
+}
+
+plenv() {
+  anyenv_all
+  plenv "$@"
+}
+
+pyenv() {
+  anyenv_all
+  pyenv "$@"
+}
+
+ndenv() {
+  anyenv_all
+  ndenv "$@"
+}
+
+rbenv() {
+  anyenv_all
+  rbenv "$@"
+}
 
 # for kubernetes
 if type kubectl > /dev/null 2>&1; then
