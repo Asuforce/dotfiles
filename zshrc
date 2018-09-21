@@ -5,9 +5,13 @@ fi
 
 # zgen conf
 AGKOZAK_MULTILINE=0
-source "${HOME}/.zgen/zgen.zsh"
 
-if ! zgen saved; then
+zgen () {
+  source ${HOME}/.zgen/zgen.zsh
+  zgen "$@"
+}
+
+if [ ! -s ${HOME}/.zgen/init.zsh ]; then
   zgen load zsh-users/zsh-completions
   zgen load mollifier/cd-gitroot
   zgen load b4b4r07/auto-fu.zsh
@@ -21,6 +25,8 @@ if ! zgen saved; then
   for f in `find "${HOME}/.zgen" -name "*.zsh"`; do
     zcompile $f
   done
+else
+  source ${HOME}/.zgen/init.zsh
 fi
 
 # tmux auto load
