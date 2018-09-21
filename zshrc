@@ -6,12 +6,9 @@ fi
 # zgen conf
 AGKOZAK_MULTILINE=0
 
-zgen () {
+zgen_init () {
   source ${HOME}/.zgen/zgen.zsh
-  zgen "$@"
-}
 
-if [ ! -s ${HOME}/.zgen/init.zsh ]; then
   zgen load zsh-users/zsh-completions
   zgen load mollifier/cd-gitroot
   zgen load b4b4r07/auto-fu.zsh
@@ -25,6 +22,10 @@ if [ ! -s ${HOME}/.zgen/init.zsh ]; then
   for f in `find "${HOME}/.zgen" -name "*.zsh"`; do
     zcompile $f
   done
+}
+
+if [ ! -s ${HOME}/.zgen/init.zsh ]; then
+  zgen_init
 else
   source ${HOME}/.zgen/init.zsh
 fi
