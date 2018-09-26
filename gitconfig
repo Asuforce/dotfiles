@@ -18,6 +18,7 @@
 	ca = commit -av
 	ad = add
 	df = diff
+	fe = fetch
 	cia = commit --allow-empty
 	co = checkout
 	st = status
