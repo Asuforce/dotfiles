@@ -26,7 +26,7 @@ repo = "ctrlpvim/ctrlp.vim"
 repo = 'plasticboy/vim-markdown'
 
 [[plugins]]
-repo = 'Lokaltog/vim-powerline'
+repo = 'vim-airline/vim-airline'
 
 [[plugins]]
 repo = 'tpope/vim-obsession'
