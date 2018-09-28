@@ -81,10 +81,10 @@ let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
 filetype plugin indent on
 filetype indent on
 
-" カラースキーマ
-set t_Co=256
-set background=dark
-colorscheme jellybeans
+" colorscheme
+syntax on
+colorscheme onedark
+let g:onedark_termcolors=256
 
 " NERDTree
 let NERDTreeShowHidden = 1
@@ -111,5 +111,3 @@ nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap sq :<C-u>q<CR>
 
-" コードの色分け
-syntax on

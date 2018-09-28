@@ -8,7 +8,7 @@ repo = 'Lokaltog/vim-easymotion'
 repo = 'Shougo/neocomplcache'
 
 [[plugins]]
-repo = 'nanotech/jellybeans.vim'
+repo = 'joshdick/onedark.vim'
 
 [[plugins]]
 repo = 'tpope/vim-endwise'
