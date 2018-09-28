@@ -124,7 +124,7 @@ module.exports = {
 
     // for advanced config flags please refer to https://hyper.is/#cfg
 
-    opacity: 0.90,
+    opacity: 0.70,
   },
 
   // a list of plugins to fetch and install from npm
