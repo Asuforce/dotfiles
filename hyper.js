@@ -9,10 +9,10 @@ module.exports = {
     updateChannel: 'stable',
 
     // default font size in pixels for all tabs
-    fontSize: 12,
+    fontSize: 15,
 
     // font family with optional fallbacks
-    fontFamily: 'Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+    fontFamily: 'Ricty Diminished',
 
     // default font weight: 'normal' or 'bold'
     fontWeight: 'normal',
@@ -31,7 +31,6 @@ module.exports = {
 
     // set to `true` (without backticks and without quotes) for blinking cursor
     cursorBlink: false,
-
     // color of the text
     foregroundColor: '#fff',
 
@@ -61,7 +60,7 @@ module.exports = {
     showWindowControls: '',
 
     // custom padding (CSS format, i.e.: `top right bottom left`)
-    padding: '12px 14px',
+    padding: '0px 2px',
 
     // the full list. if you're going to provide the full color palette,
     // including the 6 x 6 color cubes and the grayscale map, just provide
@@ -85,26 +84,13 @@ module.exports = {
       lightWhite: '#FFFFFF',
     },
 
-    // the shell to run when spawning a new session (i.e. /usr/local/bin/fish)
-    // if left empty, your system's login shell will be used by default
-    //
-    // Windows
-    // - Make sure to use a full path if the binary name doesn't work
-    // - Remove `--login` in shellArgs
-    //
-    // Bash on Windows
-    // - Example: `C:\\Windows\\System32\\bash.exe`
-    //
-    // PowerShell on Windows
-    // - Example: `C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`
-    shell: '',
+    shell: '/usr/local/bin/zsh',
 
-    // for setting shell arguments (i.e. for using interactive shellArgs: `['-i']`)
-    // by default `['--login']` will be used
     shellArgs: ['--login'],
 
-    // for environment variables
-    env: {},
+    env: {
+      LANG: 'ja_JP.UTF-8'
+    },
 
     // set to `false` for no bell
     bell: 'SOUND',
@@ -124,16 +110,31 @@ module.exports = {
 
     // for advanced config flags please refer to https://hyper.is/#cfg
 
-    opacity: 0.70,
+    opacity: 0.80,
+
+    overlay: {
+      alwaysOnTop: false,
+      animat: true,
+      hasShadow: false,
+      hideDock: false,
+      hideOnBlur: false,
+      hotkeys: ['Option+Space'],
+      position: 'top',
+      primaryDisplay: false,
+      resizable: false,
+      startAlone: true,
+      startup: true,
+      size: 1,
+      tray: false,
+      unique: true
+    },
   },
 
-  // a list of plugins to fetch and install from npm
-  // format: [@org/]project[#version]
-  // examples:
-  //   `hyperpower`
-  //   `@company/project`
-  //   `project#1.0.1`
-  plugins: ["hyper-opacity"],
+  plugins: [
+    'hyper-opacity',
+    'hyperterm-overlay',
+    'hyper-one-dark',
+  ],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
