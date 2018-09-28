@@ -24,9 +24,9 @@ do
   if [ ! -d "/usr/local/Caskroom/$pkg" ]; then
     if [ "$pkg" == "java8" ]; then
       brew tap caskroom/versions
+    elif [ "$pkg" == "font-ricty-diminished" ]; then
+      brew tap caskroom/fonts
     fi
-
-    echo $pkg
 
     brew cask install $pkg
   fi

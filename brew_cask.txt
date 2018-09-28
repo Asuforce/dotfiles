@@ -3,6 +3,7 @@ appcleaner
 docker
 dropbox
 firefox
+font-ricty-diminished
 gpg-suite
 hyper
 iterm2
