@@ -133,7 +133,6 @@ module.exports = {
   plugins: [
     'hyper-opacity',
     'hyperterm-overlay',
-    'hyper-one-dark',
   ],
 
   // in development, you can create a directory under
