@@ -23,6 +23,7 @@
 	df = diff
 	fe = fetch
 	st = status
+	me = merge
 
 	amend = commit --amend
 	bout = checkout -b
