@@ -1,5 +1,6 @@
 ansible
 bat
+circleci
 curl
 direnv
 envchain
