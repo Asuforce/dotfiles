@@ -4,6 +4,7 @@ docker
 dropbox
 firefox
 font-ricty-diminished
+google-cloud-sdk
 gpg-suite
 hyper
 java8
