@@ -264,7 +264,7 @@ anyenv_all() {
   unset -f goenv
   unset -f plenv
   unset -f pyenv
-  unset -f ndenv
+  unset -f nodenv
   unset -f rbenv
 
   eval "$(anyenv init - --no-rehash)"
@@ -285,9 +285,9 @@ pyenv() {
   pyenv "$@"
 }
 
-ndenv() {
+nodenv() {
   anyenv_all
-  ndenv "$@"
+  nodenv "$@"
 }
 
 rbenv() {
