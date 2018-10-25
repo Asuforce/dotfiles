@@ -2,7 +2,6 @@ ansible
 bat
 circleci
 curl
-direnv
 envchain
 exa
 fd
@@ -18,14 +17,10 @@ hub
 ipcalc
 jq
 maven
-mysql
 openssl
 peco
-postgresql
 readline
-redis
 ripgrep
-sqlite
 tig
 terraform
 tmux
