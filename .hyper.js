@@ -110,7 +110,7 @@ module.exports = {
 
     // for advanced config flags please refer to https://hyper.is/#cfg
 
-    opacity: 0.80,
+    opacity: 0.85,
 
     overlay: {
       alwaysOnTop: false,
