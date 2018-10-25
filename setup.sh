@@ -59,7 +59,7 @@ for file in ${LINK_DOT_FILES[@]}
 do
   dest_file="$HOME/.$file"
   if [ ! -e $dest_file ]; then
-    ln -fs $REPO_DIR/$file $dest_file
+    ln -fs $REPO_DIR/.$file $dest_file
   fi
 done
 
@@ -68,7 +68,7 @@ for file in ${COPY_DOT_FILES[@]}
 do
   dest_file="$HOME/.$file"
   if [ ! -e $dest_file ]; then
-    cp $REPO_DIR/$file $dest_file
+    cp $REPO_DIR/.$file $dest_file
   fi
 done
 
