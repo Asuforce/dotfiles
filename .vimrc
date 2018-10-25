@@ -83,8 +83,7 @@ filetype indent on
 
 " colorscheme
 syntax on
-colorscheme onedark
-let g:onedark_termcolors=256
+color elflord
 
 " NERDTree
 let NERDTreeShowHidden = 1
