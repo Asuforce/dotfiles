@@ -21,3 +21,6 @@ color  diff-chunk        black   white
 
 # ! で revert
 bind main    !      ?git revert %(commit)
+
+# Copy commit id
+bind generic y @sh -c "echo %(commit) | pbcopy"
