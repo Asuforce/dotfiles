@@ -20,9 +20,6 @@ repo = 'bronson/vim-trailing-whitespace'
 repo = "ctrlpvim/ctrlp.vim"
 
 [[plugins]]
-repo = 'plasticboy/vim-markdown'
-
-[[plugins]]
 repo = 'vim-airline/vim-airline'
 
 [[plugins]]
