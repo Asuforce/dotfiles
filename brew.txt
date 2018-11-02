@@ -20,6 +20,7 @@ jq
 kubernetes-cli
 kubernetes-helm
 maven
+mysql
 openssl
 peco
 readline
