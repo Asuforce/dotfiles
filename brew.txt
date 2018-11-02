@@ -23,6 +23,7 @@ maven
 mysql
 openssl
 peco
+postgresql
 readline
 ripgrep
 tig
