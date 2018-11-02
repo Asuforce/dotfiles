@@ -10,6 +10,7 @@ hyper
 java8
 karabiner-elements
 kindle
+minikube
 nanowallet
 notion
 shiftit
