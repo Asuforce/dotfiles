@@ -2,6 +2,7 @@ ansible
 bat
 circleci
 curl
+draft
 envchain
 exa
 fd
@@ -16,6 +17,8 @@ htop
 hub
 ipcalc
 jq
+kubernetes-cli
+kubernetes-helm
 maven
 openssl
 peco
