@@ -36,6 +36,9 @@ done < $REPO_DIR/brew_cask.txt
 while read pkg opt
 do
   if [ ! -d "/usr/local/Cellar/$pkg" ]; then
+    if [ $pkg == "draft" ]; then
+      brew tap azure/draft
+    fi
     brew install $pkg $opt
   fi
 done < $REPO_DIR/brew.txt
