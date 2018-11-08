@@ -8,6 +8,14 @@ MNML_PROMPT=(mnml_ssh mnml_pyenv mnml_pwd mnml_status mnml_keymap mnml_git)
 MNML_RPROMPT=('')
 MNML_USER_CHAR='ʕ ◔ϖ◔ʔ'
 
+zgen_update() {
+  source ${HOME}/.zgen/zgen.zsh
+  zgen update
+  zgen_init
+
+  exec $SHELL -l
+}
+
 zgen_init () {
   source ${HOME}/.zgen/zgen.zsh
 
