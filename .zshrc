@@ -4,7 +4,9 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
 fi
 
 # zgen conf
-AGKOZAK_MULTILINE=0
+MNML_PROMPT=(mnml_ssh mnml_pyenv mnml_pwd mnml_status mnml_keymap mnml_git)
+MNML_RPROMPT=('')
+MNML_USER_CHAR='ʕ ◔ϖ◔ʔ'
 
 zgen_init () {
   source ${HOME}/.zgen/zgen.zsh
@@ -15,7 +17,7 @@ zgen_init () {
   zgen load mafredri/zsh-async
   zgen load rupa/z
 
-  zgen load agkozak/agkozak-zsh-theme
+  zgen load subnixr/minimal
 
   zgen save
 
