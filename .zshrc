@@ -296,10 +296,10 @@ rbenv() {
 }
 
 # for kubernetes
-if type kubectl > /dev/null 2>&1; then
+kubectl() {
   . <(kubectl completion zsh)
-  alias kube='kubectl'
-fi
+  kubectl "$@"
+}
 
 # for openssl
 if [ -d /usr/local/opt/openssl ]; then
