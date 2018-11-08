@@ -30,6 +30,7 @@ tig
 terraform
 tmux
 tmux-xpanes
+translate-shell
 tree
 vim
 watch
