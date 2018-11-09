@@ -19,7 +19,6 @@ zgen_init () {
   source ${HOME}/.zgen/zgen.zsh
 
   zgen load zsh-users/zsh-completions
-  zgen load b4b4r07/auto-fu.zsh
   zgen load rupa/z
 
   zgen load subnixr/minimal
@@ -54,13 +53,6 @@ if [[ ! -n $TMUX ]]; then
     : # Start terminal normally
   fi
 fi
-
-# auto-fu.sh
-function zle-line-init () {
-  auto-fu-init
-}
-zle -N zle-line-init
-zstyle ':completion:*' completer _oldlist _complete
 
 # notify
 notify_precmd() {
