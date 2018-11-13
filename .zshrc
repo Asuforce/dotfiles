@@ -37,7 +37,7 @@ else
 fi
 
 # tmux auto load
-if [[ ! -n $TMUX ]]; then
+if [[ ! -n $TMUX ]] && [[ $TERM_PROGRAM != "vscode" ]]; then
   ls=`tmux list-sessions`
   if [[ -z "${ls}" ]]; then
     tmux new-session
