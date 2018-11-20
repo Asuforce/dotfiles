@@ -21,7 +21,7 @@ zgen_init () {
   zgen load zsh-users/zsh-completions
   zgen load rupa/z
 
-  zgen load subnixr/minimal
+  zgen load asuforce/minimal
 
   zgen save
 
