@@ -13,6 +13,7 @@ kindle
 minikube
 nanowallet
 notion
+postman
 shiftit
 slack
 the-unarchiver
