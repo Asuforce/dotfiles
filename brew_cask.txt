@@ -7,6 +7,7 @@ font-ricty-diminished
 google-cloud-sdk
 gpg-suite
 hyper
+iterm2
 java8
 karabiner-elements
 kindle
