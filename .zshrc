@@ -320,6 +320,12 @@ if [ -d ${JAVA_HOME} ]; then
   export PATH="$JAVA_HOME/bin:$PATH"
 fi
 
+# for work script
+WORK_SCRIPT="${HOME}/.work.sh"
+if [ -s ${WORK_SCRIPT} ]; then
+  source ${WORK_SCRIPT}
+fi
+
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
 
