@@ -100,9 +100,6 @@ fi
 readonly ANYENV_DIR="$HOME/.anyenv"
 if [ ! -d $ANYENV_DIR ]; then
   git clone https://github.com/riywo/anyenv $ANYENV_DIR
-
-  mkdir $ANYENV_DIR/plugins
-  git clone https://github.com/znz/anyenv-update.git $ANYENV_DIR/plugins/anyenv-update
 fi
 
 # set default shell

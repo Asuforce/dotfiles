@@ -301,6 +301,20 @@ rbenv() {
   rbenv "$@"
 }
 
+anyenv-update() {
+  _PWD=`pwd`
+  _ENVHOME="${HOME}/.anyenv/envs"
+
+  for _DIRS in `ls ${_ENVHOME}`; do
+    echo "\n-- ${_DIRS} --"
+    cd ${_ENVHOME}/${_DIRS}
+    _PULL=`git pull`
+    echo $_PULL
+  done
+
+  cd ${_PWD}
+}
+
 # for openssl
 if [ -d /usr/local/opt/openssl ]; then
   export PATH="/usr/local/opt/openssl/bin:$PATH"
