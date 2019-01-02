@@ -305,11 +305,20 @@ anyenv-update() {
   _PWD=`pwd`
   _ENVHOME="${HOME}/.anyenv/envs"
 
-  for _DIRS in `ls ${_ENVHOME}`; do
-    echo "\n-- ${_DIRS} --"
-    cd ${_ENVHOME}/${_DIRS}
+  for _DIR in `ls ${_ENVHOME}`; do
+    echo "\n-- ${_DIR} --"
+    _HOME=${_ENVHOME}/${_DIR}
+    cd ${_HOME}
     _PULL=`git pull`
     echo $_PULL
+
+    for _DIR in `ls plugins`; do
+      echo `pwd`
+      echo "\n-- ${_DIR} --"
+      cd "${_HOME}/plugins/${_DIR}"
+      _PULL=`git pull`
+      echo $_PULL
+    done
   done
 
   cd ${_PWD}
