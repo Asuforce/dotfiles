@@ -18,6 +18,7 @@ zgen_update() {
 zgen_init () {
   source ${HOME}/.zgen/zgen.zsh
 
+  zgen load zsh-users/zsh-autosuggestions
   zgen load zsh-users/zsh-completions
   zgen load rupa/z
 
