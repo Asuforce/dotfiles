@@ -340,6 +340,12 @@ if [ -s ${WORK_SCRIPT} ]; then
   source ${WORK_SCRIPT}
 fi
 
+# for flutter
+FLUTTER_DIR="${HOME}/dev/src/github.com/flutter/flutter"
+if [ -d ${FLUTTER_DIR} ]; then
+  export PATH="$FLUTTER_DIR/bin:$PATH"
+fi
+
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
 
