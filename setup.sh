@@ -118,5 +118,16 @@ if [ ! -d $SSH_DIR  ]; then
   cp $REPO_DIR/.config $SSH_DIR/config
 fi
 
+# Link karabiner-elements config
+readonly DROPBOX_DIR="$HOME/Dropbox/Apps/karabiner"
+if [ ! -d $DROPBOX_DIR ]; then
+  mkdir -p $DROPBOX_DIR
+fi
+
+readonly KARABINER_DIR="$HOME/.config/karabiner"
+if [ ! -d $KARABINER_DIR ]; then
+  ln -fs $DROPBOX_DIR $KARABINER_DIR
+fi
+
 # restart shell
 exec -l $SHELL
