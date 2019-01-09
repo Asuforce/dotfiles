@@ -356,6 +356,12 @@ if [ -d ${FLUTTER_DIR} ]; then
   export PATH="$FLUTTER_DIR/bin:$PATH"
 fi
 
+# for deno
+DENO_DIR="${HOME}/.deno"
+if [ -d ${DENO_DIR} ]; then
+  export PATH="$DENO_DIR/bin:$PATH"
+fi
+
 # 重複パスを登録しない
 typeset -U path cdpath fpath manpath
 
