@@ -15,6 +15,7 @@ nanowallet
 notion
 postman
 shiftit
+station
 slack
 the-unarchiver
 vagrant
