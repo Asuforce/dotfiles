@@ -307,7 +307,7 @@ anyenv-update() {
   _ENVHOME="${HOME}/.anyenv/envs"
 
   for _DIR in `ls ${_ENVHOME}`; do
-    echo "\n-- ${_DIR} --"
+    echo "\n-- $(echo ${_DIR} | sed 's/\///g') --"
     _HOME=${_ENVHOME}/${_DIR}
     cd ${_HOME}
     _PULL=`git pull`
@@ -315,7 +315,7 @@ anyenv-update() {
 
     for _DIR in `ls plugins`; do
       echo `pwd`
-      echo "\n-- ${_DIR} --"
+      echo "\n-- $(echo ${_DIR} | sed 's/\///g') --"
       cd "${_HOME}/plugins/${_DIR}"
       _PULL=`git pull`
       echo $_PULL
