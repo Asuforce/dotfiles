@@ -174,7 +174,7 @@ alias g='git'
 
 # for brew
 alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
-alias bu='brew upgrade --fetch-HEAD --ignore-pinned --display-times --cleanup && brew cask upgrade'
+alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew cask upgrade'
 
 # for bundle
 alias be='bundle exec'
