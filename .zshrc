@@ -3,9 +3,10 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
 
-# zgen conf
+# Zsh plugin conf
 MNML_PROMPT=(mnml_ssh mnml_pyenv mnml_pwd mnml_status mnml_keymap mnml_git)
 MNML_RPROMPT=('')
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
 zgen_update() {
   source ${HOME}/.zgen/zgen.zsh
