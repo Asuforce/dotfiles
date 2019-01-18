@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eu
+
 # create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/dev/src/github.com"
 
