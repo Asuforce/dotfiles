@@ -6,6 +6,7 @@ dropbox
 firefox
 font-ricty-diminished
 google-cloud-sdk
+google-japanese-ime
 gpg-suite
 iterm2
 java8
