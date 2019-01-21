@@ -131,5 +131,14 @@ if [ ! -d $KARABINER_DIR ]; then
   ln -fs $DROPBOX_DIR $KARABINER_DIR
 fi
 
+# for repo that is alfread workflow
+readonly REPO_FILE="$HOME/Dropbox/Alfred/settings.json"
+readonly REPO_DIST="$HOME/Library/Application Support/Alfred 3/Workflow Data/net.deanishe.alfred-git-repos/settings.json"
+if [ ! -L "${REPO_DIST}" ]; then
+  rm "${REPO_DIST}"
+  ln -fs $REPO_FILE "${REPO_DIST}"
+fi
+
+
 # restart shell
 exec -l $SHELL
