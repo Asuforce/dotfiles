@@ -12,7 +12,6 @@ karabiner-elements
 kindle
 minikube
 nanowallet
-notion
 postman
 shiftit
 station
