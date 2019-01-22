@@ -17,7 +17,6 @@ nanowallet
 postman
 shiftit
 station
-slack
 the-unarchiver
 vagrant
 virtualbox
