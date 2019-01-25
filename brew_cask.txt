@@ -16,6 +16,7 @@ minikube
 nanowallet
 postman
 shiftit
+spotify
 station
 the-unarchiver
 vagrant
