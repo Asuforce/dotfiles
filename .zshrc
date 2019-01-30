@@ -1,4 +1,4 @@
-# auto compile
+# Auto compile
 if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
@@ -39,7 +39,7 @@ else
   source ${HOME}/.zgen/init.zsh
 fi
 
-# tmux auto load
+# Auto load tmux
 if [[ ! -n $TMUX ]] && [[ $TERM_PROGRAM != "vscode" ]]; then
   ls=`tmux list-sessions`
   if [[ -z "${ls}" ]]; then
@@ -57,7 +57,7 @@ if [[ ! -n $TMUX ]] && [[ $TERM_PROGRAM != "vscode" ]]; then
   fi
 fi
 
-# notify
+# Notify
 notify_precmd() {
   prev_command_status=$?
 
@@ -75,10 +75,10 @@ autoload -Uz add-zsh-hook
 add-zsh-hook preexec store_command
 add-zsh-hook precmd notify_precmd
 
-# 色を使用出来るようにする
+# Change colors
 autoload -Uz colors
 
-# ヒストリの設定
+# Configure for hostory
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
@@ -89,104 +89,103 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_NO_STORE
 
-# editor
 export EDITOR=vim
 
-# 単語の区切り文字を指定する
+# Specify word delimiter
 autoload -Uz select-word-style
 select-word-style default
 
-# 補完で小文字でも大文字にマッチさせる
+# Match lowercase letters or capital letters in completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# ../ の後は今いるディレクトリを補完しない
+# After ../ do not complement the directory that is now
 zstyle ':completion:*' ignore-parents parent pwd ..
 
-# ps コマンドのプロセス名補完
+# Process name completion of ps command
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-# オプション
-# 日本語ファイル名を表示可能にする
+# Options
+# Make Japanese filename displayable
 setopt print_eight_bit
 
-# beep を無効にする
+# Disable beep
 setopt no_beep
 
-# フローコントロールを無効にする
+# Disable flow control
 setopt no_flow_control
 
-# Ctrl+Dでzshを終了しない
+# Do not quit zsh with Ctrl + D
 setopt ignore_eof
 
-# '#' 以降をコメントとして扱う
+# Treat after '#' as comment
 setopt interactive_comments
 
-# ディレクトリ名だけでcdする
+# Cd by directory name alone
 setopt auto_cd
 
-# cd したら自動的にpushdする
+# Automatically pushd after cd
 setopt auto_pushd
 
-# 重複したディレクトリを追加しない
+# Do not add duplicate directory name
 setopt pushd_ignore_dups
 
-# 同時に起動したzshの間でヒストリを共有する
+# Sharing the history among zshs started at the same time
 setopt share_history
 
-# 同じコマンドをヒストリに残さない
+# Do not leave the same command in the history
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 
-# スペースから始まるコマンド行はヒストリに残さない
+# Command lines beginning with a space are not left in the history
 setopt hist_ignore_space
 
-# ヒストリに保存するときに余分なスペースを削除する
+# Delete extra space when saved in history
 setopt hist_reduce_blanks
 
-# 高機能なワイルドカード展開を使用する
+# Use advanced wildcard deployment
 setopt extended_glob
 
-# ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
+# Make wildcard available with * when ^ R search history search
 bindkey '^R' history-incremental-pattern-search-backward
 
-# ctrl系の操作
+# Control type of ctrl
 bindkey -e
 
-# custom command
+# Custom command
 mkcd() { mkdir -p $1 && cd $1; }
 
-# alias 上書きファイルの問い合わせ
+# Query overwrite file
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 
-# for shortcut
+# For shortcut
 alias cat='bat'
 
-# for exa alias & shortcut
+# For exa alias & shortcut
 alias ls='exa -GF'
 alias ll='exa -l'
 alias la='exa -alh'
 
-# for vim
+# For vim
 alias vi='vim'
 
-# for git
+# For git
 alias g='git'
 
-# for brew
+# For brew
 alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
 alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew cask upgrade'
 
-# for bundle
+# For bundle
 alias be='bundle exec'
 alias bi='bundle install -j4 --path vendor/bundle'
 
-# for Docker
+# For Docker
 alias de='docker exec'
 alias d-c='docker-compose'
 
-# for peco
+# For peco
 peco-z-search() {
   which peco z > /dev/null
   if [ $? -ne 0 ]; then
@@ -222,7 +221,7 @@ peco-history() {
 zle -N peco-history
 bindkey '^]' peco-history
 
-# for ssh
+# For ssh
 set_term_bgcolor() {
   local R=${1}*65535/255
   local G=${2}*65535/255
@@ -245,13 +244,13 @@ myssh() {
 
 alias ssh='myssh'
 
-# for vscode
+# For vscode
 alias e='code -r'
 
-# for gnu-sed
+# For gnu-sed
 alias sed='gsed'
 
-# for anyenv
+# For anyenv
 eval "$(direnv hook zsh)"
 
 if [ -d $HOME/.anyenv ]; then
@@ -320,44 +319,44 @@ anyenv-update() {
   cd ${_PWD}
 }
 
-# for openssl
+# For openssl
 if [ -d /usr/local/opt/openssl ]; then
   export PATH="/usr/local/opt/openssl/bin:$PATH"
   export LD_LIBRARY_PATH="/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH"
   export CPATH="/usr/local/opt/openssl/include:$LD_LIBRARY_PATH"
 fi
 
-# for curl
+# For curl
 if [ -d /usr/local/opt/curl ]; then
   export PATH="/usr/local/opt/curl/bin:$PATH"
 fi
 
-# for java
+# For java
 JAVA_HOME=`/usr/libexec/java_home -v "1.8"`
 if [ -d ${JAVA_HOME} ]; then
   export JAVA_HOME=${JAVA_HOME}
   export PATH="$JAVA_HOME/bin:$PATH"
 fi
 
-# for work script
+# For work script
 WORK_SCRIPT="${HOME}/.work.sh"
 if [ -s ${WORK_SCRIPT} ]; then
   source ${WORK_SCRIPT}
 fi
 
-# for flutter
+# For flutter
 FLUTTER_DIR="${HOME}/dev/src/github.com/flutter/flutter"
 if [ -d ${FLUTTER_DIR} ]; then
   export PATH="$FLUTTER_DIR/bin:$PATH"
 fi
 
-# for deno
+# For deno
 DENO_DIR="${HOME}/.deno"
 if [ -d ${DENO_DIR} ]; then
   export PATH="$DENO_DIR/bin:$PATH"
 fi
 
-# 重複パスを登録しない
+# Do not register duplicate paths
 typeset -U path cdpath fpath manpath
 
 # Use zprof
