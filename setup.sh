@@ -2,25 +2,25 @@
 
 set -eu
 
-# create GITHUB_DIR
+# Create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/dev/src/github.com"
 
 if [ ! -d $GITHUB_DIR  ]; then
   mkdir -p $GITHUB_DIR
 fi
 
-# install dotfiles
+# Install dotfiles
 readonly REPO_DIR="$GITHUB_DIR/Asuforce/dotfiles"
 if [ ! -d $REPO_DIR ]; then
   git clone https://github.com/Asuforce/dotfiles.git $REPO_DIR
 fi
 
-# install brew
+# Install brew
 if ! type brew > /dev/null 2>&1; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# install applications
+# Install applications
 while read pkg
 do
   if [ ! -d "/usr/local/Caskroom/$pkg" ]; then
@@ -34,7 +34,7 @@ do
   fi
 done < $REPO_DIR/brew_cask.txt
 
-# install packges
+# Install packges
 while read pkg opt
 do
   if [ ! -d "/usr/local/Cellar/$pkg" ]; then
@@ -45,12 +45,12 @@ do
   fi
 done < $REPO_DIR/brew.txt
 
-# install rustup
+# Install rustup
 if ! type rustup > /dev/null 2>&1; then
   curl https://sh.rustup.rs -sSf | sh
 fi
 
-# install rust packages
+# Install rust packages
 while read pkg opt
 do
   if [ ! -e "$HOME/.cargo/bin/$opt" ]; then
@@ -58,7 +58,7 @@ do
   fi
 done < $REPO_DIR/cargo.txt
 
-# setup dotfiles
+# Setup dotfiles
 readonly LINK_DOT_FILES=(gitconfig gitignore tmux.conf vimrc  zshrc zshenv tigrc)
 for file in ${LINK_DOT_FILES[@]}
 do
@@ -77,7 +77,7 @@ do
   fi
 done
 
-# link dein files
+# Link dein files
 readonly DEIN_DIR="$HOME/.vim/dein"
 if [ ! -e $DEIN_DIR ]; then
   mkdir -p $DEIN_DIR
@@ -92,26 +92,26 @@ if [ ! -e $DEIN_DIR ]; then
   done
 fi
 
-# install zgen
+# Install zgen
 readonly ZGEN_DIR="$HOME/.zgen"
 if [ ! -d $ZGEN_DIR ]; then
   git clone https://github.com/tarjoilija/zgen.git $ZGEN_DIR
 fi
 
-# install anyenv
+# Install anyenv
 readonly ANYENV_DIR="$HOME/.anyenv"
 if [ ! -d $ANYENV_DIR ]; then
   git clone https://github.com/riywo/anyenv $ANYENV_DIR
 fi
 
-# set default shell
+# Set default shell
 readonly ZSH_DIR="/usr/local/bin/zsh"
 readonly SHELL_FILE="/etc/shells"
 if ! grep $ZSH_DIR $SHELL_FILE > /dev/null; then
   echo $ZSH_DIR | sudo tee -a $SHELL_FILE
 fi
 
-# create ssh directory
+# Create ssh directory
 readonly SSH_DIR="$HOME/.ssh"
 if [ ! -d $SSH_DIR  ]; then
   mkdir -p $SSH_DIR/conf.d
@@ -131,5 +131,5 @@ if [ ! -d $KARABINER_DIR ]; then
   ln -fs $DROPBOX_DIR $KARABINER_DIR
 fi
 
-# restart shell
+# Restart shell
 exec -l $SHELL
