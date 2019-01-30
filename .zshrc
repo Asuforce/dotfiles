@@ -253,7 +253,7 @@ alias vs='vagrant status'
 alias vssh='vagrant ssh'
 
 # for vscode
-alias e='code'
+alias e='code -r'
 
 # for gnu-sed
 alias sed='gsed'
