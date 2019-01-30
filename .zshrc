@@ -245,13 +245,6 @@ myssh() {
 
 alias ssh='myssh'
 
-# for vagrant
-alias vu='vagrant up'
-alias vd='vagrant destroy'
-alias vp='vagrant provision'
-alias vs='vagrant status'
-alias vssh='vagrant ssh'
-
 # for vscode
 alias e='code -r'
 
