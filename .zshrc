@@ -21,7 +21,6 @@ zgen_init () {
 
   zgen load zsh-users/zsh-autosuggestions
   zgen load zsh-users/zsh-completions
-  zgen load zsh-users/zsh-syntax-highlighting
   zgen load rupa/z
 
   zgen load asuforce/minimal
