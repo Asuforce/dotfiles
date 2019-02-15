@@ -158,9 +158,6 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 
-# For shortcut
-alias cat='bat'
-
 # For exa alias & shortcut
 alias ls='exa -GF'
 alias ll='exa -l'
