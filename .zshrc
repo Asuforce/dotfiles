@@ -355,6 +355,12 @@ if [ -d ${DENO_DIR} ]; then
   export PATH="$DENO_DIR/bin:$PATH"
 fi
 
+# For mozjpeg
+MOZJPEG_DIR="/usr/local/opt/mozjpeg"
+if [ -d ${MOZJPEG_DIR} ]; then
+  export PATH="${MOZJPEG_DIR}/bin:$PATH"
+fi
+
 # Do not register duplicate paths
 typeset -U path cdpath fpath manpath
 

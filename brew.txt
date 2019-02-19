@@ -21,6 +21,7 @@ kubernetes-cli
 kubernetes-helm
 maven
 mysql
+mozjpeg
 openssl
 peco
 postgresql
