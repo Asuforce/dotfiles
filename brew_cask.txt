@@ -1,6 +1,7 @@
 alfred
 appcleaner
 authy
+dash
 docker
 dropbox
 firefox
