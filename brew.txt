@@ -16,6 +16,7 @@ heroku
 htop
 hub
 ipcalc
+jo
 jq
 kubernetes-cli
 kubernetes-helm
