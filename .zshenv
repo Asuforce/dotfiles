@@ -16,9 +16,6 @@ if [ -z $TMUX ]; then
   export PATH="$PATH:/usr/local/sbin"
   export PATH="$PATH:/usr/local/bin"
 
-  # for go
-  export GOPATH="$HOME/dev"
-  export PATH="$PATH:$GOPATH/bin"
 
   #for rust
   export PATH="$HOME/.cargo/bin:$PATH"
