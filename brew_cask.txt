@@ -19,6 +19,7 @@ postman
 shiftit
 spotify
 station
+tableplus
 the-unarchiver
 vagrant
 virtualbox
