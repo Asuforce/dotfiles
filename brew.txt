@@ -11,6 +11,7 @@ ghq
 gifsicle
 git
 gnu-sed
+go
 grep --with-default-names
 heroku
 htop
