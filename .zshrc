@@ -258,18 +258,12 @@ if [ -d $HOME/.anyenv ]; then
 fi
 
 anyenv_all() {
-  unset -f goenv
   unset -f plenv
   unset -f pyenv
   unset -f nodenv
   unset -f rbenv
 
   eval "$(anyenv init - --no-rehash)"
-}
-
-goenv() {
-  anyenv_all
-  goenv "$@"
 }
 
 plenv() {
@@ -361,8 +355,11 @@ fi
 # Do not register duplicate paths
 typeset -U path cdpath fpath manpath
 
+# for go
+export GOPATH="$HOME/dev"
+export PATH="$PATH:$GOPATH/bin"
+
 # Use zprof
 if (which zprof > /dev/null) ;then
   zprof | less
 fi
-
