@@ -19,6 +19,7 @@ hub
 ipcalc
 jo
 jq
+kubectx
 kubernetes-cli
 kubernetes-helm
 maven
