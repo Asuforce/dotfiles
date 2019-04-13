@@ -190,6 +190,9 @@ alias kg='kubectl get'
 alias kl='kubectl log'
 alias kr='kubectl delete'
 
+# For reset
+alias re='exec $SHELL -l'
+
 # For peco
 peco-z-search() {
   which peco z > /dev/null
