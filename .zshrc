@@ -181,6 +181,15 @@ alias bi='bundle install -j4 --path vendor/bundle'
 alias de='docker exec'
 alias d-c='docker-compose'
 
+# For kubectl
+alias k='kubectl'
+alias ka='kubectl apply'
+alias kd='kubectl describe'
+alias ke='kubectl exec'
+alias kg='kubectl get'
+alias kl='kubectl log'
+alias kr='kubectl delete'
+
 # For peco
 peco-z-search() {
   which peco z > /dev/null
