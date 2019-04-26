@@ -187,7 +187,7 @@ alias ka='kubectl apply'
 alias kd='kubectl describe'
 alias ke='kubectl exec'
 alias kg='kubectl get'
-alias kl='kubectl log'
+alias kl='kubectl logs'
 alias kr='kubectl delete'
 
 # For reset
