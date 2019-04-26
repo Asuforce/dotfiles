@@ -23,6 +23,7 @@ jq
 kubectx
 kubernetes-cli
 kubernetes-helm
+kustomize
 maven
 mysql
 mozjpeg
