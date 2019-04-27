@@ -184,11 +184,11 @@ alias d-c='docker-compose'
 # For kubectl
 alias k='kubectl'
 alias ka='kubectl apply'
-alias kd='kubectl describe'
+alias kdes='kubectl describe'
+alias kdel='kubectl delete'
 alias ke='kubectl exec'
 alias kg='kubectl get'
 alias kl='kubectl logs'
-alias kr='kubectl delete'
 
 # For reset
 alias re='exec $SHELL -l'
