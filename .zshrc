@@ -287,7 +287,6 @@ pyenv() {
   anyenv_all
   pyenv "$@"
 }
-
 nodenv() {
   anyenv_all
   nodenv "$@"
@@ -370,6 +369,18 @@ typeset -U path cdpath fpath manpath
 # for go
 export GOPATH="$HOME/dev"
 export PATH="$PATH:$GOPATH/bin"
+
+# for gcloud
+function gconf() {
+  projData=$(gcloud config configurations list | peco)
+  if echo "${projData}" | grep -E "^[a-zA-Z].*" > /dev/null ; then
+    config=$(echo ${projData} | awk '{print $1}')
+    gcloud config configurations activate ${config}
+
+    echo "=== The current account is as follows ==="
+    gcloud config configurations list | grep "${config}"
+  fi
+}
 
 # Use zprof
 if (which zprof > /dev/null) ;then
