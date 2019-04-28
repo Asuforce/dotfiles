@@ -238,6 +238,20 @@ git-branch-fzf() {
 zle -N git-branch-fzf
 bindkey "^b" git-branch-fzf
 
+tree-fzf() {
+  local SELECTED_FILE=$(tree --charset=o -f | fzf --query "$LBUFFER" | tr -d '\||`|-' | xargs echo)
+
+  if [ "$SELECTED_FILE" != "" ]; then
+    BUFFER="$EDITOR $SELECTED_FILE"
+    zle accept-line
+  fi
+
+  zle reset-prompt
+}
+
+zle -N tree-fzf
+bindkey "^t" tree-fzf
+
 # For ssh
 set_term_bgcolor() {
   local R=${1}*65535/255
