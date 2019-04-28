@@ -46,7 +46,7 @@ if [[ ! -n $TMUX ]] && [[ $TERM_PROGRAM != "vscode" ]]; then
   fi
 
   create_new_session="Create New Session"
-  ID=`echo "${ls}\n${create_new_session}:" | peco | cut -d: -f1`
+  ID=`echo "${ls}\n${create_new_session}:" | fzf | cut -d: -f1`
   if [[ "${ID}" = "${create_new_session}" ]]; then
     tmux new-session
   elif [[ -n "${ID}" ]]; then
@@ -193,14 +193,9 @@ alias kl='kubectl logs'
 # For reset
 alias re='exec $SHELL -l'
 
-# For peco
-peco-z-search() {
-  which peco z > /dev/null
-  if [ $? -ne 0 ]; then
-    echo "Please install peco and z"
-    return 1
-  fi
-  local res=$(z | sort -rn | cut -c 12- | peco)
+# for fzf
+fzf-z-search() {
+  local res=$(z | sort -rn | cut -c 12- | fzf)
   if [ -n "$res" ]; then
     BUFFER+="cd $res"
     zle accept-line
@@ -208,26 +203,26 @@ peco-z-search() {
     return 1
   fi
 }
-zle -N peco-z-search
-bindkey '^v' peco-z-search
+zle -N fzf-z-search
+bindkey '^v' fzf-z-search
 
-peco-src() {
-  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+fzf-src() {
+  local selected_dir=$(ghq list -p | fzf --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
     BUFFER="cd ${selected_dir}"
     zle accept-line
   fi
   zle clear-screen
 }
-zle -N peco-src
-bindkey '^j' peco-src
+zle -N fzf-src
+bindkey '^j' fzf-src
 
-peco-history() {
-  BUFFER=`history -n 1 | sort -k1,1nr | sort | uniq | peco`
+fzf-history() {
+  BUFFER=`history -n 1 | sort -k1,1nr | sort | uniq | fzf`
   CURSOR=$#BUFFER
 }
-zle -N peco-history
-bindkey '^]' peco-history
+zle -N fzf-history
+bindkey '^]' fzf-history
 
 # For ssh
 set_term_bgcolor() {
@@ -372,7 +367,7 @@ export PATH="$PATH:$GOPATH/bin"
 
 # for gcloud
 function gconf() {
-  projData=$(gcloud config configurations list | peco)
+  projData=$(gcloud config configurations list | fzf)
   if echo "${projData}" | grep -E "^[a-zA-Z].*" > /dev/null ; then
     config=$(echo ${projData} | awk '{print $1}')
     gcloud config configurations activate ${config}
