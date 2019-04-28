@@ -212,7 +212,6 @@ fzf-src() {
     BUFFER="cd ${selected_dir}"
     zle accept-line
   fi
-  zle clear-screen
 }
 zle -N fzf-src
 bindkey '^j' fzf-src
