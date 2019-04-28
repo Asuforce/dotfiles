@@ -235,7 +235,7 @@ git-branch-fzf() {
 }
 
 zle -N git-branch-fzf
-bindkey "^b" git-branch-fzf
+bindkey "^n" git-branch-fzf
 
 tree-fzf() {
   local SELECTED_FILE=$(tree --charset=o -f | fzf --query "$LBUFFER" | tr -d '\||`|-' | xargs echo)
