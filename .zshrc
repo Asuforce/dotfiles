@@ -394,7 +394,7 @@ export PATH="$PATH:$GOPATH/bin"
 
 # for gcloud
 function gconf() {
-  projData=$(gcloud config configurations list | fzf)
+  projData=$(gcloud config configurations list | sed -e '1d' | fzf)
   if echo "${projData}" | grep -E "^[a-zA-Z].*" > /dev/null ; then
     config=$(echo ${projData} | awk '{print $1}')
     gcloud config configurations activate ${config}
