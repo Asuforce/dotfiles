@@ -8,6 +8,7 @@ envchain
 exa
 fd
 ffmpeg
+figlet
 fzf
 ghq
 gifsicle
