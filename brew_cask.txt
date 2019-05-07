@@ -4,6 +4,7 @@ authy
 dash
 docker
 dropbox
+duet
 firefox
 font-ricty-diminished
 google-cloud-sdk
