@@ -131,5 +131,13 @@ if [ ! -d $KARABINER_DIR ]; then
   ln -fs $DROPBOX_DIR $KARABINER_DIR
 fi
 
+# Link diff-highlight
+readonly DIFF_HIGHLIGHT_FILE=/usr/local/bin/diff-highlight
+if [ ! -f $DIFF_HIGHLIGHT_FILE ]; then
+  ln -s /usr/local/share/git-core/contrib/diff-highlight/diff-highlight $DIFF_HIGHLIGHT_FILE
+fi
+
+
+
 # Restart shell
 exec -l $SHELL
