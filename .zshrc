@@ -280,6 +280,9 @@ alias e='code -r'
 # For gnu-sed
 alias sed='gsed'
 
+# For tig
+alias t='tig'
+
 # For anyenv
 eval "$(direnv hook zsh)"
 
