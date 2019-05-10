@@ -1,26 +1,154 @@
+### Display settings ###
+
 # Show commit ID on left of main view
 set main-view = id date author:email-user commit-title:graph=yes,refs=yes
 
-# blame view の行数表示をON、intervalを1に
+# Show line number on blame view, interval 1
 set blame-view  = date:default author:email-user id:yes,color line-number:yes,interval=1 text
 
-# Pager系の行数表示をON、intervalを1に (default: line-number:no,interval=5)
+# Show line number on Pager type interval 1 (default: line-number:no,interval=5)
 set pager-view  = line-number:yes,interval=1 text
 set stage-view  = line-number:yes,interval=1 text
 set log-view    = line-number:yes,interval=1 text
 set blob-view   = line-number:yes,interval=1 text
 set diff-view   = line-number:yes,interval=1 text:yes,commit-title-overflow=no
 
-# 差分表示に diff-highlight を使う
+
+### Other settings ###
+
+set vertical-split = no
+set tab-size = 4
+set ignore-case = true
+set diff-options = -m --first-parent
+set mouse = true
+set editor-line-number = yes
+
+# Reflesh timing
+set refresh-mode = auto
+set refresh-mode = after-command
+set refresh-mode = periodic
+set refresh-interval = 1
+
+# Use diff-highlight
 set diff-highlight = true
 
-# カラー設定
-# diff-view で境界が見やすくなるように変更
+# Change border to be easy to see in diff-view
 color  diff-header       default magenta
 color  diff-chunk        black   white
 
-# ! で revert
+### Key bindings ###
+
+# g : Move to top of file
+bind generic g      move-first-line
+# E : Rebind view-grep
+bind generic E      view-grep
+
+# G : Move to end of file (default: :toggle commit-title-graph)
+bind generic G      move-last-line
+bind main    G      move-last-line
+
+# Alt-g : :toggle commit-title-graph
+bind main    <Esc>g :toggle commit-title-graph
+
+# F : fetch (default: :toggle file-name / :toggle commit-title-refs)
+bind generic F      ?git fetch %(remote)
+bind main    F      ?git fetch %(remote)
+
+# Alt-f : :toggle file-name / :toggle commit-title-refs
+bind generic <Esc>f :toggle file-name
+bind main    <Esc>f :toggle commit-title-refs
+
+# U : Pull
+bind generic U      ?git pull %(remote)
+
+# Alt-u : Update branch
+bind main    <Esc>u ?sh -c "git checkout %(branch) && git pull %(remote) --ff-only && git checkout -"
+bind diff    <Esc>u ?sh -c "git checkout %(branch) && git pull %(remote) --ff-only && git checkout -"
+bind refs    <Esc>u ?sh -c "git checkout %(branch) && git pull %(remote) --ff-only && git checkout -"
+
+# P : push remote
+bind generic P      ?git push -u %(remote) %(repo:head)
+
+# C : commit (refs での C は checkout, main での C は cherry-pick だが上書きする)
+bind generic C      !git commit
+bind refs    C      !git commit
+bind main    C      !git commit
+
+# Alt-c : commit --allow-empty
+bind generic <Esc>c !git commit --allow-empty
+
+# + : commit --amend
+bind generic +      !git commit --amend --allow-empty
+
+# y : Copy commit id
+bind generic y @sh -c "echo %(commit) | pbcopy"
+
+# ! : revert
 bind main    !      ?git revert %(commit)
 
-# Copy commit id
-bind generic y @sh -c "echo %(commit) | pbcopy"
+# K : cherry-pick (default: 'C')
+bind main    K      ?git cherry-pick %(commit)
+bind diff    K      ?git cherry-pick %(commit)
+
+# Alt-k : cherry-pick -n (--no-commit)
+bind main    <Esc>k ?git cherry-pick -n %(commit)
+bind diff    <Esc>k ?git cherry-pick -n %(commit)
+
+# = : checkout
+bind main    =      ?git checkout %(branch)
+bind refs    =      ?git checkout %(branch)
+bind main    <Esc>= ?git checkout %(commit)
+
+# - : back Previous branch (checkout -)
+bind generic -      ?git checkout -
+
+# T : tag
+bind main    T ?git tag "%(prompt Enter tag name: )" %(commit)
+bind refs    T ?git tag "%(prompt Enter tag name: )" %(branch)
+
+# B : Create branch and move on (checkout -b)
+bind main    B      ?git checkout -b "%(prompt Enter branch name: )" %(branch)
+bind refs    B      ?git checkout -b "%(prompt Enter branch name: )" %(branch)
+bind main    <Esc>b ?git checkout -b "%(prompt Enter branch name: )" %(commit)
+
+# M : merge
+bind main    M      ?git merge %(branch)
+bind diff    M      ?git merge %(branch)
+bind refs    M      ?git merge %(branch)
+bind main    <Esc>m ?git merge %(commit)
+bind diff    <Esc>m ?git merge %(commit)
+
+# R : rebase
+bind main    R      ?git rebase %(branch)
+bind diff    R      ?git rebase %(branch)
+bind refs    R      ?git rebase %(branch)
+bind main    <Esc>r ?git rebase %(commit)
+bind diff    <Esc>r ?git rebase %(commit)
+
+# I : rebase -i
+bind main    I      ?git rebase -i %(branch)
+bind diff    I      ?git rebase -i %(branch)
+bind refs    I      ?git rebase -i %(branch)
+bind main    <Esc>i ?git rebase -i %(commit)
+bind diff    <Esc>i ?git rebase -i %(commit)
+
+# ; : Opne commit in GitHub
+bind main    ;      @hub browse -- commit/%(commit)
+bind blame   ;      @hub browse -- commit/%(commit)
+bind diff    ;      @hub browse -- commit/%(commit)
+
+# ; : Open page in GitHub
+bind tree    ;      @hub browse -- blob/%(branch)/%(file)
+bind blob    ;      @hub browse -- blob/%(branch)/%(file)
+bind grep    ;      @hub browse -- blob/%(branch)/%(file)
+
+# Alt-; : Open branch page in GitHub
+bind tree    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+bind blob    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+bind grep    <Esc>; @hub browse -- blob/"%(prompt Enter branch name: )"/%(file)
+
+# w : Open branch pull request page in GitHub
+bind main    w      @hub browse -- compare/%(branch)?expand=1
+bind diff    w      @hub browse -- compare/%(branch)?expand=1
+bind refs    w      @hub browse -- compare/%(branch)?expand=1
+
