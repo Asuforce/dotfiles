@@ -35,6 +35,7 @@ peco
 postgresql
 readline
 ripgrep
+skaffold
 tig
 terraform
 tmux
