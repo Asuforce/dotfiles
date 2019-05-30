@@ -2,6 +2,7 @@ ansible
 bat
 certbot
 circleci
+consul
 curl
 draft
 envchain
@@ -42,6 +43,7 @@ tmux
 tmux-xpanes
 translate-shell
 tree
+vault
 vim
 watch
 wget
