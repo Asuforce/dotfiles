@@ -4,7 +4,7 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
 fi
 
 # Zsh plugin conf
-MNML_PROMPT=(mnml_ssh mnml_pyenv mnml_pwd mnml_status mnml_keymap mnml_git)
+MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap mnml_git)
 MNML_RPROMPT=('')
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
@@ -23,7 +23,7 @@ zgen_init () {
   zgen load zsh-users/zsh-completions
   zgen load rupa/z
 
-  zgen load asuforce/minimal
+  zgen load subnixr/minimal
 
   zgen save
 
