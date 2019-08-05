@@ -283,9 +283,10 @@ alias sed='gsed'
 # For tig
 alias t='tig'
 
-# For anyenv
+# For direnv
 eval "$(direnv hook zsh)"
 
+# For anyenv
 if [ -d $HOME/.anyenv ]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
   for D in `ls $HOME/.anyenv/envs | sed 's/\///g'`
