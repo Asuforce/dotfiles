@@ -17,6 +17,7 @@ git
 gnu-sed
 go
 grep --with-default-names
+guetzli
 heroku
 htop
 hub
