@@ -193,6 +193,9 @@ alias kl='kubectl logs'
 # For reset
 alias re='exec $SHELL -l'
 
+# For xargs
+alias xargs='gxargs'
+
 # for fzf
 fzf-z-search() {
   local res=$(z | sort -rn | cut -c 12- | fzf)
