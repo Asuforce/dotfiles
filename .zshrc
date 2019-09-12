@@ -220,7 +220,7 @@ zle -N fzf-src
 bindkey '^j' fzf-src
 
 fzf-history() {
-  BUFFER=`history -n 1 | sort -k1,1nr | sort | uniq | fzf`
+  BUFFER=`history -n 1 | LC_ALL=C sort | uniq | fzf`
   CURSOR=$#BUFFER
 }
 zle -N fzf-history
