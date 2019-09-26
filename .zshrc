@@ -359,7 +359,7 @@ if [ -d /usr/local/opt/curl ]; then
 fi
 
 # For java
-JAVA_HOME=`/usr/libexec/java_home -v "11.0.4"`
+JAVA_HOME=`/usr/libexec/java_home -v "13.0.0"`
 if [ -d ${JAVA_HOME} ]; then
   export JAVA_HOME=${JAVA_HOME}
   export PATH="$JAVA_HOME/bin:$PATH"
