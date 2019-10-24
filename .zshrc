@@ -193,6 +193,9 @@ alias kl='kubectl logs'
 # For reset
 alias re='exec $SHELL -l'
 
+# For xargs
+alias xargs='gxargs'
+
 # for fzf
 fzf-z-search() {
   local res=$(z | sort -rn | cut -c 12- | fzf)
@@ -217,7 +220,7 @@ zle -N fzf-src
 bindkey '^j' fzf-src
 
 fzf-history() {
-  BUFFER=`history -n 1 | sort -k1,1nr | sort | uniq | fzf`
+  BUFFER=`history -n 1 | LC_ALL=C sort | uniq | fzf`
   CURSOR=$#BUFFER
 }
 zle -N fzf-history
@@ -300,6 +303,7 @@ anyenv_all() {
   unset -f pyenv
   unset -f nodenv
   unset -f rbenv
+  unset -f jenv
 
   eval "$(anyenv init - --no-rehash)"
 }
@@ -321,6 +325,11 @@ nodenv() {
 rbenv() {
   anyenv_all
   rbenv "$@"
+}
+
+jenv() {
+  anyenv_all
+  jenv "$@"
 }
 
 anyenv-update() {
@@ -356,13 +365,6 @@ fi
 # For curl
 if [ -d /usr/local/opt/curl ]; then
   export PATH="/usr/local/opt/curl/bin:$PATH"
-fi
-
-# For java
-JAVA_HOME=`/usr/libexec/java_home -v "13.0.0"`
-if [ -d ${JAVA_HOME} ]; then
-  export JAVA_HOME=${JAVA_HOME}
-  export PATH="$JAVA_HOME/bin:$PATH"
 fi
 
 # For work script
