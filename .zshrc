@@ -303,6 +303,7 @@ anyenv_all() {
   unset -f pyenv
   unset -f nodenv
   unset -f rbenv
+  unset -f jenv
 
   eval "$(anyenv init - --no-rehash)"
 }
@@ -324,6 +325,11 @@ nodenv() {
 rbenv() {
   anyenv_all
   rbenv "$@"
+}
+
+jenv() {
+  anyenv_all
+  jenv "$@"
 }
 
 anyenv-update() {
@@ -359,13 +365,6 @@ fi
 # For curl
 if [ -d /usr/local/opt/curl ]; then
   export PATH="/usr/local/opt/curl/bin:$PATH"
-fi
-
-# For java
-JAVA_HOME=`/usr/libexec/java_home -v "11.0.4"`
-if [ -d ${JAVA_HOME} ]; then
-  export JAVA_HOME=${JAVA_HOME}
-  export PATH="$JAVA_HOME/bin:$PATH"
 fi
 
 # For work script
