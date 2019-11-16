@@ -25,7 +25,7 @@ while read pkg
 do
   if [ ! -d "/usr/local/Caskroom/$pkg" ]; then
     if [ "$pkg" == "adoptopenjdk" ]; then
-      brew tap brew tap adoptopenjdk/openjdk
+      brew tap adoptopenjdk/openjdk
     elif [ "$pkg" == "font-ricty-diminished" ]; then
       brew tap caskroom/fonts
     fi
