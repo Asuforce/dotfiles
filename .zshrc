@@ -74,6 +74,9 @@ autoload -Uz add-zsh-hook
 add-zsh-hook preexec store_command
 add-zsh-hook precmd notify_precmd
 
+# Set locale
+export LC_ALL=C
+
 # Change colors
 autoload -Uz colors
 
