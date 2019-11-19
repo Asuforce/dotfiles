@@ -2,13 +2,15 @@
 
 set -eu
 
-readonly OS=uname
+readonly OS=$(uname)
 
 if [ "$OS" == "Darwin" ]; then
-  readonly BREW=/usr/local/bin/brew
+  readonly BREW_DIR=/usr/local
 else
-  readonly BREW=/home/linuxbrew/.linuxbrew/bin/brew
+  readonly BREW_DIR=/home/linuxbrew/.linuxbrew
 fi
+
+readonly BREW=$BREW_DIR/bin/brew
 
 # Create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/dev/src/github.com"
@@ -36,9 +38,9 @@ fi
 if [ "$OS" == "Darwin" ]; then
   while read pkg
   do
-    if [ ! -d "/usr/local/Caskroom/$pkg" ]; then
+    if [ ! -d "$BREW_DIR/Caskroom/$pkg" ]; then
       if [ "$pkg" == "adoptopenjdk" ]; then
-        $$BREW tap adoptopenjdk/openjdk
+        $BREW tap adoptopenjdk/openjdk
       elif [ "$pkg" == "font-ricty-diminished" ]; then
         $BREW tap caskroom/fonts
       fi
@@ -51,7 +53,7 @@ fi
 # Install packges
 while read pkg opt
 do
-  if [ ! -d "/usr/local/Cellar/$pkg" ]; then
+  if [ ! -d "$BREW_DIR/Cellar/$pkg" ]; then
     if [ $pkg == "draft" ]; then
       $BREW tap azure/draft
     fi
