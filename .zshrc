@@ -287,7 +287,9 @@ alias ssh='myssh'
 alias e='code -r'
 
 # For gnu-sed
-alias sed='gsed'
+if [ $(uname) = Darwin ]; then
+  alias sed='gsed'
+fi
 
 # For tig
 alias t='tig'
@@ -422,5 +424,3 @@ if (which zprof > /dev/null) ;then
   zprof | less
 fi
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/vault vault
