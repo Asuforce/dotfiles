@@ -6,6 +6,8 @@ fi
 # Zsh plugin conf
 MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap mnml_git)
 MNML_RPROMPT=('')
+MNML_USER_CHAR='#'
+MNML_INSERT_CHAR='>'
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
 zgen_update() {
