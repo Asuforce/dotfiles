@@ -2,6 +2,16 @@
 
 set -eu
 
+readonly OS=$(uname)
+
+if [ "$OS" == "Darwin" ]; then
+  readonly BREW_DIR=/usr/local
+else
+  readonly BREW_DIR=/home/linuxbrew/.linuxbrew
+fi
+
+readonly BREW=$BREW_DIR/bin/brew
+
 # Create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/dev/src/github.com"
 
@@ -16,32 +26,38 @@ if [ ! -d $REPO_DIR ]; then
 fi
 
 # Install brew
-if ! type brew > /dev/null 2>&1; then
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if ! type $BREW > /dev/null 2>&1; then
+  if [ "$OS" == "Darwin" ]; then
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  else
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+  fi
 fi
 
 # Install applications
-while read pkg
-do
-  if [ ! -d "/usr/local/Caskroom/$pkg" ]; then
-    if [ "$pkg" == "adoptopenjdk" ]; then
-      brew tap adoptopenjdk/openjdk
-    elif [ "$pkg" == "font-ricty-diminished" ]; then
-      brew tap caskroom/fonts
-    fi
+if [ "$OS" == "Darwin" ]; then
+  while read pkg
+  do
+    if [ ! -d "$BREW_DIR/Caskroom/$pkg" ]; then
+      if [ "$pkg" == "adoptopenjdk" ]; then
+        $BREW tap adoptopenjdk/openjdk
+      elif [ "$pkg" == "font-ricty-diminished" ]; then
+        $BREW tap caskroom/fonts
+      fi
 
-    brew cask install $pkg
-  fi
-done < $REPO_DIR/brew_cask.txt
+      $BREW cask install $pkg
+    fi
+  done < $REPO_DIR/brew_cask.txt
+fi
 
 # Install packges
 while read pkg opt
 do
-  if [ ! -d "/usr/local/Cellar/$pkg" ]; then
+  if [ ! -d "$BREW_DIR/Cellar/$pkg" ]; then
     if [ $pkg == "draft" ]; then
-      brew tap azure/draft
+      $BREW tap azure/draft
     fi
-    brew install $pkg $opt
+    $BREW install $pkg $opt
   fi
 done < $REPO_DIR/brew.txt
 
@@ -105,7 +121,7 @@ if [ ! -d $ANYENV_DIR ]; then
 fi
 
 # Set default shell
-readonly ZSH_DIR="/usr/local/bin/zsh"
+readonly ZSH_DIR="$BREW_DIR/bin/zsh"
 readonly SHELL_FILE="/etc/shells"
 if ! grep $ZSH_DIR $SHELL_FILE > /dev/null; then
   echo $ZSH_DIR | sudo tee -a $SHELL_FILE
@@ -132,12 +148,10 @@ if [ ! -d $KARABINER_DIR ]; then
 fi
 
 # Link diff-highlight
-readonly DIFF_HIGHLIGHT_FILE=/usr/local/bin/diff-highlight
+readonly DIFF_HIGHLIGHT_FILE=$BREW_DIR/bin/diff-highlight
 if [ ! -f $DIFF_HIGHLIGHT_FILE ]; then
-  ln -s /usr/local/share/git-core/contrib/diff-highlight/diff-highlight $DIFF_HIGHLIGHT_FILE
+  ln -s $BREW_DIR/share/git-core/contrib/diff-highlight/diff-highlight $DIFF_HIGHLIGHT_FILE
 fi
-
-
 
 # Restart shell
 exec -l $SHELL

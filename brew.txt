@@ -17,7 +17,7 @@ gifsicle
 git
 gnu-sed
 go
-grep --with-default-names
+grep
 guetzli
 heroku
 htop
