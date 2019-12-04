@@ -6,6 +6,8 @@ fi
 # Zsh plugin conf
 MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap mnml_git)
 MNML_RPROMPT=('')
+MNML_USER_CHAR='#'
+MNML_INSERT_CHAR='>'
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
 zgen_update() {
@@ -73,6 +75,9 @@ store_command() {
 autoload -Uz add-zsh-hook
 add-zsh-hook preexec store_command
 add-zsh-hook precmd notify_precmd
+
+# Set locale
+export LC_ALL=C
 
 # Change colors
 autoload -Uz colors
@@ -170,6 +175,9 @@ alias vi='vim'
 alias g='git'
 
 # For brew
+if [ $(uname) = Linux ]; then
+  export PATH="/home/linuxbrew/.linuxbrew/bin/:$PATH"
+fi
 alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
 alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew cask upgrade'
 
@@ -281,7 +289,9 @@ alias ssh='myssh'
 alias e='code -r'
 
 # For gnu-sed
-alias sed='gsed'
+if [ $(uname) = Darwin ]; then
+  alias sed='gsed'
+fi
 
 # For tig
 alias t='tig'
@@ -416,5 +426,3 @@ if (which zprof > /dev/null) ;then
   zprof | less
 fi
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/vault vault
