@@ -20,6 +20,7 @@ minikube
 nanowallet
 postman
 shiftit
+slack
 spotify
 station
 tableplus
