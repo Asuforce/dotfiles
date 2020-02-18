@@ -42,7 +42,7 @@ if [ "$OS" == "Darwin" ]; then
       if [ "$pkg" == "adoptopenjdk" ]; then
         $BREW tap adoptopenjdk/openjdk
       elif [ "$pkg" == "font-ricty-diminished" ]; then
-        $BREW tap caskroom/fonts
+        $BREW tap homebrew/cask-fonts
       fi
 
       $BREW cask install $pkg
