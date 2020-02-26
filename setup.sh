@@ -56,6 +56,8 @@ do
   if [ ! -d "$BREW_DIR/Cellar/$pkg" ]; then
     if [ $pkg == "draft" ]; then
       $BREW tap azure/draft
+    elif [ $pkg == "speedtest" ]; then
+      $BREW tap teamookla/speedtest
     fi
     $BREW install $pkg $opt
   fi
