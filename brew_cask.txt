@@ -4,6 +4,7 @@ adoptopenjdk8
 adoptopenjdk11
 appcleaner
 authy
+clipy
 dash
 docker
 dropbox
