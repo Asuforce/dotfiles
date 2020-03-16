@@ -4,6 +4,7 @@ certbot
 circleci
 consul
 curl
+derailed/k9s/k9s
 draft
 envchain
 exa
