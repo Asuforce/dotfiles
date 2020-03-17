@@ -14,6 +14,7 @@ font-ricty-diminished
 google-cloud-sdk
 google-japanese-ime
 gpg-suite
+homebrew/cask-fonts/font-hackgen
 iterm2
 karabiner-elements
 kindle
