@@ -1,4 +1,5 @@
 ansible
+argoproj/tap/argocd
 bat
 certbot
 circleci
