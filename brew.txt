@@ -20,6 +20,7 @@ git
 gnu-sed
 go
 grep
+grpcurl
 guetzli
 heroku
 htop
