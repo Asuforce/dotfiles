@@ -28,6 +28,7 @@ ipcalc
 istioctl
 jo
 jq
+jsonnet
 k6
 kubectx
 kubernetes-cli
