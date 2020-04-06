@@ -18,7 +18,6 @@ homebrew/cask-fonts/font-hackgen
 iterm2
 karabiner-elements
 kindle
-minikube
 nanowallet
 postman
 shiftit
