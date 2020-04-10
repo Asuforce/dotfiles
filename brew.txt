@@ -55,4 +55,5 @@ vault
 vim
 watch
 wget
+yq
 zsh
