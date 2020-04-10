@@ -38,7 +38,8 @@ fi
 if [ "$OS" == "Darwin" ]; then
   while read pkg
   do
-    if [ ! -d "$BREW_DIR/Caskroom/$pkg" ]; then
+    format_pkg="$(echo $pkg | rev | cut -d '/' -f 1 | rev)"
+    if [ ! -d "$BREW_DIR/Caskroom/$format_pkg" ]; then
       if [ "$pkg" == "adoptopenjdk" ]; then
         $BREW tap adoptopenjdk/openjdk
       elif [ "$pkg" == "font-ricty-diminished" ]; then
@@ -53,7 +54,8 @@ fi
 # Install packges
 while read pkg opt
 do
-  if [ ! -d "$BREW_DIR/Cellar/$pkg" ]; then
+  format_pkg="$(echo $pkg | rev | cut -d '/' -f 1 | rev)"
+  if [ ! -d "$BREW_DIR/Cellar/$format_pkg" ]; then
     if [ $pkg == "draft" ]; then
       $BREW tap azure/draft
     elif [ $pkg == "speedtest" ]; then
