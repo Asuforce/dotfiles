@@ -6,7 +6,7 @@ circleci
 consul
 curl
 derailed/k9s/k9s
-draft
+azure/draft/draft
 envchain
 exa
 fd
@@ -44,7 +44,7 @@ postgresql
 readline
 ripgrep
 skaffold
-speedtest
+teamookla/speedtest/speedtest
 tig
 terraform
 tmux
