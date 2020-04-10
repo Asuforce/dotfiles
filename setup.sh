@@ -38,7 +38,7 @@ fi
 if [ "$OS" == "Darwin" ]; then
   while read pkg
   do
-    format_pkg="$(echo $pkg | rev | cut -d '/' -f 1 | rev)"
+    format_pkg="$(echo $pkg | grep -o '[^\/]*$')"
     if [ ! -d "$BREW_DIR/Caskroom/$format_pkg" ]; then
       $BREW cask install $pkg
     fi
@@ -48,7 +48,7 @@ fi
 # Install packges
 while read pkg opt
 do
-  format_pkg="$(echo $pkg | rev | cut -d '/' -f 1 | rev)"
+  format_pkg="$(echo $pkg | grep -o '[^\/]*$')"
   if [ ! -d "$BREW_DIR/Cellar/$format_pkg" ]; then
     $BREW install $pkg $opt
   fi
