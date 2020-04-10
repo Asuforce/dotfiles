@@ -146,5 +146,12 @@ if [ ! -f $DIFF_HIGHLIGHT_FILE ]; then
   ln -s $BREW_DIR/share/git-core/contrib/diff-highlight/diff-highlight $DIFF_HIGHLIGHT_FILE
 fi
 
+# Install tpm
+readonly TPM_DIR="$HOME/.tmux/plugins/tpm"
+if [ ! -d $TPM_DIR ]; then
+  mkdir -p $TPM_DIR
+  git clone https://github.com/tmux-plugins/tpm.git $TPM_DIR
+fi
+
 # Restart shell
 exec -l $SHELL
