@@ -5,6 +5,7 @@ certbot
 circleci
 consul
 curl
+datawire/blackbird/telepresence
 derailed/k9s/k9s
 azure/draft/draft
 envchain
