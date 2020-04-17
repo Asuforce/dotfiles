@@ -1,7 +1,7 @@
-alfred
 adoptopenjdk/openjdk/adoptopenjdk
-adoptopenjdk/openjdk/adoptopenjdk8
 adoptopenjdk/openjdk/adoptopenjdk11
+adoptopenjdk/openjdk/adoptopenjdk8
+alfred
 appcleaner
 authy
 clipy
@@ -10,11 +10,11 @@ docker
 dropbox
 duet
 firefox
-homebrew/cask-fonts/font-ricty-diminished
 google-cloud-sdk
 google-japanese-ime
 gpg-suite
 homebrew/cask-fonts/font-hackgen
+homebrew/cask-fonts/font-ricty-diminished
 iterm2
 karabiner-elements
 kindle
