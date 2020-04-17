@@ -1,0 +1,9 @@
+font:
+  normal:
+    family: HackGen35
+  bold:
+    family: HackGen35
+  italic:
+    family: HackGen35
+size: 14.0
+background_opacity: 0.7
