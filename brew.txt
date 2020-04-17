@@ -1,5 +1,6 @@
 ansible
 argoproj/tap/argocd
+azure/draft/draft
 bat
 certbot
 circleci
@@ -7,7 +8,6 @@ consul
 curl
 datawire/blackbird/telepresence
 derailed/k9s/k9s
-azure/draft/draft
 envchain
 exa
 fd
@@ -37,8 +37,8 @@ kubernetes-cli
 kubernetes-helm
 kustomize
 maven
-mysql
 mozjpeg
+mysql
 openssl
 peco
 postgresql
@@ -46,8 +46,8 @@ readline
 ripgrep
 skaffold
 teamookla/speedtest/speedtest
-tig
 terraform
+tig
 tmux
 tmux-xpanes
 translate-shell
