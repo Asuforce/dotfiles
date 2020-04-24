@@ -43,6 +43,7 @@ mysql
 openssl
 peco
 postgresql
+protobuf
 readline
 ripgrep
 skaffold
