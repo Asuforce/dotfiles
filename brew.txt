@@ -6,6 +6,7 @@ certbot
 circleci
 consul
 curl
+clang-format
 datawire/blackbird/telepresence
 derailed/k9s/k9s
 envchain
