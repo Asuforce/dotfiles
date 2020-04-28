@@ -5,6 +5,7 @@ alacritty
 alfred
 appcleaner
 authy
+blackhole
 clipy
 dash
 docker
