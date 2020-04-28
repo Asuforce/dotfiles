@@ -29,6 +29,5 @@ spotify
 station
 tableplus
 the-unarchiver
-vagrant
 virtualbox
 visual-studio-code
