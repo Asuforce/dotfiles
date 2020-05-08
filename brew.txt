@@ -36,6 +36,7 @@ k6
 kubectx
 kubernetes-cli
 kubernetes-helm
+kubeseal
 kustomize
 maven
 mozjpeg
