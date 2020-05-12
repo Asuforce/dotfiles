@@ -78,6 +78,9 @@ add-zsh-hook precmd notify_precmd
 # Set locale
 export LC_ALL=C
 
+# XDG base
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # Change colors
 autoload -Uz colors
 
