@@ -24,7 +24,6 @@ go
 grep
 grpcurl
 guetzli
-heroku
 htop
 hub
 ipcalc
