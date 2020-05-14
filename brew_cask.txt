@@ -21,7 +21,6 @@ kindle
 osxfuse
 shiftit
 slack
-station
 tableplus
 the-unarchiver
 visual-studio-code
