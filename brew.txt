@@ -9,6 +9,7 @@ curl
 clang-format
 datawire/blackbird/telepresence
 derailed/k9s/k9s
+direnv
 envchain
 exa
 fd
