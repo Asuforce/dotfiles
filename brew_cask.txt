@@ -19,7 +19,6 @@ iterm2
 karabiner-elements
 kindle
 osxfuse
-postman
 shiftit
 slack
 spotify
