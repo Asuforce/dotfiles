@@ -40,7 +40,7 @@ kustomize
 maven
 mozjpeg
 mysql
-openssl
+openssl@1.1
 peco
 postgresql
 protobuf
