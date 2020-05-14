@@ -24,6 +24,7 @@ go
 grep
 grpcurl
 guetzli
+helm
 htop
 hub
 ipcalc
@@ -34,7 +35,6 @@ jsonnet
 k6
 kubectx
 kubernetes-cli
-kubernetes-helm
 kubeseal
 kustomize
 maven
