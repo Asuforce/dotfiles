@@ -18,7 +18,6 @@ homebrew/cask-fonts/font-ricty-diminished
 iterm2
 karabiner-elements
 kindle
-nanowallet
 osxfuse
 postman
 shiftit
