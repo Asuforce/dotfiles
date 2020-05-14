@@ -1,4 +1,3 @@
-adoptopenjdk/openjdk/adoptopenjdk
 adoptopenjdk/openjdk/adoptopenjdk11
 adoptopenjdk/openjdk/adoptopenjdk8
 alacritty
