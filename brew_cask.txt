@@ -21,7 +21,6 @@ kindle
 osxfuse
 shiftit
 slack
-spotify
 station
 tableplus
 the-unarchiver
