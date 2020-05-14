@@ -11,7 +11,6 @@ docker
 dropbox
 duet
 firefox
-google-cloud-sdk
 google-japanese-ime
 gpg-suite
 homebrew/cask-fonts/font-hackgen
