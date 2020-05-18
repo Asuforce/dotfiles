@@ -34,6 +34,7 @@ jo
 jq
 jsonnet
 k6
+kind
 kubectx
 kubernetes-cli
 kubeseal
