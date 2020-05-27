@@ -62,7 +62,7 @@ notify_precmd() {
   prev_command_status=$?
 
   if [ "$TTYIDLE" -gt 1 ]; then
-    notify_title=$([ "$prev_command_status" -eq 0 ] && echo "Command succeeded \U1F646" || echo "Command failed \U1F645")
+    notify_title=$([ "$prev_command_status" -eq 0 ] && echo "Command succeeded" || echo "Command failed")
     osascript -e "display notification \"$prev_command\" with title \"$notify_title\""
   fi
 }
