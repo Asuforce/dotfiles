@@ -35,6 +35,7 @@ jq
 jsonnet
 k6
 kind
+kube-ps1
 kubectx
 kubernetes-cli
 kubeseal
