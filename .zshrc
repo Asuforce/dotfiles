@@ -3,6 +3,9 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
 
+# Set locale
+export LC_ALL=ja_JP.UTF-8
+
 # Zsh plugin conf
 MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap mnml_git)
 MNML_RPROMPT=('')
@@ -74,9 +77,6 @@ store_command() {
 autoload -Uz add-zsh-hook
 add-zsh-hook preexec store_command
 add-zsh-hook precmd notify_precmd
-
-# Set locale
-export LC_ALL=C
 
 # XDG base
 export XDG_CONFIG_HOME="$HOME/.config"
