@@ -4,11 +4,7 @@ set -eu
 
 readonly OS=$(uname)
 
-if [ "$OS" == "Darwin" ]; then
-  readonly BREW_DIR=/usr/local
-else
-  readonly BREW_DIR=/home/linuxbrew/.linuxbrew
-fi
+[ "$OS" == "Darwin" ] && readonly BREW_DIR=/usr/local || readonly BREW_DIR=/home/linuxbrew/.linuxbrew
 
 readonly BREW=$BREW_DIR/bin/brew
 
@@ -21,9 +17,7 @@ fi
 
 # Install dotfiles
 readonly REPO_DIR="$GITHUB_DIR/Asuforce/dotfiles"
-if [ ! -d $REPO_DIR ]; then
-  git clone https://github.com/Asuforce/dotfiles.git $REPO_DIR
-fi
+[ ! -d $REPO_DIR ] && git clone https://github.com/Asuforce/dotfiles.git $REPO_DIR
 
 # Install brew
 if ! type $BREW > /dev/null 2>&1; then
@@ -39,9 +33,7 @@ if [ "$OS" == "Darwin" ]; then
   while read pkg
   do
     format_pkg="$(echo $pkg | grep -o '[^\/]*$')"
-    if [ ! -d "$BREW_DIR/Caskroom/$format_pkg" ]; then
-      $BREW cask reinstall --force $pkg
-    fi
+    [ ! -d "$BREW_DIR/Caskroom/$format_pkg" ] && $BREW cask reinstall --force $pkg
   done < $REPO_DIR/brew_cask.txt
 fi
 
@@ -49,9 +41,7 @@ fi
 while read pkg opt
 do
   format_pkg="$(echo $pkg | grep -o '[^\/]*$')"
-  if [ ! -d "$BREW_DIR/Cellar/$format_pkg" ]; then
-    $BREW install $pkg $opt
-  fi
+  [ ! -d "$BREW_DIR/Cellar/$format_pkg" ] && $BREW install $pkg $opt
 done < $REPO_DIR/brew.txt
 
 # Install rustup
@@ -72,18 +62,14 @@ readonly LINK_DOT_FILES=(gitconfig gitignore tmux.conf vimrc  zshrc zshenv tigrc
 for file in ${LINK_DOT_FILES[@]}
 do
   dest_file="$HOME/.$file"
-  if [ ! -e $dest_file ]; then
-    ln -fs $REPO_DIR/.$file $dest_file
-  fi
+  [ ! -e $dest_file ] && ln -fs $REPO_DIR/.$file $dest_file
 done
 
 readonly COPY_DOT_FILES=(gitconfig-user gitconfig-work netrc)
 for file in ${COPY_DOT_FILES[@]}
 do
   dest_file="$HOME/.$file"
-  if [ ! -e $dest_file ]; then
-    cp $REPO_DIR/.$file $dest_file
-  fi
+  [ ! -e $dest_file ] && cp $REPO_DIR/.$file $dest_file
 done
 
 # Link dein files
@@ -95,23 +81,17 @@ if [ ! -e $DEIN_DIR ]; then
   for file in ${DEIN_FILES[@]}
   do
     dest_file="$DEIN_DIR/$file"
-    if [ ! -e $dest_file ]; then
-      ln -fs $REPO_DIR/$file $dest_file
-    fi
+    [ ! -e $dest_file ] && ln -fs $REPO_DIR/$file $dest_file
   done
 fi
 
 # Install zgen
 readonly ZGEN_DIR="$HOME/.zgen"
-if [ ! -d $ZGEN_DIR ]; then
-  git clone https://github.com/tarjoilija/zgen.git $ZGEN_DIR
-fi
+[ ! -d $ZGEN_DIR ] && git clone https://github.com/tarjoilija/zgen.git $ZGEN_DIR
 
 # Install anyenv
 readonly ANYENV_DIR="$HOME/.anyenv"
-if [ ! -d $ANYENV_DIR ]; then
-  git clone https://github.com/riywo/anyenv $ANYENV_DIR
-fi
+[ ! -d $ANYENV_DIR ] && git clone https://github.com/riywo/anyenv $ANYENV_DIR
 
 # Set default shell
 readonly ZSH_DIR="$BREW_DIR/bin/zsh"
@@ -131,20 +111,14 @@ fi
 
 # Link karabiner-elements config
 readonly DROPBOX_DIR="$HOME/Dropbox/Apps/karabiner"
-if [ ! -d $DROPBOX_DIR ]; then
-  mkdir -p $DROPBOX_DIR
-fi
+[ ! -d $DROPBOX_DIR ] && mkdir -p $DROPBOX_DIR
 
 readonly KARABINER_DIR="$HOME/.config/karabiner"
-if [ ! -d $KARABINER_DIR ]; then
-  ln -fs $DROPBOX_DIR $KARABINER_DIR
-fi
+[ ! -d $KARABINER_DIR ] && ln -fs $DROPBOX_DIR $KARABINER_DIR
 
 # Link diff-highlight
 readonly DIFF_HIGHLIGHT_FILE=$BREW_DIR/bin/diff-highlight
-if [ ! -f $DIFF_HIGHLIGHT_FILE ]; then
-  ln -s $BREW_DIR/share/git-core/contrib/diff-highlight/diff-highlight $DIFF_HIGHLIGHT_FILE
-fi
+[ ! -f $DIFF_HIGHLIGHT_FILE ] && ln -s $BREW_DIR/share/git-core/contrib/diff-highlight/diff-highlight $DIFF_HIGHLIGHT_FILE
 
 # Install tpm
 readonly TPM_DIR="$HOME/.tmux/plugins/tpm"
