@@ -43,6 +43,7 @@ kustomize
 maven
 mozjpeg
 mysql
+neofetch
 openssl@1.1
 peco
 postgresql
