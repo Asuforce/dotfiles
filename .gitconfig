@@ -9,6 +9,8 @@
 	excludesfile = ~/.gitignore
 [push]
 	default = current
+[pull]
+  rebase = true
 [commit]
 	gpgsign = false
 [fetch]
