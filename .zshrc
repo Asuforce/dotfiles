@@ -183,7 +183,7 @@ if [ $(uname) = Linux ]; then
   export PATH="/home/linuxbrew/.linuxbrew/bin/:$PATH"
 fi
 alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
-alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew cask upgrade'
+alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew upgrade --cask'
 
 # For bundle
 alias be='bundle exec'
