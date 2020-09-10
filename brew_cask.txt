@@ -14,6 +14,7 @@ duet
 firefox
 google-japanese-ime
 gpg-suite
+handbrake
 homebrew/cask-fonts/font-hackgen
 homebrew/cask-fonts/font-ricty-diminished
 iterm2
