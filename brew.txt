@@ -17,6 +17,7 @@ ffmpeg
 figlet
 findutils
 fzf
+gh
 ghq
 gifsicle
 git
