@@ -33,7 +33,7 @@ if [ "$OS" == "Darwin" ]; then
   while read pkg
   do
     format_pkg="$(echo $pkg | grep -o '[^\/]*$')"
-    [ ! -d "$BREW_DIR/Caskroom/$format_pkg" ] && $BREW cask reinstall --force $pkg
+    [ ! -d "$BREW_DIR/Caskroom/$format_pkg" ] && $BREW reinstall --force $pkg
   done < $REPO_DIR/brew_cask.txt
 fi
 
