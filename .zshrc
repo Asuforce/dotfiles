@@ -310,6 +310,12 @@ if [ -d $HOME/.anyenv ]; then
   done
 fi
 
+# For npm
+NPM_PATH="$HOME/.anyenv/envs/nodenv/versions/$(node -v | tr -d v)/bin"
+if [ -d $NPM_PATH ]; then
+  export PATH="$NPM_PATH:$PATH"
+fi
+
 anyenv_all() {
   unset -f plenv
   unset -f pyenv
