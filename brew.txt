@@ -27,7 +27,6 @@ grpcurl
 guetzli
 helm
 htop
-hub
 ipcalc
 istioctl
 jo
