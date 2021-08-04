@@ -1,6 +1,5 @@
 adoptopenjdk/openjdk/adoptopenjdk11
 adoptopenjdk/openjdk/adoptopenjdk8
-alacritty
 alfred
 appcleaner
 authy
@@ -19,9 +18,9 @@ homebrew/cask-fonts/font-hackgen
 homebrew/cask-fonts/font-ricty-diminished
 iterm2
 karabiner-elements
-kindle
 osxfuse
 shiftit
 slack
+telegram
 the-unarchiver
 visual-studio-code
