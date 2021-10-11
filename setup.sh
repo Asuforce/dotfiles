@@ -58,7 +58,7 @@ do
 done < $REPO_DIR/cargo.txt
 
 # Setup dotfiles
-readonly LINK_DOT_FILES=(gitconfig gitignore tmux.conf vimrc  zshrc zshenv tigrc alacritty.yml)
+readonly LINK_DOT_FILES=(gitconfig gitignore tmux.conf vimrc  zshrc zshenv tigrc)
 for file in ${LINK_DOT_FILES[@]}
 do
   dest_file="$HOME/.$file"
