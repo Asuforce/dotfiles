@@ -7,7 +7,6 @@ blackhole
 clipy
 dash
 discord
-docker
 dropbox
 duet
 firefox
@@ -24,3 +23,4 @@ slack
 telegram
 the-unarchiver
 visual-studio-code
+virtualbox

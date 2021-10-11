@@ -192,6 +192,7 @@ alias bi='bundle install -j4 --path vendor/bundle'
 # For Docker
 alias de='docker exec'
 alias d-c='docker-compose'
+eval $(minikube -p minikube docker-env)
 
 # For kubectl
 alias k='kubectl'
