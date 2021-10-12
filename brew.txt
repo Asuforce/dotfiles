@@ -16,7 +16,6 @@ git
 gnu-sed
 go
 grep
-guetzli
 htop
 ipcalc
 jo
@@ -27,7 +26,6 @@ kube-ps1
 kubectx
 kubernetes-cli
 kustomize
-mozjpeg
 neofetch
 tig
 tmux

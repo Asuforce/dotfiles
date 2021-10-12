@@ -8,10 +8,9 @@ dropbox
 firefox
 google-japanese-ime
 gpg-suite
-homebrew/cask-fonts/font-hackgen
+font-hackgen
 iterm2
 karabiner-elements
-osxfuse
 shiftit
 slack
 the-unarchiver
