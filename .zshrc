@@ -192,7 +192,7 @@ alias bi='bundle install -j4 --path vendor/bundle'
 # For Docker
 alias de='docker exec'
 alias d-c='docker-compose'
-eval $(minikube -p minikube docker-env)
+export DOCKER_HOST=ssh://localhost:60006
 
 # For kubectl
 alias k='kubectl'

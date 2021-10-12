@@ -27,7 +27,6 @@ kube-ps1
 kubectx
 kubernetes-cli
 kustomize
-minikube
 mozjpeg
 neofetch
 tig

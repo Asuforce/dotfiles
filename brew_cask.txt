@@ -16,4 +16,3 @@ shiftit
 slack
 the-unarchiver
 visual-studio-code
-virtualbox
