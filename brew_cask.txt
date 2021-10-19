@@ -3,6 +3,7 @@ appcleaner
 authy
 blackhole-2ch
 clipy
+deepl
 discord
 dropbox
 firefox
