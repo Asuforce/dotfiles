@@ -106,7 +106,7 @@ if [ ! -d $SSH_DIR  ]; then
   mkdir -p $SSH_DIR/conf.d
   chmod -R 700 $SSH_DIR
   cp $REPO_DIR/ssh_config $SSH_DIR/ssh_config
-  cp $REPO_DIR/.config $SSH_DIR/config
+  cp $REPO_DIR/config $SSH_DIR/config
 fi
 
 # Link karabiner-elements config
@@ -114,7 +114,7 @@ readonly DROPBOX_DIR="$HOME/Dropbox/Apps/karabiner"
 [ ! -d $DROPBOX_DIR ] && mkdir -p $DROPBOX_DIR
 
 readonly KARABINER_DIR="$HOME/.config/karabiner"
-[ ! -d $KARABINER_DIR ] && ln -fs $DROPBOX_DIR $KARABINER_DIR
+[ ! -d $KARABINER_DIR ] && mkdir -p KARABINER_DIR && ln -fs $DROPBOX_DIR $KARABINER_DIR
 
 # Link diff-highlight
 readonly DIFF_HIGHLIGHT_FILE=$BREW_DIR/bin/diff-highlight
