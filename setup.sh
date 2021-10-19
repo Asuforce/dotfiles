@@ -53,7 +53,7 @@ fi
 while read pkg opt
 do
   if [ ! -e "$HOME/.cargo/bin/$opt" ]; then
-    cargo install $pkg
+    $HOME/.cargo/bin/cargo install $pkg
   fi
 done < $REPO_DIR/cargo.txt
 
