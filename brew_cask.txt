@@ -1,7 +1,7 @@
 alfred
 appcleaner
 authy
-blackhole
+blackhole-2ch
 clipy
 discord
 dropbox
