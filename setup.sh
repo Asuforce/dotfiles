@@ -105,7 +105,7 @@ readonly SSH_DIR="$HOME/.ssh"
 if [ ! -d $SSH_DIR  ]; then
   mkdir -p $SSH_DIR/conf.d
   chmod -R 700 $SSH_DIR
-  cp $REPO_DIR/.ssh_config $SSH_DIR/ssh_config
+  cp $REPO_DIR/ssh_config $SSH_DIR/ssh_config
   cp $REPO_DIR/.config $SSH_DIR/config
 fi
 
