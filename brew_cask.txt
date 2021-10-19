@@ -9,7 +9,7 @@ dropbox
 firefox
 google-japanese-ime
 gpg-suite
-font-hackgen
+homebrew/cask-fonts/font-hackgen
 iterm2
 karabiner-elements
 shiftit
