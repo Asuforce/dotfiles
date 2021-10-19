@@ -40,8 +40,7 @@ fi
 # Install packges
 while read pkg
 do
-  format_pkg="$(echo $pkg | grep -o '[^\/]*$')"
-  [ ! -d "$BREW_DIR/Cellar/$format_pkg" ] && $BREW install $pkg
+  [ ! -d "$BREW_DIR/Cellar/$pkg" ] && $BREW install $pkg
 done < $REPO_DIR/brew.txt
 
 # Install rustup
