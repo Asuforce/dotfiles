@@ -10,18 +10,21 @@ VSCode の [cloudSettings](https://gist.github.com/Asuforce/3803eedb0aaeda0bf875
 # xcode setting
 xcode-select --install
 
+# Login 1password web
+
 # do setup script
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Asuforce/dotfiles/master/setup.sh)"
 
 # chnage shell
 chsh -s /usr/local/bin/zsh
-
-# set token
-vi ~/.netrc
-
-# generate key
-ssh-keygen -t ed25519 -C '<my-email-address>'
 ```
+
+## Backup
+
+- .ssh
+- .zsh_history
+- .netrc
+- .gitconfig-work
 
 ## Manual setup
 
@@ -34,6 +37,8 @@ ssh-keygen -t ed25519 -C '<my-email-address>'
     - Touch Bar shows: `F key`
   - Shortcuts
     - Spotlight: all check out
+  - Continuous input
+    - `defaults write -g ApplePressAndHoldEnabled -bool false`
 - Trackpad
   - Tap to click
   - Tacking speed: Fast
@@ -69,7 +74,7 @@ ssh-keygen -t ed25519 -C '<my-email-address>'
     - Left command English
     - Right command Japanese
 - Alfread
-  - `⌘ + space`
+  - Preferancies -> Advanced -> syncing
 - 1Password
   - Security
     - Allow Touch ID to unlock 1Password
@@ -83,3 +88,5 @@ ssh-keygen -t ed25519 -C '<my-email-address>'
       - Space: All Spaces
   - Keys
     - Hotkey: `opt + Space`
+- VSCode
+  - Install settingssync
