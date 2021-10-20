@@ -29,19 +29,7 @@ if ! type $BREW > /dev/null 2>&1; then
 fi
 
 # Install applications
-if [ "$OS" == "Darwin" ]; then
-  while read pkg
-  do
-    format_pkg="$(echo $pkg | grep -o '[^\/]*$')"
-    [ ! -d "$BREW_DIR/Caskroom/$format_pkg" ] && $BREW reinstall --force $pkg
-  done < $REPO_DIR/brew_cask.txt
-fi
-
-# Install packges
-while read pkg
-do
-  [ ! -d "$BREW_DIR/Cellar/$pkg" ] && $BREW install $pkg
-done < $REPO_DIR/brew.txt
+$BREW bundle
 
 # Install rustup
 if ! type rustup > /dev/null 2>&1; then
