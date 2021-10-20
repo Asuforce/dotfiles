@@ -159,9 +159,6 @@ bindkey '^R' history-incremental-pattern-search-backward
 # Control type of ctrl
 bindkey -e
 
-# Custom command
-mkcd() { mkdir -p $1 && cd $1; }
-
 # Query overwrite file
 alias cp='cp -i'
 alias mv='mv -i'
@@ -185,10 +182,6 @@ fi
 export PATH="/usr/local/sbin:$PATH"
 alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
 alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew upgrade --cask'
-
-# For bundle
-alias be='bundle exec'
-alias bi='bundle install -j4 --path vendor/bundle'
 
 # For Docker
 alias de='docker exec'
@@ -297,9 +290,6 @@ if [ $(uname) = Darwin ]; then
   alias sed='gsed'
 fi
 
-# For tig
-alias t='tig'
-
 # For direnv
 eval "$(direnv hook zsh)"
 
@@ -328,11 +318,6 @@ anyenv_all() {
   eval "$(anyenv init - --no-rehash)"
 }
 
-plenv() {
-  anyenv_all
-  plenv "$@"
-}
-
 pyenv() {
   anyenv_all
   pyenv "$@"
@@ -345,11 +330,6 @@ nodenv() {
 rbenv() {
   anyenv_all
   rbenv "$@"
-}
-
-jenv() {
-  anyenv_all
-  jenv "$@"
 }
 
 anyenv-update() {
@@ -375,40 +355,9 @@ anyenv-update() {
   cd ${_PWD}
 }
 
-# For openssl
-if [ -d /usr/local/opt/openssl ]; then
-  export PATH="/usr/local/opt/openssl/bin:$PATH"
-  export LD_LIBRARY_PATH="/usr/local/opt/openssl/lib:$LD_LIBRARY_PATH"
-  export CPATH="/usr/local/opt/openssl/include:$LD_LIBRARY_PATH"
-fi
-
 # For curl
 if [ -d /usr/local/opt/curl ]; then
   export PATH="/usr/local/opt/curl/bin:$PATH"
-fi
-
-# For work script
-WORK_SCRIPT="${HOME}/.work.sh"
-if [ -s ${WORK_SCRIPT} ]; then
-  source ${WORK_SCRIPT}
-fi
-
-# For flutter
-FLUTTER_DIR="${HOME}/dev/src/github.com/flutter/flutter"
-if [ -d ${FLUTTER_DIR} ]; then
-  export PATH="$FLUTTER_DIR/bin:$PATH"
-fi
-
-# For deno
-DENO_DIR="${HOME}/.deno"
-if [ -d ${DENO_DIR} ]; then
-  export PATH="$DENO_DIR/bin:$PATH"
-fi
-
-# For mozjpeg
-MOZJPEG_DIR="/usr/local/opt/mozjpeg"
-if [ -d ${MOZJPEG_DIR} ]; then
-  export PATH="${MOZJPEG_DIR}/bin:$PATH"
 fi
 
 # Do not register duplicate paths
@@ -418,18 +367,6 @@ typeset -U path cdpath fpath manpath
 export GOPATH="$HOME/dev"
 export PATH="$PATH:$GOPATH/bin"
 export GO111MODULE=on
-
-# for gcloud
-function gconf() {
-  projData=$(gcloud config configurations list | sed -e '1d' | fzf)
-  if echo "${projData}" | grep -E "^[a-zA-Z].*" > /dev/null ; then
-    config=$(echo ${projData} | awk '{print $1}')
-    gcloud config configurations activate ${config}
-
-    echo "=== The current account is as follows ==="
-    gcloud config configurations list | grep "${config}"
-  fi
-}
 
 # Use zprof
 if (which zprof > /dev/null) ;then
