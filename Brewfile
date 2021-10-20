@@ -59,6 +59,7 @@ cask "slack"
 cask "the-unarchiver"
 cask "visual-studio-code"
 mas "1Password 7", id: 1333542190
+mas "Bear", id: 1091189122
 mas "Display Menu", id: 549083868
 mas "LINE", id: 539883307
 mas "Spark", id: 1176895641
