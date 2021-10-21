@@ -12,11 +12,17 @@ xcode-select --install
 
 # Login 1password web
 
-# do setup script
+# Do setup script
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/Asuforce/dotfiles/master/setup.sh)"
 
-# chnage shell
+# Chnage shell
 chsh -s /usr/local/bin/zsh
+
+# Install node
+anyenv init
+anyenv install nodenv
+nodenv install <latest-lts-version>
+npm install --global Asuforce/alfred-vscode
 ```
 
 ## Backup
