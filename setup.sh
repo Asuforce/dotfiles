@@ -111,5 +111,10 @@ if [ ! -d $TPM_DIR ]; then
   git clone https://github.com/tmux-plugins/tpm.git $TPM_DIR
 fi
 
+# Link Hammerspoon config
+readonly HAMMERSPOON_FILE="$HOME/.hammerspoon/init.lua"
+[ ! -f $HAMMERSPOON_FILE ] && ln -s $REPO_DIR/init.lua $HAMMERSPOON_FILE
+
+
 # Restart shell
 exec -l $SHELL
