@@ -186,7 +186,6 @@ alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinn
 # For Docker
 alias de='docker exec'
 alias d-c='docker-compose'
-export DOCKER_HOST=ssh://localhost:60006
 
 # For kubectl
 alias k='kubectl'
