@@ -2,8 +2,6 @@
 
 設定ファイル
 
-VSCode の [cloudSettings](https://gist.github.com/Asuforce/3803eedb0aaeda0bf875d6583e0cf753) はこれ
-
 ## Usage
 
 ```sh
