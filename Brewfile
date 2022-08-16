@@ -43,6 +43,7 @@ brew "watch"
 brew "wget"
 brew "yq"
 brew "zsh"
+cask "1password"
 cask "alfred"
 cask "appcleaner"
 cask "authy"
@@ -64,7 +65,6 @@ cask "slack"
 cask "the-unarchiver"
 cask "visual-studio-code"
 cask "wireshark"
-mas "1Password 7", id: 1333542190
 mas "Bear", id: 1091189122
 mas "Display Menu", id: 549083868
 mas "LINE", id: 539883307
