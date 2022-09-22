@@ -43,9 +43,6 @@
 	unstash = stash pop
 	untrack = rm -r --cached
 	what = show -w
-[url "github:"]
-  InsteadOf = https://github.com/
-  InsteadOf = git@github.com:
 [ghq]
 	root = ~/dev/src
 [include]
