@@ -112,7 +112,9 @@ if [ ! -d $TPM_DIR ]; then
 fi
 
 # Link Hammerspoon config
-readonly HAMMERSPOON_FILE="$HOME/.hammerspoon/init.lua"
+readonly HAMMERSPOON_DIR="$HOME/.hammerspoon"
+[ ! -d $HAMMERSPOON_DIR ] && mkdir $HAMMERSPOON_DIR
+readonly HAMMERSPOON_FILE="$HAMMERSPOON_DIR/init.lua"
 [ ! -f $HAMMERSPOON_FILE ] && ln -s $REPO_DIR/init.lua $HAMMERSPOON_FILE
 
 
