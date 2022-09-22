@@ -1,7 +1,5 @@
 # dotfiles
 
-設定ファイル
-
 ## Usage
 
 ```sh
@@ -19,15 +17,12 @@ chsh -s /usr/local/bin/zsh
 # Install node
 anyenv init
 anyenv install nodenv
-nodenv install <latest-lts-version>
-npm install --global Asuforce/alfred-vscode
 ```
 
 ## Backup
 
 - .ssh
 - .zsh_history
-- .netrc
 - .gitconfig-work
 
 ## Manual setup
@@ -37,8 +32,6 @@ npm install --global Asuforce/alfred-vscode
 - General
   - Use dark menu bar and Dock
 - Keyboard
-  - Keyboard
-    - Touch Bar shows: `F key`
   - Shortcuts
     - Spotlight: all check out
   - Continuous input
@@ -51,11 +44,6 @@ npm install --global Asuforce/alfred-vscode
   - Mouse & Trackpad
     - Trackpad Options
       - Enable dragging: three finger drag
-- Date & Time
-  - Clock
-    - Display the time with seconds
-    - Use a 24-hour clock
-    - Show date
 - Dock
   - Delete all default icon
   - Size: Small
@@ -94,3 +82,5 @@ npm install --global Asuforce/alfred-vscode
     - Hotkey: `opt + Space`
 - VSCode
   - Install settingssync
+- Hammerspoon
+  - Install [Shiftit spoon](https://github.com/peterklijn/hammerspoon-shiftit/blob/master/README.md#step-2)
