@@ -66,6 +66,7 @@ cask "slack"
 cask "the-unarchiver"
 cask "visual-studio-code"
 cask "wireshark"
+cask "zoom"
 mas "Bear", id: 1091189122
 mas "Display Menu", id: 549083868
 mas "LINE", id: 539883307

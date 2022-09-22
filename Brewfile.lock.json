@@ -11,7 +11,7 @@
         "revision": "8fef229ebe25d19ce0d3fca85d939c9df7aaf291"
       },
       "homebrew/core": {
-        "revision": "13c0d759d2da46a45eef09262b326669e425e2cb"
+        "revision": "2034f8dce1faf994285b119dcfa0227bd10419ef"
       }
     },
     "brew": {
@@ -1685,6 +1685,12 @@
         "options": {
           "full_name": "google-chrome"
         }
+      },
+      "zoom": {
+        "version": "5.11.11.10514",
+        "options": {
+          "full_name": "zoom"
+        }
       }
     },
     "mas": {
@@ -1723,7 +1729,7 @@
       "monterey": {
         "HOMEBREW_VERSION": "3.6.2",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "13c0d759d2da46a45eef09262b326669e425e2cb",
+        "Homebrew/homebrew-core": "2034f8dce1faf994285b119dcfa0227bd10419ef",
         "CLT": "13.4.0.0.1.1651278267",
         "Xcode": "13.4",
         "macOS": "12.3"
