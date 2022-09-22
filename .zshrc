@@ -6,7 +6,7 @@ fi
 # Set locale
 export LC_ALL=ja_JP.UTF-8
 
-source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
+source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
 
 # Zsh plugin conf
 MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap kube_ps1 mnml_git)
