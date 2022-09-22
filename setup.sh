@@ -4,7 +4,7 @@ set -eu
 
 readonly OS=$(uname)
 
-[ "$OS" == "Darwin" ] && readonly BREW_DIR=/usr/local || readonly BREW_DIR=/home/linuxbrew/.linuxbrew
+[ "$OS" == "Darwin" ] && readonly BREW_DIR=/opt/homebrew || readonly BREW_DIR=/home/linuxbrew/.linuxbrew
 
 readonly BREW=$BREW_DIR/bin/brew
 
