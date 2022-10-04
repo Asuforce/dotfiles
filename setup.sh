@@ -2,9 +2,22 @@
 
 set -eu
 
-readonly OS=$(uname)
+OS=$(uname)
+BREW_DIR=/home/linuxbrew/.linuxbrew
 
-[ "$OS" == "Darwin" ] && readonly BREW_DIR=/opt/homebrew || readonly BREW_DIR=/home/linuxbrew/.linuxbrew
+[ "${OS}" == "Linux" ] && HOMEBREW_ON_LINUX=1
+
+if [[ -z "${HOMEBREW_ON_LINUX-}" ]]
+then
+  UNAME_MACHINE="$(/usr/bin/uname -m)"
+
+  if [[ "${UNAME_MACHINE}" == "arm64" ]]
+  then
+    BREW_DIR="/opt/homebrew"
+  else
+    BREW_DIR="/usr/local"
+  fi
+fi
 
 readonly BREW=$BREW_DIR/bin/brew
 
