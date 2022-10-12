@@ -5,13 +5,13 @@
         "revision": "cf8a86177665825a7f30780e8fe1af333a0527c6"
       },
       "homebrew/cask": {
-        "revision": "1ca8537626290027d7898eb76528fd0aa0d94a77"
+        "revision": "9409186f13cbb29aec981f5269cdd81bd01ea9c7"
       },
       "homebrew/cask-fonts": {
-        "revision": "fe200fafe831bbc24e30af5687a3f3f8dc87afae"
+        "revision": "40ffcb958daebbf7bcd98bc4b0e791e3d65b4856"
       },
       "homebrew/core": {
-        "revision": "52200b37381ccd6f79cdc84e0eb8e2a070412485"
+        "revision": "2b5fff20f9d76fb8ba4c722e1cfc303eba49b816"
       }
     },
     "brew": {
@@ -1537,7 +1537,7 @@
     },
     "cask": {
       "alfred": {
-        "version": "5.0.2,2073",
+        "version": "5.0.3,2087",
         "options": {
           "full_name": "alfred"
         }
@@ -1645,7 +1645,7 @@
         }
       },
       "visual-studio-code": {
-        "version": "1.72.0",
+        "version": "1.72.1",
         "options": {
           "full_name": "visual-studio-code"
         }
@@ -1657,7 +1657,7 @@
         }
       },
       "lens": {
-        "version": "2022.10.70653",
+        "version": "2022.10.111653",
         "options": {
           "full_name": "lens"
         }
@@ -1681,7 +1681,7 @@
         }
       },
       "google-chrome": {
-        "version": "106.0.5249.103",
+        "version": "106.0.5249.119",
         "options": {
           "full_name": "google-chrome"
         }
@@ -1729,7 +1729,7 @@
       "monterey": {
         "HOMEBREW_VERSION": "3.6.5",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "52200b37381ccd6f79cdc84e0eb8e2a070412485",
+        "Homebrew/homebrew-core": "2b5fff20f9d76fb8ba4c722e1cfc303eba49b816",
         "CLT": "13.4.0.0.1.1651278267",
         "Xcode": "13.4.1",
         "macOS": "12.6"
