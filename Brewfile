@@ -66,6 +66,7 @@ cask "postman"
 cask "slack"
 cask "the-unarchiver"
 cask "visual-studio-code"
+cask "wezterm"
 cask "wireshark"
 cask "zoom"
 mas "Bear", id: 1091189122
