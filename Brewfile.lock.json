@@ -5,13 +5,13 @@
         "revision": "cc9747cd3b28628b6d70789c7c6a97d675dd1ff1"
       },
       "homebrew/cask": {
-        "revision": "7bd3fc7aa8627782d67d4a1afbbb5a06403d3b13"
+        "revision": "83406eb8917fc512dd7a76bd2747b6edf66e3f1f"
       },
       "homebrew/cask-fonts": {
         "revision": "ea84fe986f222730527278fb6afa84c4809be411"
       },
       "homebrew/core": {
-        "revision": "a0987f036282a94c5542b8f2da4c8648becdae1f"
+        "revision": "e6e1de4c8373bf609cff665b537fc2cadd84505e"
       },
       "songmu/tap": {
         "revision": "c14e6193175ef17dda24be9bbd5a18959de12b66"
@@ -1889,7 +1889,7 @@
         }
       },
       "postman": {
-        "version": "10.6.0",
+        "version": "10.7.0",
         "options": {
           "full_name": "postman"
         }
@@ -1919,7 +1919,7 @@
         }
       },
       "lens": {
-        "version": "2022.12.221341",
+        "version": "2023.1.110749",
         "options": {
           "full_name": "lens"
         }
@@ -1997,7 +1997,7 @@
       "monterey": {
         "HOMEBREW_VERSION": "3.6.18",
         "HOMEBREW_PREFIX": "/opt/homebrew",
-        "Homebrew/homebrew-core": "a0987f036282a94c5542b8f2da4c8648becdae1f",
+        "Homebrew/homebrew-core": "e6e1de4c8373bf609cff665b537fc2cadd84505e",
         "CLT": "13.4.0.0.1.1651278267",
         "Xcode": "13.4.1",
         "macOS": "12.6"
