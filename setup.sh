@@ -23,7 +23,6 @@ readonly BREW=$BREW_DIR/bin/brew
 
 # Create GITHUB_DIR
 readonly GITHUB_DIR="$HOME/dev/src/github.com"
-
 if [ ! -d $GITHUB_DIR  ]; then
   mkdir -p $GITHUB_DIR
 fi
@@ -85,7 +84,7 @@ done
 
 # Link dein files
 readonly DEIN_DIR="$HOME/.vim/dein"
-if [ ! -e $DEIN_DIR ]; then
+if [ ! -d $DEIN_DIR ]; then
   mkdir -p $DEIN_DIR
 
   readonly DEIN_FILES=(dein.toml dein_lazy.toml)
