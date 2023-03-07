@@ -6,7 +6,6 @@
 	program = gpg
 [core]
 	editor = vim
-	excludesfile = ~/.gitignore
 [push]
 	default = current
 [pull]
