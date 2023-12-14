@@ -375,3 +375,6 @@ if (which zprof > /dev/null) ;then
 fi
 
 source "$HOME/.work.sh"
+
+# Rancher Desktop
+export PATH="/Users/sun/.rd/bin:$PATH"
