@@ -164,10 +164,10 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 
-# For exa alias & shortcut
-alias ls='exa -GF'
-alias ll='exa -l'
-alias la='exa -alh'
+# For eza alias & shortcut
+alias ls='eza -GF'
+alias ll='eza -l'
+alias la='eza -alh'
 
 # For vim
 alias vi='vim'
@@ -378,3 +378,4 @@ source "$HOME/.work.sh"
 
 # Rancher Desktop
 export PATH="/Users/sun/.rd/bin:$PATH"
+
