@@ -186,7 +186,7 @@ if [ $(uname -m) = arm64 ]; then
 fi
 
 alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
-alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --ignore-pinned --display-times && brew upgrade --cask'
+alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --display-times && brew upgrade --cask'
 
 # For Docker
 alias de='docker exec'
