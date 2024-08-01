@@ -67,8 +67,8 @@ cask "the-unarchiver"
 cask "visual-studio-code"
 cask "wezterm"
 cask "wireshark"
+cask "zed"
 cask "zoom"
-mas "Bear", id: 1091189122
 mas "Display Menu", id: 549083868
 mas "LINE", id: 539883307
 mas "Spark", id: 1176895641
