@@ -44,6 +44,16 @@ else
   source ${HOME}/.zgen/init.zsh
 fi
 
+# Export brew bin path
+if [ $(uname) = Linux ]; then
+  export PATH="/home/linuxbrew/.linuxbrew/bin/:$PATH"
+fi
+export PATH="/usr/local/sbin:$PATH"
+
+if [ $(uname -m) = arm64 ]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+fi
+
 # Auto load tmux
 if [[ ! -n $TMUX ]] && [[ $TERM_PROGRAM != "vscode" ]]; then
   ls=`tmux list-sessions`
@@ -176,15 +186,6 @@ alias vi='vim'
 alias g='git'
 
 # For brew
-if [ $(uname) = Linux ]; then
-  export PATH="/home/linuxbrew/.linuxbrew/bin/:$PATH"
-fi
-export PATH="/usr/local/sbin:$PATH"
-
-if [ $(uname -m) = arm64 ]; then
-  export PATH="/opt/homebrew/bin:$PATH"
-fi
-
 alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
 alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --display-times && brew upgrade --cask'
 
