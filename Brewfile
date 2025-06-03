@@ -1,5 +1,4 @@
 tap "homebrew/bundle"
-tap "homebrew/cask-fonts"
 tap "Songmu/tap"
 brew "argocd"
 brew "bat"
