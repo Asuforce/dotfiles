@@ -46,3 +46,5 @@
 	root = ~/dev/src
 [include]
 	path = ~/.gitconfig-work
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager
