@@ -374,8 +374,6 @@ if (which zprof > /dev/null) ;then
   zprof | less
 fi
 
-source "$HOME/.work.sh"
-
 # Rancher Desktop
 export PATH="/Users/sun/.rd/bin:$PATH"
 
