@@ -1,9 +1,11 @@
 [user]
 	name = Shun Nishitsuji
 	email = owata.sn@gmail.com
-	signingkey = 8CBC44C6092F8975
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFaoXJs4gTKnLxh6xSKIw37w0Inm9nRYhzcS8g05f69B
 [gpg]
-	program = gpg
+	format = ssh
+[gpg "ssh"]
+	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [core]
 	editor = vim
 [push]
