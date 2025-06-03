@@ -1,4 +1,3 @@
-tap "homebrew/bundle"
 tap "Songmu/tap"
 brew "argocd"
 brew "bat"
@@ -65,8 +64,3 @@ cask "the-unarchiver"
 cask "visual-studio-code"
 cask "wezterm"
 cask "wireshark"
-cask "zed"
-cask "zoom"
-mas "Display Menu", id: 549083868
-mas "LINE", id: 539883307
-mas "Spark", id: 1176895641
