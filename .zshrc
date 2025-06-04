@@ -311,11 +311,9 @@ if [ -d $NPM_PATH ]; then
 fi
 
 anyenv_all() {
-  unset -f plenv
   unset -f pyenv
   unset -f nodenv
   unset -f rbenv
-  unset -f jenv
 
   eval "$(anyenv init - --no-rehash)"
 }
