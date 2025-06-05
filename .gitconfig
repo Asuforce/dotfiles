@@ -1,7 +1,7 @@
 [user]
-	name = Shun Nishitsuji
+	name = asuforce
 	email = owata.sn@gmail.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFaoXJs4gTKnLxh6xSKIw37w0Inm9nRYhzcS8g05f69B
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJdKrFfhU4etC/rv0ceecExuSX2awA00dFfQmTvx5Rca
 [gpg]
 	format = ssh
 [gpg "ssh"]
@@ -13,7 +13,7 @@
 [pull]
   rebase = true
 [commit]
-	gpgsign = false
+	gpgsign = true
 [fetch]
 	prune = true
 [alias]
