@@ -46,7 +46,5 @@
 	what = show -w
 [ghq]
 	root = ~/dev/src
-[include]
-	path = ~/.config/git/.gitconfig-work
 [credential]
 	helper = /usr/local/share/gcm-core/git-credential-manager
