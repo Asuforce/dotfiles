@@ -68,17 +68,17 @@ done
 readonly GIT_DIR="$HOME/.config/git"
 [ ! -d $GIT_DIR ] && mkdir -p $GIT_DIR
 
-readonly LINK_GIT_FILES=(config ignore)
-for f in ${LINK_GIT_FILES[@]}
+readonly LINK_GIT_FILES=(gitconfig gitignore)
+for file in ${LINK_GIT_FILES[@]}
 do
-  dest_file="$GIT_DIR/$f"
-  [ ! -e $dest_file ] && ln -fs $REPO_DIR/.git$f $dest_file
+  dest_file="$GIT_DIR/.$file"
+  [ ! -e $dest_file ] && ln -fs $REPO_DIR/.$file $dest_file
 done
 
-readonly COPY_DOT_FILES=(gitconfig-user gitconfig-work netrc)
+readonly COPY_DOT_FILES=(gitconfig-user gitconfig-work)
 for file in ${COPY_DOT_FILES[@]}
 do
-  dest_file="$HOME/.$file"
+  dest_file="$GIT_DIR/.$file"
   [ ! -e $dest_file ] && cp $REPO_DIR/.$file $dest_file
 done
 
