@@ -48,10 +48,10 @@ fi
 if [ $(uname) = Linux ]; then
   export PATH="/home/linuxbrew/.linuxbrew/bin/:$PATH"
 fi
-export PATH="/usr/local/sbin:$PATH"
 
 if [ $(uname -m) = arm64 ]; then
   export PATH="/opt/homebrew/bin:$PATH"
+  export PATH="/opt/homebrew/sbin:$PATH"
 fi
 
 # Auto load tmux
@@ -372,7 +372,4 @@ export GO111MODULE=on
 if (which zprof > /dev/null) ;then
   zprof | less
 fi
-
-# Rancher Desktop
-export PATH="/Users/sun/.rd/bin:$PATH"
 
