@@ -2,21 +2,13 @@
 
 set -eu
 
-OS=$(uname)
-BREW_DIR=/home/linuxbrew/.linuxbrew
+UNAME_MACHINE="$(/usr/bin/uname -m)"
 
-[ "${OS}" == "Linux" ] && HOMEBREW_ON_LINUX=1
-
-if [[ -z "${HOMEBREW_ON_LINUX-}" ]]
+if [[ "${UNAME_MACHINE}" == "arm64" ]]
 then
-  UNAME_MACHINE="$(/usr/bin/uname -m)"
-
-  if [[ "${UNAME_MACHINE}" == "arm64" ]]
-  then
-    BREW_DIR="/opt/homebrew"
-  else
-    BREW_DIR="/usr/local"
-  fi
+  BREW_DIR="/opt/homebrew"
+else
+  BREW_DIR="/usr/local"
 fi
 
 readonly BREW=$BREW_DIR/bin/brew
@@ -33,11 +25,7 @@ readonly REPO_DIR="$GITHUB_DIR/Asuforce/dotfiles"
 
 # Install brew
 if ! type $BREW > /dev/null 2>&1; then
-  if [ "$OS" == "Darwin" ]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-  else
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-  fi
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
 # Install applications

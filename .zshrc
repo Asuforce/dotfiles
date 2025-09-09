@@ -45,10 +45,6 @@ else
 fi
 
 # Export brew bin path
-if [ $(uname) = Linux ]; then
-  export PATH="/home/linuxbrew/.linuxbrew/bin/:$PATH"
-fi
-
 if [ $(uname -m) = arm64 ]; then
   export PATH="/opt/homebrew/bin:$PATH"
   export PATH="/opt/homebrew/sbin:$PATH"
