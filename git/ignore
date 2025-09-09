@@ -14,3 +14,7 @@ tags
 vendor/
 blog.md
 .vscode/
+CLAUDE.md
+.serena/
+
+**/.claude/settings.local.json
