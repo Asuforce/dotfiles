@@ -65,9 +65,9 @@ done
 
 readonly COPY_DOT_FILES=(.gitconfig .gitconfig-work)
 for file in ${COPY_DOT_FILES[@]}
+do
   dest_file="$HOME/$file"
   [ ! -e $dest_file ] && cp $REPO_DIR/git/$file $dest_file
-do
 done
 
 # Link dein files
