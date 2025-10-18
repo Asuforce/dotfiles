@@ -15,6 +15,7 @@ vendor/
 blog.md
 .vscode/
 CLAUDE.md
+.claude/
 .serena/
 
 **/.claude/settings.local.json
