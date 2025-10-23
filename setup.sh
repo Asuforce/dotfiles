@@ -31,6 +31,14 @@ fi
 # Install applications
 $BREW bundle
 
+# Install gh extensions
+readonly GH=$BREW_DIR/bin/gh
+if type $GH > /dev/null 2>&1; then
+  if ! $GH extension list | grep -q "seachicken/gh-poi"; then
+    $GH extension install seachicken/gh-poi
+  fi
+fi
+
 # Install rustup
 if ! type rustup > /dev/null 2>&1; then
   curl https://sh.rustup.rs -sSf | sh
