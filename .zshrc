@@ -1,12 +1,16 @@
 # Auto compile
-if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
+if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
   zcompile ~/.zshrc
 fi
 
 # Set locale
 export LC_ALL=ja_JP.UTF-8
 
-source "$(brew --prefix)/opt/kube-ps1/share/kube-ps1.sh"
+# Load kube-ps1 if available
+if command -v brew > /dev/null 2>&1; then
+  local kube_ps1_path="$(brew --prefix)/opt/kube-ps1/share/kube-ps1.sh"
+  [[ -f "$kube_ps1_path" ]] && source "$kube_ps1_path"
+fi
 
 # Zsh plugin conf
 MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap kube_ps1 mnml_git)
@@ -15,15 +19,15 @@ MNML_USER_CHAR='#'
 MNML_INSERT_CHAR='>'
 
 zgen_update() {
-  source ${HOME}/.zgen/zgen.zsh
+  source "$HOME/.zgen/zgen.zsh"
   zgen update
   zgen_init
 
-  exec $SHELL -l
+  exec "$SHELL" -l
 }
 
 zgen_init () {
-  source ${HOME}/.zgen/zgen.zsh
+  source "$HOME/.zgen/zgen.zsh"
 
   zgen load zsh-users/zsh-autosuggestions
   zgen load zsh-users/zsh-completions
@@ -33,36 +37,36 @@ zgen_init () {
 
   zgen save
 
-  for f in `find "${HOME}/.zgen" -name "*.zsh"`; do
-    zcompile $f
+  find "$HOME/.zgen" -name "*.zsh" -print0 | while IFS= read -r -d '' f; do
+    zcompile "$f"
   done
 }
 
-if [ ! -s ${HOME}/.zgen/init.zsh ]; then
+if [[ ! -s "$HOME/.zgen/init.zsh" ]]; then
   zgen_init
 else
-  source ${HOME}/.zgen/init.zsh
+  source "$HOME/.zgen/init.zsh"
 fi
 
 # Export brew bin path
-if [ $(uname -m) = arm64 ]; then
+if [[ "$(uname -m)" == "arm64" ]]; then
   export PATH="/opt/homebrew/bin:$PATH"
   export PATH="/opt/homebrew/sbin:$PATH"
 fi
 
 # Auto load tmux
-if [[ ! -n $TMUX ]] && [[ $TERM_PROGRAM != "vscode" ]]; then
-  ls=`tmux list-sessions`
-  if [[ -z "${ls}" ]]; then
+if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "vscode" ]]; then
+  local ls="$(tmux list-sessions 2>/dev/null)"
+  if [[ -z "$ls" ]]; then
     tmux new-session
   fi
 
-  create_new_session="Create New Session"
-  ID=`echo "${ls}\n${create_new_session}:" | fzf | cut -d: -f1`
-  if [[ "${ID}" = "${create_new_session}" ]]; then
+  local create_new_session="Create New Session"
+  local ID=$(printf "%s\n%s:\n" "$ls" "$create_new_session" | fzf | cut -d: -f1)
+  if [[ "$ID" == "$create_new_session" ]]; then
     tmux new-session
-  elif [[ -n "${ID}" ]]; then
-    tmux attach-session -t "${ID}"
+  elif [[ -n "$ID" ]]; then
+    tmux attach-session -t "$ID"
   else
     : # Start terminal normally
   fi
@@ -72,8 +76,13 @@ fi
 notify_precmd() {
   prev_command_status=$?
 
-  if [ "$TTYIDLE" -gt 1 ]; then
-    notify_title=$([ "$prev_command_status" -eq 0 ] && echo "Command succeeded" || echo "Command failed")
+  if [[ "${TTYIDLE:-0}" -gt 1 ]]; then
+    local notify_title
+    if [[ "$prev_command_status" -eq 0 ]]; then
+      notify_title="Command succeeded"
+    else
+      notify_title="Command failed"
+    fi
     osascript -e "display notification \"$prev_command\" with title \"$notify_title\""
   fi
 }
@@ -92,7 +101,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # Change colors
 autoload -Uz colors
 
-# Configure for hostory
+# Configure for history
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
@@ -102,6 +111,7 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_NO_STORE
+setopt SHARE_HISTORY
 
 export EDITOR=vim
 
@@ -142,19 +152,6 @@ setopt auto_pushd
 
 # Do not add duplicate directory name
 setopt pushd_ignore_dups
-
-# Sharing the history among zshs started at the same time
-setopt share_history
-
-# Do not leave the same command in the history
-setopt hist_ignore_dups
-setopt hist_ignore_all_dups
-
-# Command lines beginning with a space are not left in the history
-setopt hist_ignore_space
-
-# Delete extra space when saved in history
-setopt hist_reduce_blanks
 
 # Use advanced wildcard deployment
 setopt extended_glob
@@ -202,7 +199,7 @@ alias re='exec $SHELL -l'
 # for fzf
 fzf-z-search() {
   local res=$(z | sort -rn | cut -c 12- | fzf)
-  if [ -n "$res" ]; then
+  if [[ -n "$res" ]]; then
     BUFFER+="cd $res"
     zle accept-line
   else
@@ -214,7 +211,7 @@ bindkey '^v' fzf-z-search
 
 fzf-src() {
   local selected_dir=$(ghq list -p | fzf --query "$LBUFFER")
-  if [ -n "$selected_dir" ]; then
+  if [[ -n "$selected_dir" ]]; then
     BUFFER="cd ${selected_dir}"
     zle accept-line
   fi
@@ -223,7 +220,7 @@ zle -N fzf-src
 bindkey '^j' fzf-src
 
 fzf-history() {
-  BUFFER=`history -n 1 | LC_ALL=C sort | uniq | fzf`
+  BUFFER=$(history -n 1 | LC_ALL=C sort | uniq | fzf)
   CURSOR=$#BUFFER
 }
 zle -N fzf-history
@@ -232,7 +229,7 @@ bindkey '^]' fzf-history
 git-branch-fzf() {
   local selected_branch=$(git for-each-ref --format='%(refname)' --sort=-committerdate refs/heads | perl -pne 's{^refs/heads/}{}' | fzf --query "$LBUFFER")
 
-  if [ -n "$selected_branch" ]; then
+  if [[ -n "$selected_branch" ]]; then
     BUFFER="git checkout ${selected_branch}"
     zle accept-line
   fi
@@ -246,7 +243,7 @@ bindkey "^[" git-branch-fzf
 tree-fzf() {
   local SELECTED_FILE=$(tree --charset=o -f | fzf --query "$LBUFFER" | tr -d '\||`|-' | xargs echo)
 
-  if [ "$SELECTED_FILE" != "" ]; then
+  if [[ -n "$SELECTED_FILE" ]]; then
     BUFFER="$EDITOR $SELECTED_FILE"
     zle accept-line
   fi
@@ -274,7 +271,7 @@ EOF
 
 myssh() {
   set_term_bgcolor 0 0 30
-  \ssh $@
+  \ssh "$@"
   set_term_bgcolor 0 0 0
 }
 
@@ -284,7 +281,7 @@ alias ssh='myssh'
 alias e='code -r'
 
 # For gnu-sed
-if [ $(uname) = Darwin ]; then
+if [[ "$(uname)" == "Darwin" ]]; then
   alias sed='gsed'
 fi
 
@@ -292,67 +289,65 @@ fi
 eval "$(direnv hook zsh)"
 
 # For anyenv
-if [ -d $HOME/.anyenv ]; then
+if [[ -d "$HOME/.anyenv" ]]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
-  for D in `ls $HOME/.anyenv/envs | sed 's/\///g'`
-  do
-    export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
+  for D in "$HOME/.anyenv/envs"/*; do
+    [[ -d "$D/shims" ]] && export PATH="$D/shims:$PATH"
   done
 fi
 
-# For npm
-NPM_PATH="$HOME/.anyenv/envs/nodenv/versions/$(node -v | tr -d v)/bin"
-if [ -d $NPM_PATH ]; then
-  export PATH="$NPM_PATH:$PATH"
-fi
-
-anyenv_all() {
-  unset -f pyenv
-  unset -f nodenv
-  unset -f rbenv
-
+# Lazy load anyenv for version managers
+_init_anyenv() {
+  unset -f pyenv nodenv rbenv
   eval "$(anyenv init - --no-rehash)"
 }
 
 pyenv() {
-  anyenv_all
+  _init_anyenv
   pyenv "$@"
 }
+
 nodenv() {
-  anyenv_all
+  _init_anyenv
   nodenv "$@"
 }
 
 rbenv() {
-  anyenv_all
+  _init_anyenv
   rbenv "$@"
 }
 
 anyenv-update() {
-  _PWD=`pwd`
-  _ENVHOME="${HOME}/.anyenv/envs"
+  local _PWD="$(pwd)"
+  local _ENVHOME="$HOME/.anyenv/envs"
 
-  for _DIR in `ls ${_ENVHOME}`; do
-    echo "\n-- $(echo ${_DIR} | sed 's/\///g') --"
-    _HOME=${_ENVHOME}/${_DIR}
-    cd ${_HOME}
-    _PULL=`git pull`
-    echo $_PULL
+  for _DIR in "$_ENVHOME"/*; do
+    [[ ! -d "$_DIR" ]] && continue
+    local _DIR_NAME=$(basename "$_DIR")
+    echo "\n-- $_DIR_NAME --"
+    local _HOME="$_DIR"
+    cd "$_HOME"
+    local _PULL="$(git pull)"
+    echo "$_PULL"
 
-    for _DIR in `ls plugins`; do
-      echo `pwd`
-      echo "\n-- $(echo ${_DIR} | sed 's/\///g') --"
-      cd "${_HOME}/plugins/${_DIR}"
-      _PULL=`git pull`
-      echo $_PULL
-    done
+    if [[ -d "$_HOME/plugins" ]]; then
+      for _PLUGIN_DIR in "$_HOME/plugins"/*; do
+        [[ ! -d "$_PLUGIN_DIR" ]] && continue
+        local _PLUGIN_NAME=$(basename "$_PLUGIN_DIR")
+        echo "$(pwd)"
+        echo "\n-- $_PLUGIN_NAME --"
+        cd "$_PLUGIN_DIR"
+        local _PLUGIN_PULL="$(git pull)"
+        echo "$_PLUGIN_PULL"
+      done
+    fi
   done
 
-  cd ${_PWD}
+  cd "$_PWD"
 }
 
 # For curl
-if [ -d /usr/local/opt/curl ]; then
+if [[ -d /usr/local/opt/curl ]]; then
   export PATH="/usr/local/opt/curl/bin:$PATH"
 fi
 
@@ -364,8 +359,4 @@ export GOPATH="$HOME/dev"
 export PATH="$PATH:$GOPATH/bin"
 export GO111MODULE=on
 
-# Use zprof
-if (which zprof > /dev/null) ;then
-  zprof | less
-fi
 
