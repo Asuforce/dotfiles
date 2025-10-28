@@ -7,10 +7,16 @@ fi
 export LC_ALL=ja_JP.UTF-8
 
 # Load kube-ps1 if available
-if command -v brew > /dev/null 2>&1; then
-  local kube_ps1_path="$(brew --prefix)/opt/kube-ps1/share/kube-ps1.sh"
-  [[ -f "$kube_ps1_path" ]] && source "$kube_ps1_path"
-fi
+local kube_ps1_paths=(
+  /opt/homebrew/opt/kube-ps1/share/kube-ps1.sh    # Apple Silicon
+  /usr/local/opt/kube-ps1/share/kube-ps1.sh       # Intel
+)
+for kube_ps1_path in "${kube_ps1_paths[@]}"; do
+  if [[ -f "$kube_ps1_path" ]]; then
+    source "$kube_ps1_path"
+    break
+  fi
+done
 
 # Zsh plugin conf
 MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap kube_ps1 mnml_git)
@@ -54,27 +60,29 @@ if [[ "$(uname -m)" == "arm64" ]]; then
   export PATH="/opt/homebrew/sbin:$PATH"
 fi
 
-# Auto load tmux
-if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "vscode" ]]; then
+# Auto load tmux (disabled by default, enable with TMUX_AUTO_LAUNCH=1)
+if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TMUX_AUTO_LAUNCH" == "1" ]]; then
   local ls="$(tmux list-sessions 2>/dev/null)"
   if [[ -z "$ls" ]]; then
     tmux new-session
-  fi
-
-  local create_new_session="Create New Session"
-  local ID=$(printf "%s\n%s:\n" "$ls" "$create_new_session" | fzf | cut -d: -f1)
-  if [[ "$ID" == "$create_new_session" ]]; then
-    tmux new-session
-  elif [[ -n "$ID" ]]; then
-    tmux attach-session -t "$ID"
   else
-    : # Start terminal normally
+    local create_new_session="Create New Session"
+    local ID=$(printf "%s\n%s:\n" "$ls" "$create_new_session" | fzf | cut -d: -f1)
+    if [[ "$ID" == "$create_new_session" ]]; then
+      tmux new-session
+    elif [[ -n "$ID" ]]; then
+      tmux attach-session -t "$ID"
+    fi
   fi
 fi
 
-# Notify
+# Notify (disabled by default, enable with ZSHRC_NOTIFY=1)
 notify_precmd() {
-  prev_command_status=$?
+  if [[ "$ZSHRC_NOTIFY" != "1" ]]; then
+    return
+  fi
+
+  local prev_command_status=$?
 
   if [[ "${TTYIDLE:-0}" -gt 1 ]]; then
     local notify_title
@@ -83,7 +91,8 @@ notify_precmd() {
     else
       notify_title="Command failed"
     fi
-    osascript -e "display notification \"$prev_command\" with title \"$notify_title\""
+    # Run in background to avoid blocking shell
+    osascript -e "display notification \"$prev_command\" with title \"$notify_title\"" &!
   fi
 }
 
@@ -220,7 +229,7 @@ zle -N fzf-src
 bindkey '^j' fzf-src
 
 fzf-history() {
-  BUFFER=$(history -n 1 | LC_ALL=C sort | uniq | fzf)
+  BUFFER=$(fc -l -r 1 | awk '{$1=""; print substr($0,2)}' | uniq | fzf)
   CURSOR=$#BUFFER
 }
 zle -N fzf-history
@@ -288,12 +297,19 @@ fi
 # For direnv
 eval "$(direnv hook zsh)"
 
-# For anyenv
+# For anyenv (lazy load shims)
 if [[ -d "$HOME/.anyenv" ]]; then
   export PATH="$HOME/.anyenv/bin:$PATH"
+
+  # Add shims to PATH at startup for immediate availability
   for D in "$HOME/.anyenv/envs"/*; do
     [[ -d "$D/shims" ]] && export PATH="$D/shims:$PATH"
   done
+
+  # Rehash nodenv at startup to ensure npm packages are available
+  if [[ -d "$HOME/.anyenv/envs/nodenv" ]]; then
+    "$HOME/.anyenv/envs/nodenv/bin/nodenv" rehash 2>/dev/null
+  fi
 fi
 
 # Lazy load anyenv for version managers
