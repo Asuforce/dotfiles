@@ -19,7 +19,7 @@ for kube_ps1_path in "${kube_ps1_paths[@]}"; do
 done
 
 # Zsh plugin conf
-MNML_PROMPT=(mnml_ssh mnml_pyenv 'mnml_cwd 0 0' mnml_status mnml_keymap kube_ps1 mnml_git)
+MNML_PROMPT=(mnml_ssh 'mnml_cwd 0 0' mnml_status mnml_keymap kube_ps1 mnml_git)
 MNML_RPROMPT=('')
 MNML_USER_CHAR='#'
 MNML_INSERT_CHAR='>'
