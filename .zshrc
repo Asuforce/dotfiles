@@ -60,8 +60,8 @@ if [[ "$(uname -m)" == "arm64" ]]; then
   export PATH="/opt/homebrew/sbin:$PATH"
 fi
 
-# Auto load tmux (disabled by default, enable with TMUX_AUTO_LAUNCH=1)
-if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TMUX_AUTO_LAUNCH" == "1" ]]; then
+# Auto load tmux
+if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "vscode" ]]; then
   local ls="$(tmux list-sessions 2>/dev/null)"
   if [[ -z "$ls" ]]; then
     tmux new-session
