@@ -53,7 +53,7 @@ do
 done < "$REPO_DIR/cargo.txt"
 
 # Setup dotfiles
-readonly LINK_DOT_FILES=(tmux.conf vimrc zshrc zshenv tigrc)
+readonly LINK_DOT_FILES=(tmux.conf vimrc zshrc zshenv tigrc wezterm.lua)
 for file in "${LINK_DOT_FILES[@]}"
 do
   dest_file="$HOME/.$file"
@@ -89,9 +89,11 @@ do
   [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/$file" "$dest_file"
 done
 
-# Install zgen
-readonly ZGEN_DIR="$HOME/.zgen"
-[ ! -d "$ZGEN_DIR" ] && git clone https://github.com/tarjoilija/zgen.git "$ZGEN_DIR"
+# Setup sheldon
+readonly SHELDON_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon"
+[ ! -d "$SHELDON_CONFIG_DIR" ] && mkdir -p "$SHELDON_CONFIG_DIR"
+readonly SHELDON_PLUGINS_FILE="$SHELDON_CONFIG_DIR/plugins.toml"
+[ ! -e "$SHELDON_PLUGINS_FILE" ] && ln -fs "$REPO_DIR/sheldon/plugins.toml" "$SHELDON_PLUGINS_FILE"
 
 # Set default shell
 readonly ZSH_DIR="$BREW_DIR/bin/zsh"
@@ -128,8 +130,7 @@ fi
 readonly HAMMERSPOON_DIR="$HOME/.hammerspoon"
 [ ! -d "$HAMMERSPOON_DIR" ] && mkdir "$HAMMERSPOON_DIR"
 readonly HAMMERSPOON_FILE="$HAMMERSPOON_DIR/init.lua"
-[ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/init.lua" "$HAMMERSPOON_FILE"
-
+[ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/.hammerspoon/init.lua" "$HAMMERSPOON_FILE"
 
 # Restart shell
 exec "$SHELL" -l
