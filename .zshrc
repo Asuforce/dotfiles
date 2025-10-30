@@ -24,35 +24,8 @@ MNML_RPROMPT=('')
 MNML_USER_CHAR='#'
 MNML_INSERT_CHAR='>'
 
-zgen_update() {
-  source "$HOME/.zgen/zgen.zsh"
-  zgen update
-  zgen_init
-
-  exec "$SHELL" -l
-}
-
-zgen_init () {
-  source "$HOME/.zgen/zgen.zsh"
-
-  zgen load zsh-users/zsh-autosuggestions
-  zgen load zsh-users/zsh-completions
-  zgen load rupa/z
-
-  zgen load subnixr/minimal
-
-  zgen save
-
-  find "$HOME/.zgen" -name "*.zsh" -print0 | while IFS= read -r -d '' f; do
-    zcompile "$f"
-  done
-}
-
-if [[ ! -s "$HOME/.zgen/init.zsh" ]]; then
-  zgen_init
-else
-  source "$HOME/.zgen/init.zsh"
-fi
+# Load sheldon plugins
+eval "$(sheldon source)"
 
 # Export brew bin path
 if [[ "$(uname -m)" == "arm64" ]]; then
