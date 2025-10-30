@@ -93,10 +93,6 @@ done
 readonly ZGEN_DIR="$HOME/.zgen"
 [ ! -d "$ZGEN_DIR" ] && git clone https://github.com/tarjoilija/zgen.git "$ZGEN_DIR"
 
-# Install anyenv
-readonly ANYENV_DIR="$HOME/.anyenv"
-[ ! -d "$ANYENV_DIR" ] && git clone https://github.com/riywo/anyenv "$ANYENV_DIR"
-
 # Set default shell
 readonly ZSH_DIR="$BREW_DIR/bin/zsh"
 readonly SHELL_FILE="/etc/shells"

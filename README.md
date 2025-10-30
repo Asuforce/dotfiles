@@ -13,10 +13,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/Asuforce/dotfiles/master/s
 
 # Chnage shell
 chsh -s /usr/local/bin/zsh
-
-# Install node
-anyenv init
-anyenv install nodenv
 ```
 
 ## Backup

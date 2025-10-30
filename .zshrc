@@ -188,7 +188,6 @@ alias vi='vim'
 alias g='git'
 
 # For brew
-alias brew="env PATH=${PATH/\/Users\/${USER}\/\.anyenv\/envs\/pyenv\/shims:/} brew"
 alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --display-times && brew upgrade --cask'
 
 # For Docker
@@ -297,70 +296,8 @@ fi
 # For direnv
 eval "$(direnv hook zsh)"
 
-# For anyenv (lazy load shims)
-if [[ -d "$HOME/.anyenv" ]]; then
-  export PATH="$HOME/.anyenv/bin:$PATH"
-
-  # Add shims to PATH at startup for immediate availability
-  for D in "$HOME/.anyenv/envs"/*; do
-    [[ -d "$D/shims" ]] && export PATH="$D/shims:$PATH"
-  done
-
-  # Rehash nodenv at startup to ensure npm packages are available
-  if [[ -d "$HOME/.anyenv/envs/nodenv" ]]; then
-    "$HOME/.anyenv/envs/nodenv/bin/nodenv" rehash 2>/dev/null
-  fi
-fi
-
-# Lazy load anyenv for version managers
-_init_anyenv() {
-  unset -f pyenv nodenv rbenv
-  eval "$(anyenv init - --no-rehash)"
-}
-
-pyenv() {
-  _init_anyenv
-  pyenv "$@"
-}
-
-nodenv() {
-  _init_anyenv
-  nodenv "$@"
-}
-
-rbenv() {
-  _init_anyenv
-  rbenv "$@"
-}
-
-anyenv-update() {
-  local _PWD="$(pwd)"
-  local _ENVHOME="$HOME/.anyenv/envs"
-
-  for _DIR in "$_ENVHOME"/*; do
-    [[ ! -d "$_DIR" ]] && continue
-    local _DIR_NAME=$(basename "$_DIR")
-    echo "\n-- $_DIR_NAME --"
-    local _HOME="$_DIR"
-    cd "$_HOME"
-    local _PULL="$(git pull)"
-    echo "$_PULL"
-
-    if [[ -d "$_HOME/plugins" ]]; then
-      for _PLUGIN_DIR in "$_HOME/plugins"/*; do
-        [[ ! -d "$_PLUGIN_DIR" ]] && continue
-        local _PLUGIN_NAME=$(basename "$_PLUGIN_DIR")
-        echo "$(pwd)"
-        echo "\n-- $_PLUGIN_NAME --"
-        cd "$_PLUGIN_DIR"
-        local _PLUGIN_PULL="$(git pull)"
-        echo "$_PLUGIN_PULL"
-      done
-    fi
-  done
-
-  cd "$_PWD"
-}
+# For mise (lazy load)
+eval "$(mise activate zsh --shims)"
 
 # For curl
 if [[ -d /usr/local/opt/curl ]]; then
