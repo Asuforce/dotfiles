@@ -1,5 +1,4 @@
 -- WezTerm設定ファイル
--- iTerm2 + tmuxからの移行設定
 
 local wezterm = require('wezterm')
 local config = {}
@@ -27,7 +26,7 @@ config.color_scheme = 'OneDark (gogh)'
 -- フォント設定
 config.font = wezterm.font_with_fallback({
   'HackGen35 Console',
-  'HackGen Console',
+  'HackGen35',
   'Monaco',
   'Menlo',
 })
@@ -36,7 +35,6 @@ config.use_ime = true
 
 -- フォントレンダリング設定（文字をくっきり表示）
 config.freetype_load_target = 'Normal'
-config.freetype_render_target = 'HorizontalLcd'
 config.front_end = 'WebGpu'
 
 -- ハーフバイト機能でフォントの整形を最適化
@@ -51,7 +49,7 @@ config.window_padding = {
   bottom = 5,
 }
 
--- タブバーを上部に表示（tmux風）
+-- タブバーを上部に表示
 config.tab_bar_at_bottom = false
 config.use_fancy_tab_bar = false  -- シンプルなタブバー
 config.show_tabs_in_tab_bar = true  -- タブを表示
@@ -59,7 +57,7 @@ config.hide_tab_bar_if_only_one_tab = false  -- 1つのタブでもバーを表�
 config.tab_max_width = 32  -- タブの最大幅
 config.show_new_tab_button_in_tab_bar = false  -- "+" ボタンを非表示
 
--- タブバーの色設定（tmux風）
+-- タブバーの色設定
 config.colors = {
   tab_bar = {
     background = '#1a1b26',  -- タブバーの背景色
@@ -80,10 +78,10 @@ config.colors = {
 }
 
 -- ========================================
--- キーバインド設定（tmux風）
+-- キーバインド設定
 -- ========================================
 
--- リーダーキー: Ctrl+g（tmuxのprefixと同じ）
+-- リーダーキー: Ctrl+g
 config.leader = { key = 'g', mods = 'CTRL', timeout_milliseconds = 1000 }
 
 config.keys = {
