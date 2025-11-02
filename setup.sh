@@ -52,10 +52,6 @@ do
   [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/zsh/$file" "$dest_file"
 done
 
-# Link tmux config
-readonly TMUX_CONFIG_FILE="$HOME/.tmux.conf"
-[ ! -e "$TMUX_CONFIG_FILE" ] && ln -fs "$REPO_DIR/tmux/tmux.conf" "$TMUX_CONFIG_FILE"
-
 # Link tig config
 readonly TIG_CONFIG_FILE="$HOME/.tigrc"
 [ ! -e "$TIG_CONFIG_FILE" ] && ln -fs "$REPO_DIR/tig/tigrc" "$TIG_CONFIG_FILE"
@@ -111,7 +107,9 @@ fi
 
 # Link karabiner-elements config
 readonly KARABINER_DIR="$HOME/.config/karabiner"
-[ ! -d "$KARABINER_DIR" ] && ln -fs "$REPO_DIR/karabiner" "$KARABINER_DIR"
+[ ! -d "$KARABINER_DIR" ] && mkdir -p "$KARABINER_DIR"
+readonly KARABINER_CONFIG_FILE="$KARABINER_DIR/karabiner.json"
+[ ! -e "$KARABINER_CONFIG_FILE" ] && ln -fs "$REPO_DIR/karabiner/karabiner.json" "$KARABINER_CONFIG_FILE"
 
 # Link diff-highlight
 readonly DIFF_HIGHLIGHT_FILE="$BREW_DIR/bin/diff-highlight"
