@@ -5,38 +5,14 @@ vim.cmd('filetype plugin indent on')
 
 -- Encoding
 vim.opt.encoding = 'utf-8'
-vim.opt.fileencodings = { 'utf-8', 'iso-2022-jp', 'cp932', 'sjis', 'euc-jp' }
 
--- Command line completion
-vim.opt.wildmenu = true
-
--- Show typed command at last line
-vim.opt.showcmd = true
-
--- Backspace behavior
-vim.opt.backspace = { 'indent', 'eol', 'start' }
-
--- Auto indent
-vim.opt.autoindent = true
+-- Tab width and indentation
+vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
-
--- Show ruler at the last line
-vim.opt.ruler = true
-
--- Always show status line
-vim.opt.laststatus = 2
+vim.opt.expandtab = true
 
 -- Line numbers
 vim.opt.number = true
-
--- Tab width
-vim.opt.tabstop = 2
-
--- Visual bell
-vim.opt.visualbell = true
-
--- Expand tab to spaces
-vim.opt.expandtab = true
 
 -- Highlight search results
 vim.opt.hlsearch = true
@@ -70,7 +46,6 @@ keymap('n', 'sH', '<C-w>H', opts)
 keymap('n', 'sr', '<C-w>r', opts)
 keymap('n', 's=', '<C-w>=', opts)
 keymap('n', 'sw', '<C-w>w', opts)
-keymap('n', 'sO', '<C-w>=', opts)
 keymap('n', 'sN', ':<C-u>bn<CR>', opts)
 keymap('n', 'sP', ':<C-u>bp<CR>', opts)
 keymap('n', 'st', ':<C-u>tabnew<CR>', opts)
@@ -117,21 +92,6 @@ local plugins = {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
-      options = {
-        icons_enabled = true,
-        theme = 'auto',
-        component_separators = { left = '', right = '' },
-        section_separators = { left = '', right = '' },
-        disabled_filetypes = {},
-        ignore_focus = {},
-        always_divide_middle = true,
-        globalstatus = false,
-        refresh = {
-          statusline = 1000,
-          tabline = 1000,
-          winbar = 1000,
-        },
-      },
       sections = {
         lualine_a = { 'mode' },
         lualine_b = { 'branch', 'diff', 'diagnostics' },
@@ -140,15 +100,6 @@ local plugins = {
         lualine_y = { 'progress' },
         lualine_z = { 'location' },
       },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = { 'filename' },
-        lualine_x = { 'location' },
-        lualine_y = {},
-        lualine_z = {},
-      },
-      extensions = {},
     },
   },
 
@@ -158,26 +109,10 @@ local plugins = {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('nvim-tree').setup({
-        sort = {
-          sorter = 'name',
-          folders_first = true,
-        },
-        renderer = {
-          icons = {
-            show = {
-              file = true,
-              folder = true,
-              folder_arrow = true,
-              git = true,
-            },
-          },
-        },
         view = {
-          side = 'left',
           width = 30,
         },
       })
-      -- Keybind for opening nvim-tree with Ctrl-b
       vim.keymap.set('n', '<C-b>', '<cmd>NvimTreeToggle<cr>', { noremap = true, silent = true })
     end,
   },

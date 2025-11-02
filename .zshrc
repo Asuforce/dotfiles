@@ -3,9 +3,6 @@ if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
   zcompile ~/.zshrc
 fi
 
-# Set locale
-export LC_ALL=ja_JP.UTF-8
-
 # Load kube-ps1 if available
 local kube_ps1_paths=(
   /opt/homebrew/opt/kube-ps1/share/kube-ps1.sh    # Apple Silicon
@@ -77,9 +74,6 @@ autoload -Uz add-zsh-hook
 add-zsh-hook preexec store_command
 add-zsh-hook precmd notify_precmd
 
-# XDG base
-export XDG_CONFIG_HOME="$HOME/.config"
-
 # Change colors
 autoload -Uz colors
 
@@ -95,7 +89,7 @@ setopt HIST_REDUCE_BLANKS
 setopt HIST_NO_STORE
 setopt SHARE_HISTORY
 
-export EDITOR=vim
+export EDITOR=nvim
 
 # Specify word delimiter
 autoload -Uz select-word-style

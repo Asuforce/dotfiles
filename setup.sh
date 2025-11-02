@@ -45,7 +45,7 @@ if ! type rustup > /dev/null 2>&1; then
 fi
 
 # Setup dotfiles
-readonly LINK_DOT_FILES=(tmux.conf vimrc zshrc zshenv tigrc wezterm.lua)
+readonly LINK_DOT_FILES=(tmux.conf zshrc zshenv tigrc wezterm.lua)
 for file in "${LINK_DOT_FILES[@]}"
 do
   dest_file="$HOME/.$file"
