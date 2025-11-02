@@ -78,16 +78,11 @@ do
   [ ! -e "$dest_file" ] && cp "$REPO_DIR/git/$file" "$dest_file"
 done
 
-# Link dein files
-readonly DEIN_DIR="$HOME/.vim/dein"
-[ ! -d "$DEIN_DIR" ] && mkdir -p "$DEIN_DIR"
-
-readonly DEIN_FILES=(dein.toml dein_lazy.toml)
-for file in "${DEIN_FILES[@]}"
-do
-  dest_file="$DEIN_DIR/$file"
-  [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/$file" "$dest_file"
-done
+# Link Neovim config
+readonly NVIM_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+[ ! -d "$NVIM_CONFIG_DIR" ] && mkdir -p "$NVIM_CONFIG_DIR"
+readonly NVIM_CONFIG_FILE="$NVIM_CONFIG_DIR/init.lua"
+[ ! -e "$NVIM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/nvim/init.lua" "$NVIM_CONFIG_FILE"
 
 # Setup sheldon
 readonly SHELDON_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon"

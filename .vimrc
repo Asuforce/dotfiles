@@ -50,44 +50,12 @@ set ignorecase
 " 検索文字列に大小文字列が混在した場合、区別して検索
 set smartcase
 
-" dein
-let s:dein_dir = expand('~/.vim/dein')
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
-if &runtimepath !~# '/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-  endif
-  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
-endif
-
-let s:toml = '~/.vim/dein/dein.toml'
-let s:lazy_toml = '~/.vim/dein/dein_lazy.toml'
-
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir)
-  call dein#load_toml(s:toml, {'lazy': 0})
-  call dein#load_toml(s:lazy_toml, {'lazy': 1})
-  call dein#end()
-  call dein#save_state()
-endif
-
-if dein#check_install()
-  call dein#install()
-endif
-
-let g:indent_guides_enable_on_vim_startup = 1 " 起動時に発火
-
 filetype plugin indent on
 filetype indent on
 
 " colorscheme
 syntax on
 color elflord
-
-" NERDTree
-let NERDTreeShowHidden = 1
-nnoremap <silent><C-e> :NERDTreeToggle<CR> " nerdtreeを'ctrl + e'で起動
 
 " タブページの管理
 nnoremap s <Nop>
