@@ -28,7 +28,6 @@ vim.opt.smartcase = true
 
 -- Color scheme
 vim.cmd('syntax on')
-vim.cmd('color elflord')
 
 -- Window management keybinds
 local keymap = vim.keymap.set
@@ -69,6 +68,16 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Plugin specifications
 local plugins = {
+  -- Color scheme
+  {
+    'olimorris/onedarkpro.nvim',
+    priority = 1000,
+    lazy = false,
+    config = function()
+      vim.cmd('colorscheme onedark')
+    end,
+  },
+
   -- Indentation guides
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -126,5 +135,5 @@ local plugins = {
 
 -- Load lazy.nvim
 require('lazy').setup(plugins, {
-  install = { colorscheme = { 'elflord' } },
+  install = { colorscheme = { 'onedark' } },
 })
