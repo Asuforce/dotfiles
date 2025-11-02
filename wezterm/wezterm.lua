@@ -1,4 +1,4 @@
--- WezTerm設定ファイル
+-- WezTerm configuration file
 
 local wezterm = require('wezterm')
 local config = {}
@@ -8,22 +8,22 @@ if wezterm.config_builder then
 end
 
 -- ========================================
--- 外観設定
+-- Appearance settings
 -- ========================================
 
--- ウィンドウの透過設定
+-- Window transparency settings
 config.window_background_opacity = 0.7
 
--- macOSのブラー効果
+-- macOS blur effect
 config.macos_window_background_blur = 0
 
--- フルスクリーン設定（別デスクトップにならない）
+-- Fullscreen settings (does not create a separate desktop)
 config.native_macos_fullscreen_mode = false
 
--- カラースキーム
+-- Color scheme
 config.color_scheme = 'OneDark (gogh)'
 
--- フォント設定
+-- Font settings
 config.font = wezterm.font_with_fallback({
   'HackGen35 Console',
   'HackGen35',
@@ -33,14 +33,14 @@ config.font = wezterm.font_with_fallback({
 config.font_size = 14.0
 config.use_ime = true
 
--- フォントレンダリング設定（文字をくっきり表示）
+-- Font rendering settings (display text sharply)
 config.freetype_load_target = 'Normal'
 config.front_end = 'WebGpu'
 
--- ハーフバイト機能でフォントの整形を最適化
+-- Optimize font shaping with harfbuzz features
 config.harfbuzz_features = { 'kern', 'liga' }
 
--- ウィンドウ設定
+-- Window settings
 config.window_decorations = 'RESIZE'
 config.window_padding = {
   left = 5,
@@ -49,50 +49,50 @@ config.window_padding = {
   bottom = 5,
 }
 
--- タブバーを上部に表示
+-- Display tab bar at the top
 config.tab_bar_at_bottom = false
-config.use_fancy_tab_bar = false  -- シンプルなタブバー
-config.show_tabs_in_tab_bar = true  -- タブを表示
-config.hide_tab_bar_if_only_one_tab = false  -- 1つのタブでもバーを表示
-config.tab_max_width = 32  -- タブの最大幅
-config.show_new_tab_button_in_tab_bar = false  -- "+" ボタンを非表示
+config.use_fancy_tab_bar = false  -- Simple tab bar
+config.show_tabs_in_tab_bar = true  -- Show tabs
+config.hide_tab_bar_if_only_one_tab = false  -- Show bar even with one tab
+config.tab_max_width = 32  -- Maximum tab width
+config.show_new_tab_button_in_tab_bar = false  -- Hide the "+" button
 
--- タブバーの色設定
+-- Tab bar color settings
 config.colors = {
   tab_bar = {
-    background = '#1a1b26',  -- タブバーの背景色
+    background = '#1a1b26',  -- Tab bar background color
     active_tab = {
-      bg_color = '#7aa2f7',  -- アクティブタブの背景色
-      fg_color = '#1a1b26',  -- アクティブタブの文字色
+      bg_color = '#7aa2f7',  -- Active tab background color
+      fg_color = '#1a1b26',  -- Active tab foreground color
       intensity = 'Bold',
     },
     inactive_tab = {
-      bg_color = '#292e42',  -- 非アクティブタブの背景色
-      fg_color = '#565f89',  -- 非アクティブタブの文字色
+      bg_color = '#292e42',  -- Inactive tab background color
+      fg_color = '#565f89',  -- Inactive tab foreground color
     },
     inactive_tab_hover = {
-      bg_color = '#3b4261',  -- ホバー時の背景色
-      fg_color = '#c0caf5',  -- ホバー時の文字色
+      bg_color = '#3b4261',  -- Hover background color
+      fg_color = '#c0caf5',  -- Hover foreground color
     },
   },
 }
 
 -- ========================================
--- キーバインド設定
+-- Key bindings settings
 -- ========================================
 
--- リーダーキー: Ctrl+g
+-- Leader key: Ctrl+g
 config.leader = { key = 'g', mods = 'CTRL', timeout_milliseconds = 1000 }
 
 config.keys = {
-  -- リーダーキー + r: 設定のリロード
+  -- Leader + r: Reload configuration
   {
     key = 'r',
     mods = 'LEADER',
     action = wezterm.action.ReloadConfiguration,
   },
 
-  -- ペイン分割
+  -- Pane splitting
   {
     key = '5',
     mods = 'LEADER',
@@ -104,7 +104,7 @@ config.keys = {
     action = wezterm.action.SplitVertical({ domain = 'CurrentPaneDomain' }),
   },
 
-  -- ペイン移動（Vim風: h,j,k,l）
+  -- Pane navigation (Vim-style: h,j,k,l)
   {
     key = 'h',
     mods = 'LEADER',
@@ -126,7 +126,7 @@ config.keys = {
     action = wezterm.action.ActivatePaneDirection('Right'),
   },
 
-  -- ペインリサイズ（Ctrl+h,j,k,l）
+  -- Pane resize (Ctrl+h,j,k,l)
   {
     key = 'h',
     mods = 'LEADER|CTRL',
@@ -148,7 +148,7 @@ config.keys = {
     action = wezterm.action.AdjustPaneSize({ 'Right', 5 }),
   },
 
-  -- ウィンドウ（タブ）移動（Option+Left/Right）
+  -- Window (tab) navigation (Option+Left/Right)
   {
     key = 'LeftArrow',
     mods = 'OPT',
@@ -160,56 +160,56 @@ config.keys = {
     action = wezterm.action.ActivateTabRelative(1),
   },
 
-  -- 新規ウィンドウ（タブ）作成（Option+Enter）
+  -- Create new window (tab) (Option+Enter)
   {
     key = 'Enter',
     mods = 'OPT',
     action = wezterm.action.SpawnTab('CurrentPaneDomain'),
   },
 
-  -- ペイン削除（x）
+  -- Close pane (x)
   {
     key = 'x',
     mods = 'LEADER',
     action = wezterm.action.CloseCurrentPane({ confirm = true }),
   },
 
-  -- ウィンドウ（タブ）削除（X）
+  -- Close window (tab) (X)
   {
     key = 'X',
     mods = 'LEADER|SHIFT',
     action = wezterm.action.CloseCurrentTab({ confirm = true }),
   },
 
-  -- ペインのズーム切り替え（tmuxのzoom機能）
+  -- Toggle pane zoom (tmux zoom feature)
   {
     key = 'z',
     mods = 'LEADER',
     action = wezterm.action.TogglePaneZoomState,
   },
 
-  -- コピーモード（Leader+v）
+  -- Copy mode (Leader+v)
   {
     key = 'v',
     mods = 'LEADER',
     action = wezterm.action.ActivateCopyMode,
   },
 
-  -- フルスクリーン切り替え（Ctrl+g → f）
+  -- Toggle fullscreen (Ctrl+g → f)
   {
     key = 'f',
     mods = 'LEADER',
     action = wezterm.action.ToggleFullScreen,
   },
 
-  -- macOS標準のフルスクリーン（Cmd+Ctrl+f でも可）
+  -- macOS native fullscreen (Cmd+Ctrl+f also works)
   {
     key = 'f',
     mods = 'CMD|CTRL',
     action = wezterm.action.ToggleFullScreen,
   },
 
-  -- ペインの同期（tmuxのsynchronize-panes）
+  -- Synchronize panes (tmux synchronize-panes)
   {
     key = 'e',
     mods = 'LEADER',
@@ -220,7 +220,7 @@ config.keys = {
 }
 
 -- ========================================
--- コピーモード（Vi風キーバインド）
+-- Copy mode (Vi-style key bindings)
 -- ========================================
 
 config.key_tables = {
@@ -228,31 +228,31 @@ config.key_tables = {
     { key = 'Escape', mods = 'NONE', action = wezterm.action.CopyMode('Close') },
     { key = 'q', mods = 'NONE', action = wezterm.action.CopyMode('Close') },
 
-    -- 移動
+    -- Navigation
     { key = 'h', mods = 'NONE', action = wezterm.action.CopyMode('MoveLeft') },
     { key = 'j', mods = 'NONE', action = wezterm.action.CopyMode('MoveDown') },
     { key = 'k', mods = 'NONE', action = wezterm.action.CopyMode('MoveUp') },
     { key = 'l', mods = 'NONE', action = wezterm.action.CopyMode('MoveRight') },
 
-    -- 単語移動
+    -- Word navigation
     { key = 'w', mods = 'NONE', action = wezterm.action.CopyMode('MoveForwardWord') },
     { key = 'b', mods = 'NONE', action = wezterm.action.CopyMode('MoveBackwardWord') },
 
-    -- 行頭/行末
+    -- Beginning/end of line
     { key = '0', mods = 'NONE', action = wezterm.action.CopyMode('MoveToStartOfLine') },
     { key = '$', mods = 'SHIFT', action = wezterm.action.CopyMode('MoveToEndOfLineContent') },
 
-    -- ページ移動
+    -- Page navigation
     { key = 'g', mods = 'NONE', action = wezterm.action.CopyMode('MoveToScrollbackTop') },
     { key = 'G', mods = 'SHIFT', action = wezterm.action.CopyMode('MoveToScrollbackBottom') },
     { key = 'u', mods = 'CTRL', action = wezterm.action.CopyMode('PageUp') },
     { key = 'd', mods = 'CTRL', action = wezterm.action.CopyMode('PageDown') },
 
-    -- 選択開始
+    -- Start selection
     { key = 'v', mods = 'NONE', action = wezterm.action.CopyMode({ SetSelectionMode = 'Cell' }) },
     { key = 'V', mods = 'SHIFT', action = wezterm.action.CopyMode({ SetSelectionMode = 'Line' }) },
 
-    -- コピー（yでクリップボードにコピー）
+    -- Copy (copy to clipboard with y)
     {
       key = 'y',
       mods = 'NONE',
@@ -273,20 +273,20 @@ config.key_tables = {
 }
 
 -- ========================================
--- タブバーのフォーマット設定（tmux風）
+-- Tab bar format settings (tmux-style)
 -- ========================================
 
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
   local title = tab.active_pane.title
   local index = tab.tab_index
 
-  -- プロセス名を取得（例: zsh, vim, htop）
+  -- Get process name (e.g. zsh, vim, htop)
   local process_name = title:match('([^/]+)$') or title
 
-  -- tmux風のフォーマット: "番号:プロセス名"
+  -- tmux-style format: "number:process_name"
   local tab_title = string.format('%d:%s', index, process_name)
 
-  -- アクティブなタブには * を付ける
+  -- Add * to active tabs
   if tab.is_active then
     tab_title = tab_title .. '*'
   end
@@ -297,18 +297,18 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
 end)
 
 -- ========================================
--- ステータスバー設定
+-- Status bar settings
 -- ========================================
 
 wezterm.on('update-right-status', function(window, pane)
-  -- ホスト名とペイン情報（tmuxのステータスバー左側を再現）
+  -- Hostname and pane info (replicating tmux status bar left side)
   local hostname = wezterm.hostname()
   local pane_id = pane:pane_id()
 
-  -- 日時（tmuxのステータスバー右側を再現）
+  -- Date/time (replicating tmux status bar right side)
   local date = wezterm.strftime('%Y-%m-%d(%a) %H:%M')
 
-  -- ステータスバーに表示
+  -- Display in status bar
   window:set_left_status(wezterm.format({
     { Text = hostname .. ':[' .. pane_id .. '] ' },
   }))
@@ -319,15 +319,15 @@ wezterm.on('update-right-status', function(window, pane)
 end)
 
 -- ========================================
--- その他の設定
+-- Other settings
 -- ========================================
 
--- スクロールバック行数
+-- Scrollback lines
 config.scrollback_lines = 10000
 
--- マウス設定
+-- Mouse settings
 config.mouse_bindings = {
-  -- 右クリックでペースト
+  -- Right-click to paste
   {
     event = { Down = { streak = 1, button = 'Right' } },
     mods = 'NONE',
@@ -335,17 +335,17 @@ config.mouse_bindings = {
   },
 }
 
--- デフォルトでのエスケープシーケンスのディレイを減らす
+-- Reduce escape sequence delay by default
 config.enable_csi_u_key_encoding = true
 
--- ターミナルタイプ
+-- Terminal type
 config.term = 'xterm-256color'
 
 -- ========================================
--- 起動時の設定
+-- Startup settings
 -- ========================================
 
--- ウィンドウを起動時に最大化
+-- Maximize window on startup
 wezterm.on('gui-startup', function(cmd)
   local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
   window:gui_window():maximize()

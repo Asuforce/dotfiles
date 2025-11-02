@@ -1,40 +1,40 @@
--- Hammerspoon設定ファイル
--- WezTermのグローバルホットキー設定
+-- Hammerspoon configuration file
+-- WezTerm global hotkey configuration
 
 -- ========================================
--- WezTerm表示/非表示切り替え（Option+Space）
+-- Toggle WezTerm show/hide (Option+Space)
 -- ========================================
 
--- Option+SpaceでWezTermを前面表示/非表示
+-- Option+Space to show/hide WezTerm
 hs.hotkey.bind({"option"}, "space", function()
   local wezterm = hs.application.find("WezTerm")
 
   if wezterm then
-    -- WezTermが起動している場合
+    -- If WezTerm is running
     if wezterm:isFrontmost() then
-      -- 前面にある場合は非表示
+      -- Hide if in front
       wezterm:hide()
     else
-      -- 背面にある場合は前面に表示
+      -- Show if in background
       wezterm:activate()
     end
   else
-    -- WezTermが起動していない場合は起動
+    -- Launch WezTerm if not running
     hs.application.launchOrFocus("WezTerm")
   end
 end)
 
 -- ========================================
--- 設定リロード（Ctrl+Option+R）
+-- Reload configuration (Ctrl+Option+R)
 -- ========================================
 
 hs.hotkey.bind({"ctrl", "option"}, "r", function()
   hs.reload()
-  hs.alert.show("Hammerspoon設定をリロードしました")
+  hs.alert.show("Hammerspoon configuration reloaded")
 end)
 
 -- ========================================
--- 起動時のメッセージ
+-- Startup message
 -- ========================================
 
-hs.alert.show("Hammerspoon起動完了")
+hs.alert.show("Hammerspoon startup complete")
