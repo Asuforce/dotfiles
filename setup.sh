@@ -44,13 +44,25 @@ if ! type rustup > /dev/null 2>&1; then
   curl https://sh.rustup.rs -sSf | sh -s -- -y
 fi
 
-# Setup dotfiles
-readonly LINK_DOT_FILES=(tmux.conf zshrc zshenv tigrc wezterm.lua)
-for file in "${LINK_DOT_FILES[@]}"
+# Link zsh config
+readonly ZSH_CONFIG_FILES=(zshrc zshenv)
+for file in "${ZSH_CONFIG_FILES[@]}"
 do
   dest_file="$HOME/.$file"
-  [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/.$file" "$dest_file"
+  [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/zsh/$file" "$dest_file"
 done
+
+# Link tmux config
+readonly TMUX_CONFIG_FILE="$HOME/.tmux.conf"
+[ ! -e "$TMUX_CONFIG_FILE" ] && ln -fs "$REPO_DIR/tmux/tmux.conf" "$TMUX_CONFIG_FILE"
+
+# Link tig config
+readonly TIG_CONFIG_FILE="$HOME/.tigrc"
+[ ! -e "$TIG_CONFIG_FILE" ] && ln -fs "$REPO_DIR/tig/tigrc" "$TIG_CONFIG_FILE"
+
+# Link wezterm config
+readonly WEZTERM_CONFIG_FILE="$HOME/.wezterm.lua"
+[ ! -e "$WEZTERM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/wezterm/wezterm.lua" "$WEZTERM_CONFIG_FILE"
 
 # Link gitfiles
 readonly GIT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/git"
@@ -94,8 +106,7 @@ readonly SSH_DIR="$HOME/.ssh"
 if [ ! -d "$SSH_DIR" ]; then
   mkdir -p "$SSH_DIR/conf.d"
   chmod -R 700 "$SSH_DIR"
-  cp "$REPO_DIR/ssh_config" "$SSH_DIR/ssh_config"
-  cp "$REPO_DIR/config" "$SSH_DIR/config"
+  cp "$REPO_DIR/ssh/config" "$SSH_DIR/config"
 fi
 
 # Link karabiner-elements config
@@ -117,7 +128,7 @@ fi
 readonly HAMMERSPOON_DIR="$HOME/.hammerspoon"
 [ ! -d "$HAMMERSPOON_DIR" ] && mkdir "$HAMMERSPOON_DIR"
 readonly HAMMERSPOON_FILE="$HAMMERSPOON_DIR/init.lua"
-[ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/.hammerspoon/init.lua" "$HAMMERSPOON_FILE"
+[ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/hammerspoon/init.lua" "$HAMMERSPOON_FILE"
 
 # Restart shell
 exec "$SHELL" -l
