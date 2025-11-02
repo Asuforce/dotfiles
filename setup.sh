@@ -44,14 +44,6 @@ if ! type rustup > /dev/null 2>&1; then
   curl https://sh.rustup.rs -sSf | sh -s -- -y
 fi
 
-# Install rust packages
-while read -r pkg opt
-do
-  if [ ! -e "$HOME/.cargo/bin/$opt" ]; then
-    "$HOME/.cargo/bin/cargo" install "$pkg"
-  fi
-done < "$REPO_DIR/cargo.txt"
-
 # Setup dotfiles
 readonly LINK_DOT_FILES=(tmux.conf vimrc zshrc zshenv tigrc wezterm.lua)
 for file in "${LINK_DOT_FILES[@]}"
