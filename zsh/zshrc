@@ -148,8 +148,8 @@ alias ls='eza -GF'
 alias ll='eza -l'
 alias la='eza -alh'
 
-# For vim
-alias vi='vim'
+# For nvim
+alias vi='nvim'
 
 # For git
 alias g='git'
