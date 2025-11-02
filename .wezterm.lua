@@ -12,7 +12,7 @@ end
 -- 外観設定
 -- ========================================
 
--- ウィンドウの透過設定（iTerm2の半透明を再現）
+-- ウィンドウの透過設定
 config.window_background_opacity = 0.7
 
 -- macOSのブラー効果
@@ -33,6 +33,14 @@ config.font = wezterm.font_with_fallback({
 })
 config.font_size = 14.0
 config.use_ime = true
+
+-- フォントレンダリング設定（文字をくっきり表示）
+config.freetype_load_target = 'Normal'
+config.freetype_render_target = 'HorizontalLcd'
+config.front_end = 'WebGpu'
+
+-- ハーフバイト機能でフォントの整形を最適化
+config.harfbuzz_features = { 'kern', 'liga' }
 
 -- ウィンドウ設定
 config.window_decorations = 'RESIZE'
