@@ -128,5 +128,19 @@ readonly HAMMERSPOON_DIR="$HOME/.hammerspoon"
 readonly HAMMERSPOON_FILE="$HAMMERSPOON_DIR/init.lua"
 [ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/hammerspoon/init.lua" "$HAMMERSPOON_FILE"
 
+# Link Claude Code config
+readonly CLAUDE_CONFIG_DIR="$HOME/.claude"
+[ ! -d "$CLAUDE_CONFIG_DIR" ] && mkdir -p "$CLAUDE_CONFIG_DIR"
+
+readonly DOTFILES_LLM="$REPO_DIR/llm"
+readonly CLAUDE_AGENTS_FILE="$CLAUDE_CONFIG_DIR/CLAUDE.md"
+[ ! -e "$CLAUDE_AGENTS_FILE" ] && ln -fs "$DOTFILES_LLM/AGENTS.md" "$CLAUDE_AGENTS_FILE"
+
+readonly CLAUDE_SETTINGS_FILE="$CLAUDE_CONFIG_DIR/settings.json"
+[ ! -e "$CLAUDE_SETTINGS_FILE" ] && ln -fs "$DOTFILES_LLM/settings.json" "$CLAUDE_SETTINGS_FILE"
+
+readonly CLAUDE_COMMANDS_DIR="$CLAUDE_CONFIG_DIR/commands"
+[ ! -e "$CLAUDE_COMMANDS_DIR" ] && ln -fs "$DOTFILES_LLM/commands" "$CLAUDE_COMMANDS_DIR"
+
 # Restart shell
 exec "$SHELL" -l

@@ -1,0 +1,3 @@
+- Speak in Japanese
+- Don't use emojis in your documents
+- Don't use excessive emphasis in your documents

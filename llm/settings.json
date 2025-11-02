@@ -1,0 +1,14 @@
+{
+  "model": "haiku",
+  "permissions": {
+    "allow": [
+      "List(*)",
+      "Read(**)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(rg:*)",
+      "Bash(tree:*)"
+    ],
+    "deny": []
+  }
+}
