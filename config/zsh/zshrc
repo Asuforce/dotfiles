@@ -1,9 +1,47 @@
-# Auto compile
+################################################################################
+# Initialization & Performance
+################################################################################
+
+# Auto compile zshrc for faster startup
 if [[ ~/.zshrc -nt ~/.zshrc.zwc ]]; then
   zcompile ~/.zshrc
 fi
 
-# Load kube-ps1 if available
+
+################################################################################
+# Environment Variables
+################################################################################
+
+export EDITOR=nvim
+export GOPATH="$HOME/dev"
+export GO111MODULE=on
+
+# Homebrew PATH configuration (ARM64 and Intel support)
+if [[ "$(uname -m)" == "arm64" ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+  export PATH="/opt/homebrew/sbin:$PATH"
+else
+  export PATH="/usr/local/bin:$PATH"
+  export PATH="/usr/local/sbin:$PATH"
+fi
+
+# Go binaries
+export PATH="$PATH:$GOPATH/bin"
+
+# Curl binary path
+if [[ -d /usr/local/opt/curl ]]; then
+  export PATH="/usr/local/opt/curl/bin:$PATH"
+fi
+
+# Deduplicating path entries
+typeset -U path cdpath fpath manpath
+
+
+################################################################################
+# Plugin Configuration
+################################################################################
+
+# Load kube-ps1 for Kubernetes context in prompt
 local kube_ps1_paths=(
   /opt/homebrew/opt/kube-ps1/share/kube-ps1.sh    # Apple Silicon
   /usr/local/opt/kube-ps1/share/kube-ps1.sh       # Intel
@@ -15,25 +53,108 @@ for kube_ps1_path in "${kube_ps1_paths[@]}"; do
   fi
 done
 
-# Zsh plugin conf
+# Minimal prompt theme configuration
 MNML_PROMPT=(mnml_ssh 'mnml_cwd 0 0' mnml_status mnml_keymap kube_ps1 mnml_git)
 MNML_RPROMPT=('')
 MNML_USER_CHAR='#'
 MNML_INSERT_CHAR='>'
 
-# Load sheldon plugins
+# Load sheldon plugin manager
 eval "$(sheldon source)"
 
-# Export brew bin path
-if [[ "$(uname -m)" == "arm64" ]]; then
-  export PATH="/opt/homebrew/bin:$PATH"
-  export PATH="/opt/homebrew/sbin:$PATH"
-else
-  export PATH="/usr/local/bin:$PATH"
-  export PATH="/usr/local/sbin:$PATH"
-fi
+# Color support
+autoload -Uz colors
 
-# Notify (disabled by default, enable with ZSHRC_NOTIFY=1)
+# Direnv integration
+eval "$(direnv hook zsh)"
+
+# Mise language runtime manager (lazy loaded)
+eval "$(mise activate zsh --shims)"
+
+
+################################################################################
+# History Configuration
+################################################################################
+
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+setopt HIST_IGNORE_DUPS        # Ignore duplicate commands
+setopt HIST_IGNORE_ALL_DUPS    # Remove duplicates from history
+setopt HIST_IGNORE_SPACE       # Don't record commands starting with space
+setopt HIST_FIND_NO_DUPS       # Don't display duplicates when searching
+setopt HIST_REDUCE_BLANKS      # Remove blank lines from history
+setopt HIST_NO_STORE           # Don't store history command in history
+setopt SHARE_HISTORY           # Share history among shell sessions
+
+
+################################################################################
+# Completion Configuration
+################################################################################
+
+# Case-insensitive and substring completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# Ignore parent directories in completion
+zstyle ':completion:*' ignore-parents parent pwd ..
+
+# Process name completion for ps command
+zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
+
+# Word delimiter configuration
+autoload -Uz select-word-style
+select-word-style default
+
+
+################################################################################
+# Zsh Options
+################################################################################
+
+# Display Japanese filenames correctly
+setopt print_eight_bit
+
+# Disable beep on errors
+setopt no_beep
+
+# Disable flow control (Ctrl+S/Ctrl+Q)
+setopt no_flow_control
+
+# Do not exit on Ctrl+D
+setopt ignore_eof
+
+# Treat text after '#' as comments
+setopt interactive_comments
+
+# Change directory without 'cd' command
+setopt auto_cd
+
+# Automatically push directory on 'cd'
+setopt auto_pushd
+
+# Don't add duplicate directories to stack
+setopt pushd_ignore_dups
+
+# Enable extended glob patterns
+setopt extended_glob
+
+
+################################################################################
+# Keybindings
+################################################################################
+
+# Emacs keybindings
+bindkey -e
+
+# Incremental history search
+bindkey '^R' history-incremental-pattern-search-backward
+
+################################################################################
+# Notification System
+################################################################################
+
+# Display notification when long-running command finishes
+# Enable with: ZSHRC_NOTIFY=1
 notify_precmd() {
   if [[ "$ZSHRC_NOTIFY" != "1" ]]; then
     return
@@ -61,179 +182,12 @@ autoload -Uz add-zsh-hook
 add-zsh-hook preexec store_command
 add-zsh-hook precmd notify_precmd
 
-# Change colors
-autoload -Uz colors
 
-# Configure for history
-HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=1000000
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_FIND_NO_DUPS
-setopt HIST_REDUCE_BLANKS
-setopt HIST_NO_STORE
-setopt SHARE_HISTORY
+################################################################################
+# Custom Functions
+################################################################################
 
-export EDITOR=nvim
-
-# Specify word delimiter
-autoload -Uz select-word-style
-select-word-style default
-
-# Match lowercase letters or capital letters in completion
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# After ../ do not complement the directory that is now
-zstyle ':completion:*' ignore-parents parent pwd ..
-
-# Process name completion of ps command
-zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
-
-# Options
-# Make Japanese filename displayable
-setopt print_eight_bit
-
-# Disable beep
-setopt no_beep
-
-# Disable flow control
-setopt no_flow_control
-
-# Do not quit zsh with Ctrl + D
-setopt ignore_eof
-
-# Treat after '#' as comment
-setopt interactive_comments
-
-# Cd by directory name alone
-setopt auto_cd
-
-# Automatically pushd after cd
-setopt auto_pushd
-
-# Do not add duplicate directory name
-setopt pushd_ignore_dups
-
-# Use advanced wildcard deployment
-setopt extended_glob
-
-# Make wildcard available with * when ^ R search history search
-bindkey '^R' history-incremental-pattern-search-backward
-
-# Control type of ctrl
-bindkey -e
-
-# Query overwrite file
-# @system
-alias cp='cp -i'
-# @system
-alias mv='mv -i'
-# @system
-alias mkdir='mkdir -p'
-
-# For eza alias & shortcut
-# @system
-alias ls='eza -GF'
-# @system
-alias ll='eza -l'
-# @system
-alias la='eza -alh'
-
-# For nvim
-# @system
-alias vi='nvim'
-
-# For git
-# @git
-alias g='git'
-
-# For brew
-# @brew
-alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --display-times && brew upgrade --cask'
-
-# For Docker
-# @docker
-alias de='docker exec'
-# @docker
-alias d-c='docker-compose'
-
-# For kubectl
-# @kubectl
-alias k='kubectl'
-# @kubectl
-alias kg='kubectl get'
-# @kubectl
-alias kc='kubectx'
-# @kubectl
-alias kn='kubens'
-# @kubectl
-alias kv='k9s'
-
-# For reset
-# @system
-alias re='exec $SHELL -l'
-
-# for fzf
-fzf-z-search() {
-  local res=$(z | sort -rn | cut -c 12- | fzf)
-  if [[ -n "$res" ]]; then
-    BUFFER+="cd $res"
-    zle accept-line
-  else
-    return 1
-  fi
-}
-zle -N fzf-z-search
-bindkey '^v' fzf-z-search
-
-fzf-src() {
-  local selected_dir=$(ghq list -p | fzf --query "$LBUFFER")
-  if [[ -n "$selected_dir" ]]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
-}
-zle -N fzf-src
-bindkey '^j' fzf-src
-
-fzf-history() {
-  BUFFER=$(fc -l -r 1 | awk '{$1=""; print substr($0,2)}' | uniq | fzf)
-  CURSOR=$#BUFFER
-}
-zle -N fzf-history
-bindkey '^]' fzf-history
-
-git-branch-fzf() {
-  local selected_branch=$(git for-each-ref --format='%(refname)' --sort=-committerdate refs/heads | perl -pne 's{^refs/heads/}{}' | fzf --query "$LBUFFER")
-
-  if [[ -n "$selected_branch" ]]; then
-    BUFFER="git checkout ${selected_branch}"
-    zle accept-line
-  fi
-
-  zle reset-prompt
-}
-
-zle -N git-branch-fzf
-bindkey "^[" git-branch-fzf
-
-tree-fzf() {
-  local SELECTED_FILE=$(tree --charset=o -f | fzf --query "$LBUFFER" | tr -d '\||`|-' | xargs echo)
-
-  if [[ -n "$SELECTED_FILE" ]]; then
-    BUFFER="$EDITOR $SELECTED_FILE"
-    zle accept-line
-  fi
-
-  zle reset-prompt
-}
-
-zle -N tree-fzf
-bindkey "^t" tree-fzf
-
-# For ssh
+# SSH with terminal color background change
 set_term_bgcolor() {
   local R=${1}*65535/255
   local G=${2}*65535/255
@@ -250,24 +204,11 @@ EOF
 
 myssh() {
   set_term_bgcolor 0 0 30
-  \ssh "$@"
+  \\ssh "$@"
   set_term_bgcolor 0 0 0
 }
 
-# @system
-alias ssh='myssh'
-
-# For vscode
-# @system
-alias e='code -r'
-
-# For gnu-sed
-if [[ "$(uname)" == "Darwin" ]]; then
-  # @system
-  alias sed='gsed'
-fi
-
-# Alias management function
+# Manage and display aliases by category
 aliases() {
   local file="$HOME/.zshrc"
   if [[ -z "${1:-}" ]]; then
@@ -279,23 +220,143 @@ aliases() {
   fi
 }
 
-# For direnv
-eval "$(direnv hook zsh)"
 
-# For mise (lazy load)
-eval "$(mise activate zsh --shims)"
+################################################################################
+# FZF Integration Functions
+################################################################################
 
-# For curl
-if [[ -d /usr/local/opt/curl ]]; then
-  export PATH="/usr/local/opt/curl/bin:$PATH"
+# Search z directory history with fzf
+# Keybinding: Ctrl+v
+fzf-z-search() {
+  local res=$(z | sort -rn | cut -c 12- | fzf)
+  if [[ -n "$res" ]]; then
+    BUFFER+="cd $res"
+    zle accept-line
+  else
+    return 1
+  fi
+}
+zle -N fzf-z-search
+bindkey '^v' fzf-z-search
+
+# Search ghq repositories with fzf
+# Keybinding: Ctrl+j
+fzf-src() {
+  local selected_dir=$(ghq list -p | fzf --query "$LBUFFER")
+  if [[ -n "$selected_dir" ]]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+}
+zle -N fzf-src
+bindkey '^j' fzf-src
+
+# Search command history with fzf
+# Keybinding: Ctrl+]
+fzf-history() {
+  BUFFER=$(fc -l -r 1 | awk '{$1=""; print substr($0,2)}' | uniq | fzf)
+  CURSOR=$#BUFFER
+}
+zle -N fzf-history
+bindkey '^]' fzf-history
+
+# Search and checkout git branches with fzf
+# Keybinding: Ctrl+[
+git-branch-fzf() {
+  local selected_branch=$(git for-each-ref --format='%(refname)' --sort=-committerdate refs/heads | perl -pne 's{^refs/heads/}{}' | fzf --query "$LBUFFER")
+
+  if [[ -n "$selected_branch" ]]; then
+    BUFFER="git checkout ${selected_branch}"
+    zle accept-line
+  fi
+
+  zle reset-prompt
+}
+
+zle -N git-branch-fzf
+bindkey "^[" git-branch-fzf
+
+# Search and open files with tree and fzf
+# Keybinding: Ctrl+t
+tree-fzf() {
+  local SELECTED_FILE=$(tree --charset=o -f | fzf --query "$LBUFFER" | tr -d '\||`|-' | xargs echo)
+
+  if [[ -n "$SELECTED_FILE" ]]; then
+    BUFFER="$EDITOR $SELECTED_FILE"
+    zle accept-line
+  fi
+
+  zle reset-prompt
+}
+
+zle -N tree-fzf
+bindkey "^t" tree-fzf
+
+
+################################################################################
+# Aliases (Categorized)
+################################################################################
+
+# System utilities
+# @system
+alias cp='cp -i'
+# @system
+alias mv='mv -i'
+# @system
+alias mkdir='mkdir -p'
+
+# File listing with eza
+# @system
+alias ls='eza -GF'
+# @system
+alias ll='eza -l'
+# @system
+alias la='eza -alh'
+
+# Editor
+# @system
+alias vi='nvim'
+
+# Git
+# @git
+alias g='git'
+
+# Homebrew
+# @brew
+alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --display-times && brew upgrade --cask'
+
+# Docker
+# @docker
+alias de='docker exec'
+# @docker
+alias d-c='docker-compose'
+
+# Kubernetes
+# @kubectl
+alias k='kubectl'
+# @kubectl
+alias kg='kubectl get'
+# @kubectl
+alias kc='kubectx'
+# @kubectl
+alias kn='kubens'
+# @kubectl
+alias kv='k9s'
+
+# Shell management
+# @system
+alias re='exec $SHELL -l'
+
+# SSH wrapper (with iTerm2 background color)
+# @system
+alias ssh='myssh'
+
+# VSCode
+# @system
+alias e='code -r'
+
+# GNU sed on macOS
+if [[ "$(uname)" == "Darwin" ]]; then
+  # @system
+  alias sed='gsed'
 fi
-
-# Do not register duplicate paths
-typeset -U path cdpath fpath manpath
-
-# for go
-export GOPATH="$HOME/dev"
-export PATH="$PATH:$GOPATH/bin"
-export GO111MODULE=on
-
-
