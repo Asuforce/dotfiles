@@ -19,18 +19,18 @@ printf "Linking Zsh config files...\n"
 readonly ZSH_CONFIG_FILES=(zshrc zshenv)
 for file in "${ZSH_CONFIG_FILES[@]}"; do
   dest_file="$HOME/.$file"
-  [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/zsh/$file" "$dest_file"
+  [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/config/zsh/$file" "$dest_file"
 done
 
 # Link tig config
 printf "Linking Tig config...\n"
 readonly TIG_CONFIG_FILE="$HOME/.tigrc"
-[ ! -e "$TIG_CONFIG_FILE" ] && ln -fs "$REPO_DIR/tig/tigrc" "$TIG_CONFIG_FILE"
+[ ! -e "$TIG_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/tig/tigrc" "$TIG_CONFIG_FILE"
 
 # Link wezterm config
 printf "Linking Wezterm config...\n"
 readonly WEZTERM_CONFIG_FILE="$HOME/.wezterm.lua"
-[ ! -e "$WEZTERM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/wezterm/wezterm.lua" "$WEZTERM_CONFIG_FILE"
+[ ! -e "$WEZTERM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/wezterm/wezterm.lua" "$WEZTERM_CONFIG_FILE"
 
 # Link git config files
 printf "Linking Git config files...\n"
@@ -40,14 +40,14 @@ readonly GIT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/git"
 readonly LINK_GIT_FILES=(config ignore)
 for file in "${LINK_GIT_FILES[@]}"; do
   dest_file="$GIT_DIR/$file"
-  [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/git/$file" "$dest_file"
+  [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/config/git/$file" "$dest_file"
 done
 
 # Copy git user config files (not symlinked)
 readonly COPY_DOT_FILES=(.gitconfig .gitconfig-work)
 for file in "${COPY_DOT_FILES[@]}"; do
   dest_file="$HOME/$file"
-  [ ! -e "$dest_file" ] && cp "$REPO_DIR/git/$file" "$dest_file"
+  [ ! -e "$dest_file" ] && cp "$REPO_DIR/config/git/$file" "$dest_file"
 done
 
 # Link Neovim config
@@ -55,14 +55,14 @@ printf "Linking Neovim config...\n"
 readonly NVIM_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
 [ ! -d "$NVIM_CONFIG_DIR" ] && mkdir -p "$NVIM_CONFIG_DIR"
 readonly NVIM_CONFIG_FILE="$NVIM_CONFIG_DIR/init.lua"
-[ ! -e "$NVIM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/nvim/init.lua" "$NVIM_CONFIG_FILE"
+[ ! -e "$NVIM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/nvim/init.lua" "$NVIM_CONFIG_FILE"
 
 # Link Sheldon config
 printf "Linking Sheldon config...\n"
 readonly SHELDON_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon"
 [ ! -d "$SHELDON_CONFIG_DIR" ] && mkdir -p "$SHELDON_CONFIG_DIR"
 readonly SHELDON_PLUGINS_FILE="$SHELDON_CONFIG_DIR/plugins.toml"
-[ ! -e "$SHELDON_PLUGINS_FILE" ] && ln -fs "$REPO_DIR/sheldon/plugins.toml" "$SHELDON_PLUGINS_FILE"
+[ ! -e "$SHELDON_PLUGINS_FILE" ] && ln -fs "$REPO_DIR/config/sheldon/plugins.toml" "$SHELDON_PLUGINS_FILE"
 
 # Set default shell to Zsh
 printf "Setting default shell to Zsh...\n"
@@ -78,7 +78,7 @@ readonly SSH_DIR="$HOME/.ssh"
 if [ ! -d "$SSH_DIR" ]; then
   mkdir -p "$SSH_DIR/conf.d"
   chmod -R 700 "$SSH_DIR"
-  cp "$REPO_DIR/ssh/config" "$SSH_DIR/config"
+  cp "$REPO_DIR/config/ssh/config" "$SSH_DIR/config"
 fi
 
 # Link Karabiner config
@@ -86,7 +86,7 @@ printf "Linking Karabiner config...\n"
 readonly KARABINER_DIR="$HOME/.config/karabiner"
 [ ! -d "$KARABINER_DIR" ] && mkdir -p "$KARABINER_DIR"
 readonly KARABINER_CONFIG_FILE="$KARABINER_DIR/karabiner.json"
-[ ! -e "$KARABINER_CONFIG_FILE" ] && ln -fs "$REPO_DIR/karabiner/karabiner.json" "$KARABINER_CONFIG_FILE"
+[ ! -e "$KARABINER_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/karabiner/karabiner.json" "$KARABINER_CONFIG_FILE"
 
 # Link diff-highlight
 printf "Linking diff-highlight...\n"
@@ -106,6 +106,6 @@ printf "Linking Hammerspoon config...\n"
 readonly HAMMERSPOON_DIR="$HOME/.hammerspoon"
 [ ! -d "$HAMMERSPOON_DIR" ] && mkdir "$HAMMERSPOON_DIR"
 readonly HAMMERSPOON_FILE="$HAMMERSPOON_DIR/init.lua"
-[ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/hammerspoon/init.lua" "$HAMMERSPOON_FILE"
+[ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/config/hammerspoon/init.lua" "$HAMMERSPOON_FILE"
 
 printf "All symlinks created successfully.\n"
