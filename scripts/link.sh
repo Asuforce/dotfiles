@@ -93,14 +93,6 @@ printf "Linking diff-highlight...\n"
 readonly DIFF_HIGHLIGHT_FILE="$BREW_DIR/bin/diff-highlight"
 [ ! -f "$DIFF_HIGHLIGHT_FILE" ] && ln -s "$BREW_DIR/share/git-core/contrib/diff-highlight/diff-highlight" "$DIFF_HIGHLIGHT_FILE"
 
-# Install Tmux Plugin Manager (tpm)
-printf "Installing Tmux Plugin Manager...\n"
-readonly TPM_DIR="$HOME/.tmux/plugins/tpm"
-if [ ! -d "$TPM_DIR" ]; then
-  mkdir -p "$TPM_DIR"
-  git clone https://github.com/tmux-plugins/tpm.git "$TPM_DIR"
-fi
-
 # Link Hammerspoon config
 printf "Linking Hammerspoon config...\n"
 readonly HAMMERSPOON_DIR="$HOME/.hammerspoon"

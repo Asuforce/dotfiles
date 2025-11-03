@@ -33,22 +33,6 @@ else
   export PATH="/usr/local/sbin:$PATH"
 fi
 
-# Auto load tmux (disabled by default, enable with TMUX_AUTO_LAUNCH=1)
-if [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" != "vscode" ]] && [[ "$TMUX_AUTO_LAUNCH" == "1" ]]; then
-  local ls="$(tmux list-sessions 2>/dev/null)"
-  if [[ -z "$ls" ]]; then
-    tmux new-session
-  else
-    local create_new_session="Create New Session"
-    local ID=$(printf "%s\n%s:\n" "$ls" "$create_new_session" | fzf | cut -d: -f1)
-    if [[ "$ID" == "$create_new_session" ]]; then
-      tmux new-session
-    elif [[ -n "$ID" ]]; then
-      tmux attach-session -t "$ID"
-    fi
-  fi
-fi
-
 # Notify (disabled by default, enable with ZSHRC_NOTIFY=1)
 notify_precmd() {
   if [[ "$ZSHRC_NOTIFY" != "1" ]]; then
