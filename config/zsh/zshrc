@@ -142,36 +142,53 @@ bindkey '^R' history-incremental-pattern-search-backward
 bindkey -e
 
 # Query overwrite file
+# @system
 alias cp='cp -i'
+# @system
 alias mv='mv -i'
+# @system
 alias mkdir='mkdir -p'
 
 # For eza alias & shortcut
+# @system
 alias ls='eza -GF'
+# @system
 alias ll='eza -l'
+# @system
 alias la='eza -alh'
 
 # For nvim
+# @system
 alias vi='nvim'
 
 # For git
+# @git
 alias g='git'
 
 # For brew
+# @brew
 alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --display-times && brew upgrade --cask'
 
 # For Docker
+# @docker
 alias de='docker exec'
+# @docker
 alias d-c='docker-compose'
 
 # For kubectl
+# @kubectl
 alias k='kubectl'
+# @kubectl
 alias kg='kubectl get'
+# @kubectl
 alias kc='kubectx'
+# @kubectl
 alias kn='kubens'
+# @kubectl
 alias kv='k9s'
 
 # For reset
+# @system
 alias re='exec $SHELL -l'
 
 # for fzf
@@ -253,15 +270,30 @@ myssh() {
   set_term_bgcolor 0 0 0
 }
 
+# @system
 alias ssh='myssh'
 
 # For vscode
+# @system
 alias e='code -r'
 
 # For gnu-sed
 if [[ "$(uname)" == "Darwin" ]]; then
+  # @system
   alias sed='gsed'
 fi
+
+# Alias management function
+aliases() {
+  local file="$HOME/.zshrc"
+  if [[ -z "${1:-}" ]]; then
+    # Display all aliases with category
+    grep -B 1 "^alias [a-z]" "$file" | grep -v "^--$" | awk '/^# @/{tag=$0; next} {print tag " " $0}' | sed 's/# @//' | column -t
+  else
+    # Display aliases for specific category
+    grep -B 1 "^alias [a-z]" "$file" | grep -v "^--$" | awk "/^# @$1/{tag=1; next} /^# @/{tag=0} tag && /^alias/{print}" | column -t
+  fi
+}
 
 # For direnv
 eval "$(direnv hook zsh)"
