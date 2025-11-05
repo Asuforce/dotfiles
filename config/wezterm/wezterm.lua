@@ -12,7 +12,7 @@ end
 -- ========================================
 
 -- Window transparency settings
-config.window_background_opacity = 0.7
+config.window_background_opacity = 0.75
 
 -- macOS blur effect
 config.macos_window_background_blur = 0
