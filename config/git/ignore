@@ -17,5 +17,6 @@ blog.md
 CLAUDE.md
 .claude/
 .serena/
+.mise.toml
 
-**/.claude/settings.local.json
+**/.claude/
