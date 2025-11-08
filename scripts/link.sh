@@ -64,6 +64,12 @@ readonly SHELDON_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon"
 readonly SHELDON_PLUGINS_FILE="$SHELDON_CONFIG_DIR/plugins.toml"
 [ ! -e "$SHELDON_PLUGINS_FILE" ] && ln -fs "$REPO_DIR/config/sheldon/plugins.toml" "$SHELDON_PLUGINS_FILE"
 
+# Link Starship config
+printf "Linking Starship config...\n"
+readonly STARSHIP_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
+readonly STARSHIP_CONFIG_FILE="$STARSHIP_CONFIG_DIR/starship.toml"
+[ ! -e "$STARSHIP_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/starship/starship.toml" "$STARSHIP_CONFIG_FILE"
+
 # Set default shell to Zsh
 printf "Setting default shell to Zsh...\n"
 readonly ZSH_DIR="$BREW_DIR/bin/zsh"

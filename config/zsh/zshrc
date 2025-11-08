@@ -41,24 +41,6 @@ typeset -U path cdpath fpath manpath
 # Plugin Configuration
 ################################################################################
 
-# Load kube-ps1 for Kubernetes context in prompt
-local kube_ps1_paths=(
-  /opt/homebrew/opt/kube-ps1/share/kube-ps1.sh    # Apple Silicon
-  /usr/local/opt/kube-ps1/share/kube-ps1.sh       # Intel
-)
-for kube_ps1_path in "${kube_ps1_paths[@]}"; do
-  if [[ -f "$kube_ps1_path" ]]; then
-    source "$kube_ps1_path"
-    break
-  fi
-done
-
-# Minimal prompt theme configuration
-MNML_PROMPT=(mnml_ssh 'mnml_cwd 0 0' mnml_status mnml_keymap kube_ps1 mnml_git)
-MNML_RPROMPT=('')
-MNML_USER_CHAR='#'
-MNML_INSERT_CHAR='>'
-
 # Load sheldon plugin manager
 eval "$(sheldon source)"
 
