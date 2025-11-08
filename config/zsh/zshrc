@@ -133,6 +133,7 @@ bindkey -e
 # Incremental history search
 bindkey '^R' history-incremental-pattern-search-backward
 
+
 ################################################################################
 # Notification System
 ################################################################################
@@ -146,23 +147,6 @@ export AUTO_NOTIFY_IGNORE=("lazygit" "lazydocker" "btop" "viddy")
 # Notification format
 export AUTO_NOTIFY_TITLE="Command finished"
 export AUTO_NOTIFY_BODY="'%command' completed in %elapsed seconds"
-
-
-################################################################################
-# Custom Functions
-################################################################################
-
-# Manage and display aliases by category
-aliases() {
-  local file="$HOME/.zshrc"
-  if [[ -z "${1:-}" ]]; then
-    # Display all aliases with category
-    grep -B 1 "^alias [a-z]" "$file" | grep -v "^--$" | awk '/^# @/{tag=$0; next} {print tag " " $0}' | sed 's/# @//' | column -t
-  else
-    # Display aliases for specific category
-    grep -B 1 "^alias [a-z]" "$file" | grep -v "^--$" | awk "/^# @$1/{tag=1; next} /^# @/{tag=0} tag && /^alias/{print}" | column -t
-  fi
-}
 
 
 ################################################################################
@@ -241,6 +225,18 @@ bindkey "^t" tree-fzf
 # Aliases (Categorized)
 ################################################################################
 
+# Manage and display aliases by category
+aliases() {
+  local file="$HOME/.zshrc"
+  if [[ -z "${1:-}" ]]; then
+    # Display all aliases with category
+    grep -B 1 "^alias [a-z]" "$file" | grep -v "^--$" | awk '/^# @/{tag=$0; next} {print tag " " $0}' | sed 's/# @//' | column -t
+  else
+    # Display aliases for specific category
+    grep -B 1 "^alias [a-z]" "$file" | grep -v "^--$" | awk "/^# @$1/{tag=1; next} /^# @/{tag=0} tag && /^alias/{print}" | column -t
+  fi
+}
+
 # System utilities
 # @system
 alias cp='cp -i'
@@ -260,8 +256,6 @@ alias la='eza -alh'
 # File viewing with bat
 # @system
 alias cat='bat'
-# @system
-alias man='batman'
 
 # Editor
 # @system
