@@ -319,6 +319,26 @@ wezterm.on('update-right-status', function(window, pane)
 end)
 
 -- ========================================
+-- SSH background color change
+-- ========================================
+
+wezterm.on('update-status', function(window, pane)
+  local fg_process_name = pane:get_foreground_process_name()
+  local overrides = window:get_config_overrides() or {}
+
+  -- Change background color when SSH is running
+  if string.find(fg_process_name or '', 'ssh') then
+    overrides.colors = {
+      background = '#001e1e',  -- Darker background color for SSH sessions
+    }
+  else
+    overrides.colors = nil  -- Reset to default colors
+  end
+
+  window:set_config_overrides(overrides)
+end)
+
+-- ========================================
 -- Other settings
 -- ========================================
 

@@ -169,27 +169,6 @@ add-zsh-hook precmd notify_precmd
 # Custom Functions
 ################################################################################
 
-# SSH with terminal color background change
-set_term_bgcolor() {
-  local R=${1}*65535/255
-  local G=${2}*65535/255
-  local B=${3}*65535/255
-
-  /usr/bin/osascript <<EOF
-  tell application "iTerm2"
-    tell current session of current window
-      set background color to {$R, $G, $B}
-    end tell
-  end tell
-EOF
-}
-
-myssh() {
-  set_term_bgcolor 0 0 30
-  \\ssh "$@"
-  set_term_bgcolor 0 0 0
-}
-
 # Manage and display aliases by category
 aliases() {
   local file="$HOME/.zshrc"
@@ -334,10 +313,6 @@ alias kv='k9s'
 # Shell management
 # @system
 alias re='exec $SHELL -l'
-
-# SSH wrapper (with iTerm2 background color)
-# @system
-alias ssh='myssh'
 
 # VSCode
 # @system
