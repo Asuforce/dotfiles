@@ -17,7 +17,6 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 export EDITOR=nvim
 export GOPATH="$HOME/dev"
-export GO111MODULE=on
 
 # Homebrew PATH configuration (ARM64 and Intel support)
 if [[ "$(uname -m)" == "arm64" ]]; then
@@ -138,34 +137,15 @@ bindkey '^R' history-incremental-pattern-search-backward
 # Notification System
 ################################################################################
 
-# Display notification when long-running command finishes
-# Enable with: ZSHRC_NOTIFY=1
-notify_precmd() {
-  if [[ "$ZSHRC_NOTIFY" != "1" ]]; then
-    return
-  fi
+# Threshold for notifications (in seconds)
+export AUTO_NOTIFY_THRESHOLD=5
 
-  local prev_command_status=$?
+# Commands to exclude from notifications
+export AUTO_NOTIFY_IGNORE=("lazygit" "lazydocker" "btop" "viddy")
 
-  if [[ "${TTYIDLE:-0}" -gt 1 ]]; then
-    local notify_title
-    if [[ "$prev_command_status" -eq 0 ]]; then
-      notify_title="Command succeeded"
-    else
-      notify_title="Command failed"
-    fi
-    # Run in background to avoid blocking shell
-    osascript -e "display notification \"$prev_command\" with title \"$notify_title\"" &!
-  fi
-}
-
-store_command() {
-  prev_command=$2
-}
-
-autoload -Uz add-zsh-hook
-add-zsh-hook preexec store_command
-add-zsh-hook precmd notify_precmd
+# Notification format
+export AUTO_NOTIFY_TITLE="Command finished"
+export AUTO_NOTIFY_BODY="'%command' completed in %elapsed seconds"
 
 
 ################################################################################

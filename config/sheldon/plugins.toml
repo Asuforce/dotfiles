@@ -15,5 +15,8 @@ github = "zdharma-continuum/fast-syntax-highlighting"
 [plugins.zsh-you-should-use]
 github = "MichaelAquilina/zsh-you-should-use"
 
+[plugins.zsh-auto-notify]
+github = "MichaelAquilina/zsh-auto-notify"
+
 [plugins.starship]
 inline = 'eval "$(starship init zsh)"'
