@@ -23,7 +23,18 @@
 	navigate = true
 	side-by-side = true
 	line-numbers = true
-	syntax-theme = "OneDark"
+	syntax-theme = "OneHalfDark"
+	features = "line-numbers decorations"
+	whitespace-error-style = "22 reverse"
+	line-numbers-left-format = "{nm:>4}┊"
+	line-numbers-right-format = "{np:>4}│"
+	file-style = "bold yellow"
+	file-decoration-style = "none"
+	hunk-header-decoration-style = "blue box"
+	hunk-header-file-style = "red"
+	hunk-header-line-number-style = "#067a00"
+	plus-style = "syntax #003800"
+	minus-style = "syntax #3f0001"
 [merge]
 	conflictstyle = diff3
 [diff]
