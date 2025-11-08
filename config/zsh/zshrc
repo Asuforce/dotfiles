@@ -50,9 +50,6 @@ eval "$(zoxide init zsh)"
 # Color support
 autoload -Uz colors
 
-# Direnv integration
-eval "$(direnv hook zsh)"
-
 # Mise language runtime manager (lazy loaded)
 eval "$(mise activate zsh --shims)"
 
