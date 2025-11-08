@@ -16,7 +16,7 @@ fi
 
 # Link zsh config
 printf "Linking Zsh config files...\n"
-readonly ZSH_CONFIG_FILES=(zshrc zshenv)
+readonly ZSH_CONFIG_FILES=(zshrc)
 for file in "${ZSH_CONFIG_FILES[@]}"; do
   dest_file="$HOME/.$file"
   [ ! -e "$dest_file" ] && ln -fs "$REPO_DIR/config/zsh/$file" "$dest_file"

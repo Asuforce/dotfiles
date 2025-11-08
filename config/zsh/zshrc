@@ -12,6 +12,9 @@ fi
 # Environment Variables
 ################################################################################
 
+# XDG base directory specification
+export XDG_CONFIG_HOME="$HOME/.config"
+
 export EDITOR=nvim
 export GOPATH="$HOME/dev"
 export GO111MODULE=on
