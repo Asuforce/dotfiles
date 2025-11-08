@@ -313,6 +313,12 @@ alias kn='kubens'
 # @kubectl
 alias kv='k9s'
 
+# Lazy*
+# @lazygit
+alias lg='lazygit'
+# @lazydocker
+alias ld='lazydocker'
+
 # Shell management
 # @system
 alias re='exec $SHELL -l'
