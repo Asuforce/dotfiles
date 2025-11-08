@@ -1,7 +1,7 @@
 # Starship configuration
 # See: https://starship.rs/
 
-# 1行表示フォーマット
+# Single-line display format
 format = """
 $directory\
 $git_branch\
@@ -10,30 +10,27 @@ $kubernetes\
 $character
 """
 
-# 改行を追加しない
+# Do not add newline
 add_newline = false
 
-# ディレクトリ表示
 [directory]
 truncation_length = 0
 truncate_to_repo = false
 home_symbol = "~"
 format = "[$path]($style) "
-style = "bold cyan"
+style = "#808080"
 read_only = " "
 
-# Git ブランチ
 [git_branch]
 symbol = " "
 format = "[$symbol$branch]($style) "
-style = "bold purple"
+style = "green"
 truncation_length = 20
 truncation_symbol = "…"
 
-# Git ステータス
 [git_status]
 format = '([$all_status$ahead_behind]($style) )'
-style = "bold red"
+style = "yellow"
 conflicted = "🏳"
 ahead = "⇡${count}"
 behind = "⇣${count}"
@@ -45,14 +42,12 @@ staged = "+"
 renamed = "»"
 deleted = "✘"
 
-# Kubernetes
 [kubernetes]
 disabled = false
 format = '[\($context\)]($style) '
-style = "cyan bold"
+style = "cyan"
 
-# プロンプト文字
 [character]
-success_symbol = "[>](bold green)"
+success_symbol = "[>](white)"
 error_symbol = "[>](bold red)"
 vimcmd_symbol = "[<](bold green)"
