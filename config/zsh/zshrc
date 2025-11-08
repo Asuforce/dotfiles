@@ -62,6 +62,9 @@ MNML_INSERT_CHAR='>'
 # Load sheldon plugin manager
 eval "$(sheldon source)"
 
+# Zoxide initialization (smart directory jumper)
+eval "$(zoxide init zsh)"
+
 # Color support
 autoload -Uz colors
 
@@ -225,10 +228,10 @@ aliases() {
 # FZF Integration Functions
 ################################################################################
 
-# Search z directory history with fzf
+# Search zoxide directory history with fzf
 # Keybinding: Ctrl+v
 fzf-z-search() {
-  local res=$(z | sort -rn | cut -c 12- | fzf)
+  local res=$(zoxide query -l | sort -rn | fzf)
   if [[ -n "$res" ]]; then
     BUFFER+="cd $res"
     zle accept-line
@@ -312,6 +315,12 @@ alias ls='eza -GF'
 alias ll='eza -l'
 # @system
 alias la='eza -alh'
+
+# File viewing with bat
+# @system
+alias cat='bat'
+# @system
+alias man='batman'
 
 # Editor
 # @system

@@ -9,8 +9,8 @@ github = "zsh-users/zsh-autosuggestions"
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
 
-[plugins.z]
-github = "rupa/z"
+# [plugins.z] - Replaced by zoxide (managed in zshrc)
+# github = "rupa/z"
 
 [plugins.minimal]
 github = "subnixr/minimal"

@@ -100,4 +100,11 @@ readonly HAMMERSPOON_DIR="$HOME/.hammerspoon"
 readonly HAMMERSPOON_FILE="$HAMMERSPOON_DIR/init.lua"
 [ ! -f "$HAMMERSPOON_FILE" ] && ln -s "$REPO_DIR/config/hammerspoon/init.lua" "$HAMMERSPOON_FILE"
 
+# Link bat config
+printf "Linking bat config...\n"
+readonly BAT_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/bat"
+[ ! -d "$BAT_CONFIG_DIR" ] && mkdir -p "$BAT_CONFIG_DIR"
+readonly BAT_CONFIG_FILE="$BAT_CONFIG_DIR/config"
+[ ! -e "$BAT_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/bat/config" "$BAT_CONFIG_FILE"
+
 printf "All symlinks created successfully.\n"
