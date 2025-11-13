@@ -113,4 +113,11 @@ readonly BAT_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/bat"
 readonly BAT_CONFIG_FILE="$BAT_CONFIG_DIR/config"
 [ ! -e "$BAT_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/bat/config" "$BAT_CONFIG_FILE"
 
+# Link btop config
+printf "Linking btop config...\n"
+readonly BTOP_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/btop"
+[ ! -d "$BTOP_CONFIG_DIR" ] && mkdir -p "$BTOP_CONFIG_DIR"
+readonly BTOP_CONFIG_FILE="$BTOP_CONFIG_DIR/btop.conf"
+[ ! -e "$BTOP_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/btop/btop.conf" "$BTOP_CONFIG_FILE"
+
 printf "All symlinks created successfully.\n"
