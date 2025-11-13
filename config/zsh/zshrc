@@ -53,7 +53,7 @@ eval "$(zoxide init zsh)"
 autoload -Uz colors
 
 # Mise language runtime manager (lazy loaded)
-eval "$(mise activate zsh --shims)"
+eval "$(mise activate zsh)"
 
 
 ################################################################################
