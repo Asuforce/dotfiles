@@ -1,4 +1,4 @@
 [tools]
 python = "3.12.10"
 node = "24.10.0"
-ruby = "3.2.0"
+ruby = "3.4.7"
