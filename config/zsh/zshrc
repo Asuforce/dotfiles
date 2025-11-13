@@ -267,7 +267,7 @@ alias g='git'
 
 # Homebrew
 # @brew
-alias bu='env HOMEBREW_INSTALL_CLEANUP=1 brew upgrade --fetch-HEAD --display-times && brew upgrade --cask'
+alias bu='brew update && brew upgrade --display-times'
 
 # Docker
 # @docker
