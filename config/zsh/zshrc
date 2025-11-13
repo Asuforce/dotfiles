@@ -142,7 +142,7 @@ bindkey '^R' history-incremental-pattern-search-backward
 export AUTO_NOTIFY_THRESHOLD=5
 
 # Commands to exclude from notifications
-export AUTO_NOTIFY_IGNORE=("lazygit" "lazydocker" "btop" "viddy")
+export AUTO_NOTIFY_IGNORE=("lazygit" "lazydocker" "btop" "viddy" "cat" "nvim" "vi")
 
 # Notification format
 export AUTO_NOTIFY_TITLE="Command finished"
