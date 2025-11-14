@@ -44,7 +44,7 @@ deleted = "✘"
 
 [kubernetes]
 disabled = false
-format = '[\($context\)]($style) '
+format = '[\($context:$namespace\)]($style) '
 style = "cyan"
 
 [character]
