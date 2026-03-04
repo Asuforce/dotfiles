@@ -20,3 +20,5 @@ CLAUDE.md
 mise.toml
 
 **/.claude/
+
+.mise.toml
