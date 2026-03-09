@@ -48,8 +48,9 @@
 	cp = cherry-pick
 	df = diff
 	fe = fetch
-	st = status
 	me = merge
+	st = status
+	sw = switch
 
 	amend = commit --amend
 	bout = checkout -b
