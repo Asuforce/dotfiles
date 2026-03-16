@@ -43,6 +43,12 @@ typeset -U path cdpath fpath manpath
 # Plugin Configuration
 ################################################################################
 
+# Emacs keybindings (must be set before loading plugins so zsh-abbr can override Space)
+bindkey -e
+
+# zsh-abbr: use managed abbreviations file
+export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/zsh-abbr/abbreviations"
+
 # Load sheldon plugin manager
 eval "$(sheldon source)"
 
@@ -126,9 +132,6 @@ setopt extended_glob
 ################################################################################
 # Keybindings
 ################################################################################
-
-# Emacs keybindings
-bindkey -e
 
 # Incremental history search
 bindkey '^R' history-incremental-pattern-search-backward
@@ -222,10 +225,10 @@ bindkey "^t" tree-fzf
 
 
 ################################################################################
-# Aliases (Categorized)
+# Aliases & Abbreviations (Categorized)
 ################################################################################
 
-# Manage and display aliases by category
+# Manage and display aliases and abbreviations by category
 aliases() {
   local file="$HOME/.zshrc"
   if [[ -z "${1:-}" ]]; then
@@ -248,10 +251,6 @@ alias mkdir='mkdir -p'
 # File listing with eza
 # @system
 alias ls='eza -GF'
-# @system
-alias ll='eza -l'
-# @system
-alias la='eza -alh'
 
 # File viewing with bat
 # @system
@@ -260,46 +259,6 @@ alias cat='bat'
 # Editor
 # @system
 alias vi='nvim'
-
-# Git
-# @git
-alias g='git'
-
-# Homebrew
-# @brew
-alias bu='brew update && brew upgrade --display-times'
-
-# Docker
-# @docker
-alias de='docker exec'
-# @docker
-alias d-c='docker-compose'
-
-# Kubernetes
-# @kubectl
-alias k='kubectl'
-# @kubectl
-alias kg='kubectl get'
-# @kubectl
-alias kc='kubectx'
-# @kubectl
-alias kn='kubens'
-# @kubectl
-alias kv='k9s'
-
-# Lazy*
-# @lazygit
-alias lg='lazygit'
-# @lazydocker
-alias ld='lazydocker'
-
-# Shell management
-# @system
-alias re='exec $SHELL -l'
-
-# VSCode
-# @system
-alias e='code -r'
 
 # GNU sed on macOS
 if [[ "$(uname)" == "Darwin" ]]; then

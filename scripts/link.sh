@@ -124,4 +124,11 @@ readonly BTOP_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/btop"
 readonly BTOP_CONFIG_FILE="$BTOP_CONFIG_DIR/btop.conf"
 [ ! -e "$BTOP_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/btop/btop.conf" "$BTOP_CONFIG_FILE"
 
+# Link zsh-abbr abbreviations
+printf "Linking zsh-abbr abbreviations...\n"
+readonly ABBR_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh-abbr"
+[ ! -d "$ABBR_CONFIG_DIR" ] && mkdir -p "$ABBR_CONFIG_DIR"
+readonly ABBR_FILE="$ABBR_CONFIG_DIR/abbreviations"
+[ ! -e "$ABBR_FILE" ] && ln -fs "$REPO_DIR/config/zsh/abbreviations" "$ABBR_FILE"
+
 printf "All symlinks created successfully.\n"
