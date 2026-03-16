@@ -306,3 +306,5 @@ if [[ "$(uname)" == "Darwin" ]]; then
   # @system
   alias sed='gsed'
 fi
+
+[ -f ~/.zshrc.work ] && source ~/.zshrc.work

@@ -50,6 +50,10 @@ for file in "${COPY_DOT_FILES[@]}"; do
   [ ! -e "$dest_file" ] && cp "$REPO_DIR/config/git/$file" "$dest_file"
 done
 
+# Copy zsh work config (not symlinked, not git-managed)
+readonly ZSHRC_WORK="$HOME/.zshrc.work"
+[ ! -e "$ZSHRC_WORK" ] && cp "$REPO_DIR/config/zsh/zshrc.work" "$ZSHRC_WORK"
+
 # Link Neovim config
 printf "Linking Neovim config...\n"
 readonly NVIM_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
