@@ -18,9 +18,9 @@ readonly DOTFILES_LLM="$REPO_DIR/llm"
 readonly CLAUDE_AGENTS_FILE="$CLAUDE_CONFIG_DIR/CLAUDE.md"
 [ ! -e "$CLAUDE_AGENTS_FILE" ] && ln -fs "$DOTFILES_LLM/AGENTS.md" "$CLAUDE_AGENTS_FILE"
 
-# Link settings.json
+# Copy settings.json
 readonly CLAUDE_SETTINGS_FILE="$CLAUDE_CONFIG_DIR/settings.json"
-[ ! -e "$CLAUDE_SETTINGS_FILE" ] && ln -fs "$DOTFILES_LLM/settings.json" "$CLAUDE_SETTINGS_FILE"
+[ ! -e "$CLAUDE_SETTINGS_FILE" ] && cp "$DOTFILES_LLM/settings.json" "$CLAUDE_SETTINGS_FILE"
 
 # Link commands directory
 readonly CLAUDE_COMMANDS_DIR="$CLAUDE_CONFIG_DIR/commands"
