@@ -181,7 +181,7 @@ config.keys = {
     action = wezterm.action.CloseCurrentTab({ confirm = true }),
   },
 
-  -- Toggle pane zoom (tmux zoom feature)
+  -- Toggle pane zoom
   {
     key = 'z',
     mods = 'LEADER',
@@ -209,7 +209,7 @@ config.keys = {
     action = wezterm.action.ToggleFullScreen,
   },
 
-  -- Synchronize panes (tmux synchronize-panes)
+  -- Synchronize panes
   {
     key = 'e',
     mods = 'LEADER',
@@ -273,7 +273,7 @@ config.key_tables = {
 }
 
 -- ========================================
--- Tab bar format settings (tmux-style)
+-- Tab bar format settings
 -- ========================================
 
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
@@ -283,7 +283,6 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
   -- Get process name (e.g. zsh, vim, htop)
   local process_name = title:match('([^/]+)$') or title
 
-  -- tmux-style format: "number:process_name"
   local tab_title = string.format('%d:%s', index, process_name)
 
   -- Add * to active tabs
@@ -301,11 +300,11 @@ end)
 -- ========================================
 
 wezterm.on('update-right-status', function(window, pane)
-  -- Hostname and pane info (replicating tmux status bar left side)
+  -- Hostname and pane info
   local hostname = wezterm.hostname()
   local pane_id = pane:pane_id()
 
-  -- Date/time (replicating tmux status bar right side)
+  -- Date/time
   local date = wezterm.strftime('%Y-%m-%d(%a) %H:%M')
 
   -- Display in status bar
