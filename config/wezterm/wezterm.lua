@@ -250,6 +250,7 @@ config.key_tables = {
 
     -- Start selection
     { key = 'v', mods = 'NONE', action = wezterm.action.CopyMode({ SetSelectionMode = 'Cell' }) },
+    { key = 'Space', mods = 'NONE', action = wezterm.action.CopyMode({ SetSelectionMode = 'Cell' }) },
     { key = 'V', mods = 'SHIFT', action = wezterm.action.CopyMode({ SetSelectionMode = 'Line' }) },
 
     -- Copy (copy to clipboard with y)
