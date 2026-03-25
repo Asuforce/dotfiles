@@ -1,5 +1,6 @@
 abbr -q -- 'll'='eza -l'
 abbr -q -- 'la'='eza -alh'
+abbr -q -- 'c'='claude'
 abbr -q -- 'g'='git'
 abbr -q -- 'bu'='brew update && brew upgrade --display-times'
 abbr -q -- 'de'='docker exec'
