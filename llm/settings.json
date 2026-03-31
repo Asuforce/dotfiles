@@ -1,6 +1,9 @@
 {
   "model": "haiku",
-  "includeCoAuthoredBy": false,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "List(*)",
