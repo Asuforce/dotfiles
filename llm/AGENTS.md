@@ -1,3 +1,6 @@
 - Speak in Japanese
 - Don't use emojis in your documents
 - Don't use excessive emphasis in your documents
+- When creating git branches, always use the format `<jira-ticket-id>/<branch-name>` (e.g., `PROJ-123/add-login-feature`)
+- When writing git commit messages, keep them short and simple in a single line
+- When creating pull request titles, always use the format `[<jira-ticket-id>] <pr-title>` (e.g., `[PROJ-123] Add login feature`)

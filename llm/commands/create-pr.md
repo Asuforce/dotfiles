@@ -5,10 +5,19 @@ description: "Push a Pull Request Draft (PR Number Optional)"
 
 以下の手順で新しいPull request(PR)を作成してください。
 
-1. 直前コミットの内容確認
-2. 手本PRの内容確認
-3. 新規PRの作成
-4. 新規PRのブラウザ確認
+1. Jira チケット ID の取得
+2. 直前コミットの内容確認
+3. 手本PRの内容確認
+4. 新規PRの作成
+5. 新規PRのブラウザ確認
+
+# Jira チケット ID の取得
+
+以下のコマンドを使用して、現在のブランチ名から Jira チケット ID を取得します。
+
+```bash
+git branch --show-current | cut -d'/' -f1
+```
 
 # 直前コミットの内容確認
 
@@ -39,7 +48,7 @@ gh pr view $ARGUMENT
 直前コミット、手本PR、PRテンプレートファイルの内容を元に、以下のコマンドを使用して新規PRを作成します。
 
 ```bash
-gh pr create --draft --assignee @me --base main --title "<直前コミット/手本PRを参考にPRタイトルを作成してください>" --body "<直前コミット/手本PR/PRテンプレートファイルを参考にPR内容を作成してください>"
+gh pr create --draft --assignee @me --base main --title "[<取得した Jira チケット ID>] <直前コミット/手本PRを参考にPRタイトルを作成してください>" --body "<直前コミット/手本PR/PRテンプレートファイルを参考にPR内容を作成してください>"
 ```
 
 ## 新規PRのブラウザ確認
