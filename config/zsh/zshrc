@@ -224,7 +224,12 @@ zle -N tree-fzf
 bindkey "^t" tree-fzf
 
 # Switch Google Cloud project with fzf
-gc() {
+google-cloud-project-fzf() {
+  if [[ "$1" == "-u" ]]; then
+    gcloud config unset project
+    return
+  fi
+
   local project
   project=$(gcloud projects list --format="value(projectId)" | fzf --prompt="GCP Project> ")
   if [[ -n "$project" ]]; then

@@ -49,7 +49,7 @@ format = '[\($context:$namespace\)]($style) '
 style = "cyan"
 
 [gcloud]
-format = '[\($project\)]($style) '
+format = '([\($project\)]($style) )'
 style = "cyan"
 
 [character]
