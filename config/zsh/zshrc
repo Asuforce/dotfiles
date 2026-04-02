@@ -223,6 +223,15 @@ tree-fzf() {
 zle -N tree-fzf
 bindkey "^t" tree-fzf
 
+# Switch Google Cloud project with fzf
+gc() {
+  local project
+  project=$(gcloud projects list --format="value(projectId)" | fzf --prompt="GCP Project> ")
+  if [[ -n "$project" ]]; then
+    gcloud config set project "$project"
+  fi
+}
+
 
 ################################################################################
 # Aliases & Abbreviations (Categorized)
