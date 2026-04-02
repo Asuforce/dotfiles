@@ -224,6 +224,7 @@ zle -N tree-fzf
 bindkey "^t" tree-fzf
 
 # Switch Google Cloud project with fzf
+# Keybinding: Ctrl+/
 google-cloud-project-fzf() {
   if [[ "$1" == "-u" ]]; then
     gcloud config unset project
@@ -235,7 +236,11 @@ google-cloud-project-fzf() {
   if [[ -n "$project" ]]; then
     gcloud config set project "$project"
   fi
+
+  zle reset-prompt
 }
+zle -N google-cloud-project-fzf
+bindkey '^_' google-cloud-project-fzf
 
 
 ################################################################################
