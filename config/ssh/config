@@ -1,5 +1,11 @@
 Include ~/.ssh/ssh_config
 
+# GitHub - must be before global IdentitiesOnly yes
+Host github.com
+  User git
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+  IdentitiesOnly no
+
 # for mac
 AddKeysToAgent yes
 UseKeychain yes
