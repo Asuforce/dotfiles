@@ -26,4 +26,8 @@ readonly CLAUDE_SETTINGS_FILE="$CLAUDE_CONFIG_DIR/settings.json"
 readonly CLAUDE_COMMANDS_DIR="$CLAUDE_CONFIG_DIR/commands"
 [ ! -e "$CLAUDE_COMMANDS_DIR" ] && ln -fs "$DOTFILES_LLM/commands" "$CLAUDE_COMMANDS_DIR"
 
+# Link skills directory
+readonly CLAUDE_SKILLS_DIR="$CLAUDE_CONFIG_DIR/skills"
+[ ! -e "$CLAUDE_SKILLS_DIR" ] && ln -fs "$DOTFILES_LLM/skills" "$CLAUDE_SKILLS_DIR"
+
 printf "Claude Code setup complete.\n"
