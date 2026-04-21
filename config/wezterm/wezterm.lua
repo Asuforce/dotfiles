@@ -126,6 +126,28 @@ config.keys = {
     action = wezterm.action.ActivatePaneDirection('Right'),
   },
 
+  -- Pane navigation by index (Leader + 1-4)
+  {
+    key = '1',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneByIndex(0),
+  },
+  {
+    key = '2',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneByIndex(1),
+  },
+  {
+    key = '3',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneByIndex(2),
+  },
+  {
+    key = '4',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneByIndex(3),
+  },
+
   -- Pane resize (Ctrl+h,j,k,l)
   {
     key = 'h',
