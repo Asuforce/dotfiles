@@ -3,6 +3,9 @@
 local wezterm = require('wezterm')
 local config = {}
 
+-- Module-level state for opacity toggle
+local opacity_is_opaque = false
+
 if wezterm.config_builder then
   config = wezterm.config_builder()
 end
@@ -239,6 +242,22 @@ config.keys = {
       wezterm.action.SendKey({ key = 'e', mods = 'LEADER' }),
     }),
   },
+
+  -- Toggle window transparency (Leader + t)
+  {
+    key = 't',
+    mods = 'LEADER',
+    action = wezterm.action_callback(function(window, pane)
+      opacity_is_opaque = not opacity_is_opaque
+      local overrides = window:get_config_overrides() or {}
+      if opacity_is_opaque then
+        overrides.window_background_opacity = 1.0
+      else
+        overrides.window_background_opacity = nil
+      end
+      window:set_config_overrides(overrides)
+    end),
+  },
 }
 
 -- ========================================
@@ -355,6 +374,13 @@ wezterm.on('update-status', function(window, pane)
     }
   else
     overrides.colors = nil  -- Reset to default colors
+  end
+
+  -- Maintain opacity state set by key binding
+  if opacity_is_opaque then
+    overrides.window_background_opacity = 1.0
+  else
+    overrides.window_background_opacity = nil
   end
 
   window:set_config_overrides(overrides)
