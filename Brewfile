@@ -1,5 +1,6 @@
 tap "songmu/tap"
 tap "modem-dev/tap"
+brew "argocd"
 brew "bat"
 brew "btop"
 brew "clang-format"
