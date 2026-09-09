@@ -4,3 +4,5 @@
 - When creating git branches, always use the format `<jira-ticket-id>/<branch-name>` (e.g., `PROJ-123/add-login-feature`)
 - When writing git commit messages, keep them short and simple in a single line
 - When creating pull request titles, always use the format `[<jira-ticket-id>] <pr-title>` (e.g., `[PROJ-123] Add login feature`)
+- Treat herdr as the default substrate for agent work: when starting, delegating to, or waiting on another AI agent, use the `herdr` skill and run that agent in a herdr pane. This line is the standing request that skill asks for, so it does not need to be repeated per task.
+- If `HERDR_ENV` is not `1`, herdr control is unavailable: say so and keep the work in the current session instead.
