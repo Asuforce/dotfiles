@@ -43,6 +43,38 @@ if command -v herdr >/dev/null 2>&1; then
   # working/idle/blocked/done state. Re-running reinstalls the current version.
   printf "Installing herdr integration for Claude Code...\n"
   herdr integration install claude
+
+  # Link the "one repository = one workspace" SessionStart hook. It lives in
+  # this repository (unlike herdr's own hook, which herdr installs above), so it
+  # is symlinked rather than copied.
+  printf "Linking herdr repo-workspace hook...\n"
+  readonly CLAUDE_HOOKS_DIR="$CLAUDE_CONFIG_DIR/hooks"
+  [ ! -d "$CLAUDE_HOOKS_DIR" ] && mkdir -p "$CLAUDE_HOOKS_DIR"
+  readonly REPO_WORKSPACE_HOOK="$CLAUDE_HOOKS_DIR/herdr-repo-workspace.sh"
+  [ ! -e "$REPO_WORKSPACE_HOOK" ] \
+    && ln -fs "$DOTFILES_LLM/hooks/herdr-repo-workspace.sh" "$REPO_WORKSPACE_HOOK"
+
+  # Register it on SessionStart. This has to append to the same hooks block that
+  # `herdr integration install claude` writes, so it is merged in with jq rather
+  # than carried in llm/settings.json (which is only copied on a fresh machine).
+  readonly REPO_WORKSPACE_HOOK_COMMAND='bash "$HOME/.claude/hooks/herdr-repo-workspace.sh"'
+  if ! command -v jq >/dev/null 2>&1; then
+    printf "jq not found; skipping SessionStart hook registration.\n"
+  elif jq -e --arg cmd "$REPO_WORKSPACE_HOOK_COMMAND" \
+      '[(.hooks.SessionStart // [])[].hooks[]?.command] | index($cmd)' \
+      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+    printf "herdr repo-workspace hook already registered.\n"
+  else
+    printf "Registering herdr repo-workspace hook on SessionStart...\n"
+    settings_tmp="$(mktemp)"
+    jq --arg cmd "$REPO_WORKSPACE_HOOK_COMMAND" \
+      '.hooks.SessionStart = ((.hooks.SessionStart // []) + [{
+         matcher: "*",
+         hooks: [{ type: "command", command: $cmd, timeout: 15 }]
+       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+      || rm -f "$settings_tmp"
+  fi
 else
   printf "herdr not found; skipping herdr skill and integration.\n"
 fi
