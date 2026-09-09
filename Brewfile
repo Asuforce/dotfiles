@@ -18,7 +18,7 @@ brew "go"
 brew "grep"
 brew "helix"
 brew "helm"
-brew "herdr"
+brew "herdr", start_service: true
 brew "modem-dev/tap/hunk"
 brew "ipcalc"
 brew "jo"

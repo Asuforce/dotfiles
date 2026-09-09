@@ -1,4 +1,8 @@
 -- WezTerm configuration file
+--
+-- Pane/tab/workspace management is owned by herdr, not by WezTerm. WezTerm is
+-- kept as the drawing surface only: no leader key, no pane or tab bindings.
+-- See config/herdr/config.toml for the multiplexer bindings (prefix: ctrl+g).
 
 local wezterm = require('wezterm')
 local config = {}
@@ -23,8 +27,15 @@ config.macos_window_background_blur = 0
 -- Fullscreen settings (does not create a separate desktop)
 config.native_macos_fullscreen_mode = false
 
--- Color scheme
-config.color_scheme = 'OneDark (gogh)'
+-- Color scheme (herdr inherits this via its "terminal" theme)
+config.color_scheme = 'OneDark (Gogh)'
+
+-- OneDark (Gogh) ships #5C6370 (its comment grey) as the foreground, which is
+-- barely readable against its #1E2127 background. Use the scheme's actual text
+-- colour instead. herdr inherits this through its "terminal" theme.
+config.colors = {
+  foreground = '#ABB2BF',
+}
 
 -- Font settings
 config.font = wezterm.font_with_fallback({
@@ -52,201 +63,28 @@ config.window_padding = {
   bottom = 5,
 }
 
--- Display tab bar at the top
-config.tab_bar_at_bottom = false
-config.use_fancy_tab_bar = false  -- Simple tab bar
-config.show_tabs_in_tab_bar = true  -- Show tabs
-config.hide_tab_bar_if_only_one_tab = false  -- Show bar even with one tab
-config.tab_max_width = 32  -- Maximum tab width
-config.show_new_tab_button_in_tab_bar = false  -- Hide the "+" button
-
--- Tab bar color settings
-config.colors = {
-  tab_bar = {
-    background = '#1a1b26',  -- Tab bar background color
-    active_tab = {
-      bg_color = '#7aa2f7',  -- Active tab background color
-      fg_color = '#1a1b26',  -- Active tab foreground color
-      intensity = 'Bold',
-    },
-    inactive_tab = {
-      bg_color = '#292e42',  -- Inactive tab background color
-      fg_color = '#565f89',  -- Inactive tab foreground color
-    },
-    inactive_tab_hover = {
-      bg_color = '#3b4261',  -- Hover background color
-      fg_color = '#c0caf5',  -- Hover foreground color
-    },
-  },
-}
+-- Hide the tab bar: herdr draws its own tab bar and status entries, and
+-- nothing here creates a second WezTerm tab.
+config.hide_tab_bar_if_only_one_tab = true
 
 -- ========================================
 -- Key bindings settings
 -- ========================================
 
--- Leader key: Ctrl+g
-config.leader = { key = 'g', mods = 'CTRL', timeout_milliseconds = 1000 }
-
+-- No leader key: ctrl+g belongs to herdr's prefix. Only bindings that herdr
+-- has no equivalent for are kept here.
 config.keys = {
-  -- Leader + r: Reload configuration
-  {
-    key = 'r',
-    mods = 'LEADER',
-    action = wezterm.action.ReloadConfiguration,
-  },
-
-  -- Pane splitting
-  {
-    key = '5',
-    mods = 'LEADER',
-    action = wezterm.action.SplitHorizontal({ domain = 'CurrentPaneDomain' }),
-  },
-  {
-    key = "'",
-    mods = 'LEADER',
-    action = wezterm.action.SplitVertical({ domain = 'CurrentPaneDomain' }),
-  },
-
-  -- Pane navigation (Vim-style: h,j,k,l)
-  {
-    key = 'h',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection('Left'),
-  },
-  {
-    key = 'j',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection('Down'),
-  },
-  {
-    key = 'k',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection('Up'),
-  },
-  {
-    key = 'l',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneDirection('Right'),
-  },
-
-  -- Pane navigation by index (Leader + 1-4)
-  {
-    key = '1',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneByIndex(0),
-  },
-  {
-    key = '2',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneByIndex(1),
-  },
-  {
-    key = '3',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneByIndex(2),
-  },
-  {
-    key = '4',
-    mods = 'LEADER',
-    action = wezterm.action.ActivatePaneByIndex(3),
-  },
-
-  -- Pane resize (Ctrl+h,j,k,l)
-  {
-    key = 'h',
-    mods = 'LEADER|CTRL',
-    action = wezterm.action.AdjustPaneSize({ 'Left', 5 }),
-  },
-  {
-    key = 'j',
-    mods = 'LEADER|CTRL',
-    action = wezterm.action.AdjustPaneSize({ 'Down', 5 }),
-  },
-  {
-    key = 'k',
-    mods = 'LEADER|CTRL',
-    action = wezterm.action.AdjustPaneSize({ 'Up', 5 }),
-  },
-  {
-    key = 'l',
-    mods = 'LEADER|CTRL',
-    action = wezterm.action.AdjustPaneSize({ 'Right', 5 }),
-  },
-
-  -- Window (tab) navigation (Option+Left/Right)
-  {
-    key = 'LeftArrow',
-    mods = 'OPT',
-    action = wezterm.action.ActivateTabRelative(-1),
-  },
-  {
-    key = 'RightArrow',
-    mods = 'OPT',
-    action = wezterm.action.ActivateTabRelative(1),
-  },
-
-  -- Create new window (tab) (Option+Enter)
-  {
-    key = 'Enter',
-    mods = 'OPT',
-    action = wezterm.action.SpawnTab('CurrentPaneDomain'),
-  },
-
-  -- Close pane (x)
-  {
-    key = 'x',
-    mods = 'LEADER',
-    action = wezterm.action.CloseCurrentPane({ confirm = true }),
-  },
-
-  -- Close window (tab) (X)
-  {
-    key = 'X',
-    mods = 'LEADER|SHIFT',
-    action = wezterm.action.CloseCurrentTab({ confirm = true }),
-  },
-
-  -- Toggle pane zoom
-  {
-    key = 'z',
-    mods = 'LEADER',
-    action = wezterm.action.TogglePaneZoomState,
-  },
-
-  -- Copy mode (Leader+v)
-  {
-    key = 'v',
-    mods = 'LEADER',
-    action = wezterm.action.ActivateCopyMode,
-  },
-
-  -- Toggle fullscreen (Ctrl+g → f)
-  {
-    key = 'f',
-    mods = 'LEADER',
-    action = wezterm.action.ToggleFullScreen,
-  },
-
-  -- macOS native fullscreen (Cmd+Ctrl+f also works)
+  -- Toggle fullscreen
   {
     key = 'f',
     mods = 'CMD|CTRL',
     action = wezterm.action.ToggleFullScreen,
   },
 
-  -- Synchronize panes
-  {
-    key = 'e',
-    mods = 'LEADER',
-    action = wezterm.action.Multiple({
-      wezterm.action.SendKey({ key = 'e', mods = 'LEADER' }),
-    }),
-  },
-
-  -- Toggle window transparency (Leader + t)
+  -- Toggle window transparency
   {
     key = 't',
-    mods = 'LEADER',
+    mods = 'CMD|CTRL',
     action = wezterm.action_callback(function(window, pane)
       opacity_is_opaque = not opacity_is_opaque
       local overrides = window:get_config_overrides() or {}
@@ -261,136 +99,10 @@ config.keys = {
 }
 
 -- ========================================
--- Copy mode (Vi-style key bindings)
--- ========================================
-
-config.key_tables = {
-  copy_mode = {
-    { key = 'Escape', mods = 'NONE', action = wezterm.action.CopyMode('Close') },
-    { key = 'q', mods = 'NONE', action = wezterm.action.CopyMode('Close') },
-
-    -- Navigation
-    { key = 'h', mods = 'NONE', action = wezterm.action.CopyMode('MoveLeft') },
-    { key = 'j', mods = 'NONE', action = wezterm.action.CopyMode('MoveDown') },
-    { key = 'k', mods = 'NONE', action = wezterm.action.CopyMode('MoveUp') },
-    { key = 'l', mods = 'NONE', action = wezterm.action.CopyMode('MoveRight') },
-
-    -- Word navigation
-    { key = 'w', mods = 'NONE', action = wezterm.action.CopyMode('MoveForwardWord') },
-    { key = 'b', mods = 'NONE', action = wezterm.action.CopyMode('MoveBackwardWord') },
-
-    -- Beginning/end of line
-    { key = '0', mods = 'NONE', action = wezterm.action.CopyMode('MoveToStartOfLine') },
-    { key = '$', mods = 'SHIFT', action = wezterm.action.CopyMode('MoveToEndOfLineContent') },
-
-    -- Page navigation
-    { key = 'g', mods = 'NONE', action = wezterm.action.CopyMode('MoveToScrollbackTop') },
-    { key = 'G', mods = 'SHIFT', action = wezterm.action.CopyMode('MoveToScrollbackBottom') },
-    { key = 'u', mods = 'CTRL', action = wezterm.action.CopyMode('PageUp') },
-    { key = 'd', mods = 'CTRL', action = wezterm.action.CopyMode('PageDown') },
-
-    -- Start selection
-    { key = 'v', mods = 'NONE', action = wezterm.action.CopyMode({ SetSelectionMode = 'Cell' }) },
-    { key = 'Space', mods = 'NONE', action = wezterm.action.CopyMode({ SetSelectionMode = 'Cell' }) },
-    { key = 'V', mods = 'SHIFT', action = wezterm.action.CopyMode({ SetSelectionMode = 'Line' }) },
-
-    -- Copy (copy to clipboard with y)
-    {
-      key = 'y',
-      mods = 'NONE',
-      action = wezterm.action.Multiple({
-        wezterm.action.CopyTo('ClipboardAndPrimarySelection'),
-        wezterm.action.CopyMode('Close'),
-      }),
-    },
-    {
-      key = 'Enter',
-      mods = 'NONE',
-      action = wezterm.action.Multiple({
-        wezterm.action.CopyTo('ClipboardAndPrimarySelection'),
-        wezterm.action.CopyMode('Close'),
-      }),
-    },
-  },
-}
-
--- ========================================
--- Tab bar format settings
--- ========================================
-
-wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
-  local title = tab.active_pane.title
-  local index = tab.tab_index
-
-  -- Get process name (e.g. zsh, vim, htop)
-  local process_name = title:match('([^/]+)$') or title
-
-  local tab_title = string.format('%d:%s', index, process_name)
-
-  -- Add * to active tabs
-  if tab.is_active then
-    tab_title = tab_title .. '*'
-  end
-
-  return {
-    { Text = ' ' .. tab_title .. ' ' },
-  }
-end)
-
--- ========================================
--- Status bar settings
--- ========================================
-
-wezterm.on('update-right-status', function(window, pane)
-  -- Hostname and pane info
-  local hostname = wezterm.hostname()
-  local pane_id = pane:pane_id()
-
-  -- Date/time
-  local date = wezterm.strftime('%Y-%m-%d(%a) %H:%M')
-
-  -- Display in status bar
-  window:set_left_status(wezterm.format({
-    { Text = hostname .. ':[' .. pane_id .. '] ' },
-  }))
-
-  window:set_right_status(wezterm.format({
-    { Text = '[' .. date .. ']' },
-  }))
-end)
-
--- ========================================
--- SSH background color change
--- ========================================
-
-wezterm.on('update-status', function(window, pane)
-  local fg_process_name = pane:get_foreground_process_name()
-  local overrides = window:get_config_overrides() or {}
-
-  -- Change background color when SSH is running
-  if string.find(fg_process_name or '', 'ssh') then
-    overrides.colors = {
-      background = '#001e1e',  -- Darker background color for SSH sessions
-    }
-  else
-    overrides.colors = nil  -- Reset to default colors
-  end
-
-  -- Maintain opacity state set by key binding
-  if opacity_is_opaque then
-    overrides.window_background_opacity = 1.0
-  else
-    overrides.window_background_opacity = nil
-  end
-
-  window:set_config_overrides(overrides)
-end)
-
--- ========================================
 -- Other settings
 -- ========================================
 
--- Scrollback lines
+-- Scrollback lines (herdr keeps its own scrollback for panes)
 config.scrollback_lines = 10000
 
 -- Mouse settings

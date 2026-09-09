@@ -1,0 +1,33 @@
+# herdr configuration
+#
+# Only intentional deviations from `herdr --default-config` live here, so that
+# version upgrades do not turn this file into a full-file diff.
+# Print the defaults with `herdr --default-config`; apply edits with
+# `herdr server reload-config`.
+
+[theme]
+# Inherit the host terminal's palette instead of maintaining a second one.
+# The colour scheme is owned by config/wezterm/wezterm.lua.
+name = "terminal"
+
+[keys]
+# herdr owns pane/tab/workspace management, so it takes the prefix that
+# wezterm's leader key used to hold. wezterm no longer binds ctrl+g.
+prefix = "ctrl+g"
+
+[ui]
+tab_bar_right = [
+  { type = "hostname" },
+  { type = "datetime", format = "%Y-%m-%d(%a) %H:%M" },
+]
+window_title = "{hostname}: {workspace}"
+
+[experimental]
+# Temporarily switch the input source to ASCII while prefix mode is active, so
+# prefix commands still register while a Japanese IME is on.
+switch_ascii_input_source_in_prefix = true
+# Keep the IME candidate window tracking inside TUI agents that paint their own
+# cursor. Trade-off: an extra cursor shows in apps that hide it without drawing
+# a replacement.
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_agents = ["claude"]

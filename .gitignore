@@ -1,0 +1,4 @@
+# CLAUDE.md is ignored globally (see config/git/ignore) so that per-project
+# instruction files stay local. This repository is the exception: its CLAUDE.md
+# documents the dotfiles architecture and is meant to be tracked.
+!/CLAUDE.md

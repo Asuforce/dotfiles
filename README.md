@@ -39,3 +39,4 @@ make help
 - .ssh
 - .zsh_history
 - .gitconfig-work
+- .config/herdr/session.json
