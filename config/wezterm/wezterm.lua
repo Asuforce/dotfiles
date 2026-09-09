@@ -27,12 +27,12 @@ config.macos_window_background_blur = 0
 -- Fullscreen settings (does not create a separate desktop)
 config.native_macos_fullscreen_mode = false
 
--- Color scheme (herdr inherits this via its "terminal" theme)
+-- Color scheme (drives pane contents; herdr's own UI has its own theme)
 config.color_scheme = 'OneDark (Gogh)'
 
 -- OneDark (Gogh) ships #5C6370 (its comment grey) as the foreground, which is
 -- barely readable against its #1E2127 background. Use the scheme's actual text
--- colour instead. herdr inherits this through its "terminal" theme.
+-- colour instead. This is what pane contents inside herdr are drawn with.
 config.colors = {
   foreground = '#ABB2BF',
 }

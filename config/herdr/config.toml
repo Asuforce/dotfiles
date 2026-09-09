@@ -1,15 +1,19 @@
+onboarding = false
 # herdr configuration
 #
-# Only intentional deviations from `herdr --default-config` live here, so that
-# version upgrades do not turn this file into a full-file diff.
-# Print the defaults with `herdr --default-config`; apply edits with
-# `herdr server reload-config`.
+# Hand-written entries stay limited to intentional deviations from
+# `herdr --default-config`, so that version upgrades do not turn this file into
+# a full-file diff. herdr also writes to this file itself when settings change
+# through its UI (`onboarding`, theme, ...), so machine-written keys showing up
+# in the diff are expected. Print the defaults with `herdr --default-config`;
+# apply edits with `herdr server reload-config`.
 
 [theme]
-# Inherit the host terminal's palette instead of maintaining a second one.
-# The colour scheme is owned by config/wezterm/wezterm.lua.
-name = "terminal"
+# herdr's own UI chrome (sidebar, tab bar, pane borders). Pane contents are
+# still coloured by the host terminal's palette, not by this.
+name = "one-dark"
 
+auto_switch = false
 [keys]
 # herdr owns pane/tab/workspace management, so it takes the prefix that
 # wezterm's leader key used to hold. wezterm no longer binds ctrl+g.
