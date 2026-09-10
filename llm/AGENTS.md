@@ -4,5 +4,7 @@
 - When creating git branches, always use the format `<jira-ticket-id>/<branch-name>` (e.g., `PROJ-123/add-login-feature`)
 - When writing git commit messages, keep them short and simple in a single line
 - When creating pull request titles, always use the format `[<jira-ticket-id>] <pr-title>` (e.g., `[PROJ-123] Add login feature`)
+- When writing a pull request description or a design or technical document (ADR, PoC decision log, `CONTEXT.md`, README, design notes), use the `show-me` skill and include at least one visual that carries the main point. This applies without being asked for each time.
+- In those documents use only the text visuals from that skill — Mermaid, file or call trees, pseudocode, `diff` — because an HTML artifact cannot live inside a PR body or a Markdown file. Keep each visual to the smallest shape that makes its point, and leave it out of a section it would not clarify. Commit messages, review comments, and short replies are out of scope.
 - Treat herdr as the default substrate for agent work: when starting, delegating to, or waiting on another AI agent, use the `herdr` skill and run that agent in a herdr pane. This line is the standing request that skill asks for, so it does not need to be repeated per task.
 - If `HERDR_ENV` is not `1`, herdr control is unavailable: say so and keep the work in the current session instead.
