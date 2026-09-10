@@ -1,26 +1,26 @@
 -- Hammerspoon configuration file
--- WezTerm global hotkey configuration
+-- Ghostty global hotkey configuration
 
 -- ========================================
--- Toggle WezTerm show/hide (Option+Space)
+-- Toggle Ghostty show/hide (Option+Space)
 -- ========================================
 
--- Option+Space to show/hide WezTerm
+-- Option+Space to show/hide Ghostty
 hs.hotkey.bind({"option"}, "space", function()
-  local wezterm = hs.application.find("WezTerm")
+  local ghostty = hs.application.find("Ghostty")
 
-  if wezterm then
-    -- If WezTerm is running
-    if wezterm:isFrontmost() then
+  if ghostty then
+    -- If Ghostty is running
+    if ghostty:isFrontmost() then
       -- Hide if in front
-      wezterm:hide()
+      ghostty:hide()
     else
       -- Show if in background
-      wezterm:activate()
+      ghostty:activate()
     end
   else
-    -- Launch WezTerm if not running
-    hs.application.launchOrFocus("WezTerm")
+    -- Launch Ghostty if not running
+    hs.application.launchOrFocus("Ghostty")
   end
 end)
 

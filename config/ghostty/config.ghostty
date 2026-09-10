@@ -1,0 +1,63 @@
+# Ghostty configuration file
+#
+# Pane/tab/workspace management is owned by herdr, not by Ghostty. Ghostty is
+# kept as the drawing surface only: no pane or tab bindings, and nothing that
+# shadows herdr's prefix (ctrl+g, see config/herdr/config.toml).
+#
+# Linked to ~/.config/ghostty/config.ghostty by scripts/link.sh. Ghostty also
+# still reads the legacy ~/.config/ghostty/config; keep only one of the two.
+
+# ========================================
+# Appearance settings
+# ========================================
+
+# Window transparency. cmd+ctrl+t toggles it, see the keybind below.
+background-opacity = 0.75
+
+# Color scheme (drives pane contents; herdr's own UI has its own theme).
+# Ghostty ships no Gogh variant of One Dark. Atom One Dark is the closest
+# built-in: same red/green/blue/magenta/cyan as wezterm's "OneDark (Gogh)",
+# different yellow (#e5c07b), black (#21252b) and bright white (#abb2bf).
+theme = Atom One Dark
+
+# Font settings
+font-family = HackGen35 Console
+font-family = HackGen35
+font-family = Monaco
+font-family = Menlo
+font-size = 14
+
+# Window settings
+# "hidden" drops the titlebar but keeps the native frame and rounded corners,
+# which is what wezterm's window_decorations = "RESIZE" gave us. The window is
+# dragged with option+click on the frame instead of the titlebar.
+macos-titlebar-style = hidden
+window-padding-x = 5
+window-padding-y = 5
+
+# Maximize on startup, and stay on the same Space when going fullscreen.
+maximize = true
+macos-non-native-fullscreen = true
+
+# TERM is deliberately left at Ghostty's default (xterm-ghostty) so the outer
+# terminal advertises its real capabilities. herdr sets TERM=xterm-256color and
+# COLORTERM=truecolor for the panes itself, so pane apps are unaffected.
+
+# Scrollback is left at Ghostty's default (10MB); herdr keeps its own
+# scrollback for panes.
+
+# ========================================
+# Mouse settings
+# ========================================
+
+# Right-click to paste. Inside herdr its pane menu wins, as it does today.
+right-click-action = paste
+
+# ========================================
+# Key bindings settings
+# ========================================
+
+# No pane or tab bindings: ctrl+g belongs to herdr's prefix. Only bindings that
+# herdr has no equivalent for are kept here.
+keybind = cmd+ctrl+f=toggle_fullscreen
+keybind = cmd+ctrl+t=toggle_background_opacity

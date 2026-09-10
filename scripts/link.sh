@@ -32,6 +32,13 @@ printf "Linking Wezterm config...\n"
 readonly WEZTERM_CONFIG_FILE="$HOME/.wezterm.lua"
 [ ! -e "$WEZTERM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/wezterm/wezterm.lua" "$WEZTERM_CONFIG_FILE"
 
+# Link Ghostty config
+printf "Linking Ghostty config...\n"
+readonly GHOSTTY_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty"
+[ ! -d "$GHOSTTY_CONFIG_DIR" ] && mkdir -p "$GHOSTTY_CONFIG_DIR"
+readonly GHOSTTY_CONFIG_FILE="$GHOSTTY_CONFIG_DIR/config.ghostty"
+[ ! -e "$GHOSTTY_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/ghostty/config.ghostty" "$GHOSTTY_CONFIG_FILE"
+
 # Link herdr config
 printf "Linking herdr config...\n"
 readonly HERDR_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/herdr"
