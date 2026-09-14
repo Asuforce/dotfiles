@@ -35,6 +35,25 @@ if command -v herdr >/dev/null 2>&1; then
   [ ! -d "$HERDR_SKILL_DIR" ] && mkdir -p "$HERDR_SKILL_DIR"
   herdr --skill >"$HERDR_SKILL_DIR/SKILL.md"
 
+  # Override the generated description. herdr ships one that gates the skill on
+  # the user naming herdr in the prompt ("use only when the user explicitly
+  # mentions Herdr"), which cancels the standing request in llm/AGENTS.md: the
+  # description is what the model reads when deciding which skill to reach for,
+  # so the skill never fires unprompted. Only that one line is rewritten; the
+  # generated body stays as the installed binary produced it.
+  readonly HERDR_SKILL_DESCRIPTION='description: "Control Herdr, a terminal multiplexer for coding agents. Use whenever starting, delegating to, or waiting on another AI agent, and whenever the user mentions Herdr or asks to inspect or control panes, tabs, workspaces, commands, or agents. A standing request in ~/.claude/CLAUDE.md already covers the unprompted case, so no per-task mention is needed. Requires HERDR_ENV=1."'
+  if grep -q '^description:' "$HERDR_SKILL_DIR/SKILL.md"; then
+    skill_tmp="$(mktemp)"
+    awk -v desc="$HERDR_SKILL_DESCRIPTION" '
+      !replaced && /^description:/ { print desc; replaced = 1; next }
+      { print }
+    ' "$HERDR_SKILL_DIR/SKILL.md" >"$skill_tmp" \
+      && mv -f "$skill_tmp" "$HERDR_SKILL_DIR/SKILL.md" \
+      || rm -f "$skill_tmp"
+  else
+    printf "herdr skill has no description line; leaving it unchanged.\n"
+  fi
+
   # Install the agent state hook so herdr can read Claude Code's
   # working/idle/blocked/done state. Re-running reinstalls the current version.
   printf "Installing herdr integration for Claude Code...\n"
