@@ -34,6 +34,21 @@ make xcode     # Install Xcode Command Line Tools only
 make help
 ```
 
+### Personal Machines
+
+A few applications in the `Brewfile` are gated on `if personal`, because on
+some machines they are provisioned outside Homebrew. Homebrew installs them
+only where this marker exists, so create it before `make brew` on a machine
+that manages its own applications:
+
+```sh
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles"
+touch "${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles/personal"
+```
+
+The marker is empty and is not tracked, so a machine opts in by its presence
+alone. Run `brew bundle list --all` to confirm which entries are active.
+
 ## Backup
 
 - .ssh

@@ -1,3 +1,9 @@
+# Entries marked `if personal` are installed only on machines that opt in by
+# creating the marker file below. Where it is absent those applications are
+# provisioned outside Homebrew, so Homebrew must not try to own them.
+xdg_config = ENV.fetch("XDG_CONFIG_HOME", File.expand_path("~/.config"))
+personal = File.exist?(File.join(xdg_config, "dotfiles", "personal"))
+
 tap "songmu/tap"
 tap "modem-dev/tap"
 brew "argocd"
@@ -47,6 +53,7 @@ brew "yq"
 brew "zoxide"
 brew "zsh"
 brew "songmu/tap/blogsync"
+cask "1password" if personal
 cask "1password-cli"
 cask "appcleaner"
 cask "claude-code"
