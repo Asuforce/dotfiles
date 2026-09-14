@@ -1,8 +1,12 @@
 # Entries marked `if personal` are installed only on machines that opt in by
 # creating the marker file below. Where it is absent those applications are
 # provisioned outside Homebrew, so Homebrew must not try to own them.
-xdg_config = ENV.fetch("XDG_CONFIG_HOME", File.expand_path("~/.config"))
-personal = File.exist?(File.join(xdg_config, "dotfiles", "personal"))
+#
+# The path is fixed under $HOME rather than $XDG_CONFIG_HOME on purpose:
+# `brew bundle` scrubs the environment before evaluating this file, so
+# XDG_CONFIG_HOME arrives here as nil even when it is set. Honouring it on the
+# writing side alone would put the marker where this check never looks.
+personal = File.exist?(File.expand_path("~/.config/dotfiles/personal"))
 
 tap "songmu/tap"
 tap "modem-dev/tap"

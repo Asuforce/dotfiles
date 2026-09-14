@@ -42,9 +42,18 @@ only where this marker exists, so create it before `make brew` on a machine
 that manages its own applications:
 
 ```sh
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles"
-touch "${XDG_CONFIG_HOME:-$HOME/.config}/dotfiles/personal"
+make personal
 ```
+
+That creates `~/.config/dotfiles/personal`, which is equivalent to:
+
+```sh
+mkdir -p "$HOME/.config/dotfiles"
+touch "$HOME/.config/dotfiles/personal"
+```
+
+The path ignores `XDG_CONFIG_HOME` deliberately, because `brew bundle` scrubs
+the environment before reading the `Brewfile` and cannot see that variable.
 
 The marker is empty and is not tracked, so a machine opts in by its presence
 alone. Run `brew bundle list --all` to confirm which entries are active.

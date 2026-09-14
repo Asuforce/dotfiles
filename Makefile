@@ -1,4 +1,4 @@
-.PHONY: all help xcode link brew llm runtime macos clean test
+.PHONY: all help xcode link brew llm runtime macos personal clean test
 
 all: xcode link brew macos llm runtime
 	@printf "\033[32m✓ Setup completed\033[0m\n"
@@ -13,6 +13,7 @@ help:
 	@printf "  make macos     - Apply macOS settings\n"
 	@printf "  make llm       - Apply Claude Code (LLM) settings\n"
 	@printf "  make runtime   - Setup mise language runtimes\n"
+	@printf "  make personal  - Opt this machine into personal-only Brewfile entries\n"
 	@printf "  make clean     - Clean up removable files\n"
 	@printf "  make test      - Verify configuration files exist\n"
 
@@ -39,6 +40,18 @@ runtime:
 macos:
 	@printf "Applying macOS settings...\n"
 	@bash macos/defaults.sh
+
+personal:
+	@printf "Opting this machine into personal-only Brewfile entries...\n"
+	@bash -c 'dir="$$HOME/.config/dotfiles"; \
+		marker="$$dir/personal"; \
+		if [ -e "$$marker" ]; then \
+			printf "✓ Already opted in: %s\n" "$$marker"; \
+		else \
+			mkdir -p "$$dir" && touch "$$marker" \
+				&& printf "✓ Created %s\n" "$$marker"; \
+		fi; \
+		printf "Run: make brew\n"'
 
 clean:
 	@printf "Cleaning up...\n"
