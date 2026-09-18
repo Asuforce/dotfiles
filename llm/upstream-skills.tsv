@@ -1,0 +1,8 @@
+# Skills vendored from an upstream repository, and the upstream commit they
+# have been reviewed through. scripts/llm.sh compares each entry against
+# upstream HEAD and prints a compare URL when it has moved, so that local
+# deviations stay deliberate instead of silently falling behind.
+#
+# Columns: skill<TAB>repo<TAB>path<TAB>reviewed-through-sha
+visual-pr	humanlayer/skills	plugins/visual-pr	4e39d8fe020f17e5810b450e2646a7c4a7aa7a74
+show-me	humanlayer/skills	plugins/show-me	bba9d13ab34f0a87f1cc33df4dd196372393ddfc

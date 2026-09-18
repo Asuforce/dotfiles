@@ -26,6 +26,32 @@ readonly CLAUDE_SETTINGS_FILE="$CLAUDE_CONFIG_DIR/settings.json"
 readonly CLAUDE_SKILLS_DIR="$CLAUDE_CONFIG_DIR/skills"
 [ ! -e "$CLAUDE_SKILLS_DIR" ] && ln -fs "$DOTFILES_LLM/skills" "$CLAUDE_SKILLS_DIR"
 
+# Report vendored skills whose upstream has moved past the commit they were
+# reviewed through. Forking these skills is deliberate -- the local copies carry
+# changes upstream does not want -- so this only prints: upstream prompt changes
+# are merged by hand after review, never applied automatically.
+readonly UPSTREAM_MANIFEST="$DOTFILES_LLM/upstream-skills.tsv"
+if [ ! -f "$UPSTREAM_MANIFEST" ]; then
+  :
+elif ! command -v gh >/dev/null 2>&1; then
+  printf "gh not found; skipping the vendored skill drift check.\n"
+else
+  printf "Checking vendored skills against upstream...\n"
+  while IFS=$'\t' read -r skill repo path sha || [ -n "${skill:-}" ]; do
+    case "$skill" in '' | '#'*) continue ;; esac
+    latest="$(gh api "repos/$repo/commits?path=$path&per_page=1" --jq '.[0].sha' 2>/dev/null || true)"
+    if [ -z "$latest" ]; then
+      printf "  %s: could not reach upstream; skipped.\n" "$skill"
+    elif [ "$latest" = "$sha" ]; then
+      printf "  %s: up to date.\n" "$skill"
+    else
+      printf "  %s: upstream moved (%s).\n" "$skill" "$path"
+      printf "    https://github.com/%s/compare/%s...%s\n" "$repo" "$sha" "$latest"
+      printf "    Review it, then update llm/upstream-skills.tsv.\n"
+    fi
+  done <"$UPSTREAM_MANIFEST"
+fi
+
 # Set up herdr as the substrate for agent work
 if command -v herdr >/dev/null 2>&1; then
   # Regenerate the herdr skill from the installed binary so it tracks herdr
