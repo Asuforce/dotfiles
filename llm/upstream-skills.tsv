@@ -6,3 +6,5 @@
 # Columns: skill<TAB>repo<TAB>path<TAB>reviewed-through-sha
 visual-pr	humanlayer/skills	plugins/visual-pr	4e39d8fe020f17e5810b450e2646a7c4a7aa7a74
 show-me	humanlayer/skills	plugins/show-me	bba9d13ab34f0a87f1cc33df4dd196372393ddfc
+retro	mattpocock/skills	skills/in-progress/retro	0243b6ec4ca02f5a188506d0c0342e3617a7dee1
+writing-for-agents	mattpocock/skills	skills/productivity/writing-for-agents	321658273cb1d20b76026717d027d505790106d4
