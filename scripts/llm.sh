@@ -120,4 +120,61 @@ else
   printf "herdr not found; skipping herdr skill and integration.\n"
 fi
 
+# Link the shut-up-and-code hooks and turn always-on mode on by default. The
+# skill's own routing description ("use when writing or editing code") is not
+# enough on its own -- see llm/skills/shut-up-and-code/SKILL.md's upstream
+# README on why a CLAUDE.md line and skill routing alone do not reliably
+# suppress verbose comments -- so these hooks force the ruleset into context
+# instead of waiting for the model to decide to call the skill.
+printf "Linking shut-up-and-code hooks...\n"
+readonly SUAC_HOOKS_DIR="$CLAUDE_CONFIG_DIR/hooks"
+[ ! -d "$SUAC_HOOKS_DIR" ] && mkdir -p "$SUAC_HOOKS_DIR"
+readonly SUAC_ALWAYS_ON_HOOK="$SUAC_HOOKS_DIR/shut-up-and-code-always-on.sh"
+[ ! -e "$SUAC_ALWAYS_ON_HOOK" ] \
+  && ln -fs "$DOTFILES_LLM/hooks/shut-up-and-code-always-on.sh" "$SUAC_ALWAYS_ON_HOOK"
+readonly SUAC_AUDIT_HOOK="$SUAC_HOOKS_DIR/shut-up-and-code-audit-on-commit.sh"
+[ ! -e "$SUAC_AUDIT_HOOK" ] \
+  && ln -fs "$DOTFILES_LLM/hooks/shut-up-and-code-audit-on-commit.sh" "$SUAC_AUDIT_HOOK"
+
+readonly SUAC_FLAG_FILE="$HOME/.claude/.shut-up-and-code-always"
+[ ! -e "$SUAC_FLAG_FILE" ] && touch "$SUAC_FLAG_FILE"
+
+readonly SUAC_ALWAYS_ON_COMMAND='bash "$HOME/.claude/hooks/shut-up-and-code-always-on.sh"'
+readonly SUAC_AUDIT_COMMAND='bash "$HOME/.claude/hooks/shut-up-and-code-audit-on-commit.sh"'
+if ! command -v jq >/dev/null 2>&1; then
+  printf "jq not found; skipping shut-up-and-code hook registration.\n"
+else
+  if jq -e --arg cmd "$SUAC_ALWAYS_ON_COMMAND" \
+      '[(.hooks.SessionStart // [])[].hooks[]?.command] | index($cmd)' \
+      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+    printf "shut-up-and-code always-on hook already registered.\n"
+  else
+    printf "Registering shut-up-and-code always-on hook on SessionStart...\n"
+    settings_tmp="$(mktemp)"
+    jq --arg cmd "$SUAC_ALWAYS_ON_COMMAND" \
+      '.hooks.SessionStart = ((.hooks.SessionStart // []) + [{
+         matcher: "startup|resume|clear|compact",
+         hooks: [{ type: "command", command: $cmd, timeout: 5 }]
+       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+      || rm -f "$settings_tmp"
+  fi
+
+  if jq -e --arg cmd "$SUAC_AUDIT_COMMAND" \
+      '[(.hooks.PreToolUse // [])[].hooks[]?.command] | index($cmd)' \
+      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+    printf "shut-up-and-code audit-on-commit hook already registered.\n"
+  else
+    printf "Registering shut-up-and-code audit-on-commit hook on PreToolUse...\n"
+    settings_tmp="$(mktemp)"
+    jq --arg cmd "$SUAC_AUDIT_COMMAND" \
+      '.hooks.PreToolUse = ((.hooks.PreToolUse // []) + [{
+         matcher: "Bash",
+         hooks: [{ type: "command", command: $cmd, timeout: 5 }]
+       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+      || rm -f "$settings_tmp"
+  fi
+fi
+
 printf "Claude Code setup complete.\n"
