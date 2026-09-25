@@ -60,7 +60,6 @@ brew "songmu/tap/blogsync"
 cask "1password" if personal
 cask "1password-cli"
 cask "appcleaner"
-cask "claude-code"
 cask "firefox"
 cask "font-hackgen"
 cask "ghostty"

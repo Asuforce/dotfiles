@@ -30,6 +30,9 @@ fi
 # Go binaries
 export PATH="$PATH:$GOPATH/bin"
 
+# Claude Code native installer
+export PATH="$HOME/.local/bin:$PATH"
+
 # Curl binary path
 if [[ -d /usr/local/opt/curl ]]; then
   export PATH="/usr/local/opt/curl/bin:$PATH"

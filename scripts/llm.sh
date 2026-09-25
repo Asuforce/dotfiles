@@ -6,6 +6,24 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 
+# Install Claude Code via the official native installer instead of Homebrew:
+# the cask lags behind native/npm releases, and the native installer
+# self-updates. `brew bundle` runs without --cleanup, so dropping the cask
+# from the Brewfile does not remove it from a machine that already has it --
+# migrate by hand with `brew uninstall --cask claude-code` and rerun this
+# script.
+if command -v claude >/dev/null 2>&1; then
+  case "$(command -v claude)" in
+  /opt/homebrew/Caskroom/* | /usr/local/Caskroom/*)
+    printf "Claude Code is installed via Homebrew; migrate with:\n"
+    printf "  brew uninstall --cask claude-code && bash %s\n" "$0"
+    ;;
+  esac
+else
+  printf "Installing Claude Code...\n"
+  curl -fsSL https://claude.ai/install.sh | bash
+fi
+
 # Link Claude Code config
 printf "Setting up Claude Code configuration...\n"
 
