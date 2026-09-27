@@ -1,0 +1,64 @@
+# llm/
+
+Claude Code configuration for this repository, installed by `scripts/llm.sh`. See the root `CLAUDE.md` for the pointers into this directory; this file carries the reasoning behind them.
+
+## Skills only, no commands
+
+Reusable agent instructions live in `llm/skills/<name>/SKILL.md` only — there is no `llm/commands/` and no `~/.claude/commands` link. Slash commands and skills overlap in what they can express, but a skill carries a `description` that lets the model reach for it unprompted, so keeping both meant maintaining two mechanisms for one job.
+
+`apply-review`, `create-pr`, and `create-repo` moved over from commands; `create-pr` was later replaced by the vendored `visual-pr` (below). Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
+
+- `review-pr` — the built-in `code-review` skill takes a PR number and can post or apply its findings.
+- `guide` — plan mode explores read-only and presents options for approval, with the `Plan` and `feature-dev:code-architect` agents for the same job in a subagent.
+- `empirical-prompt-tuning` — `claude plugin eval` runs eval cases with LLM graders, repeated runs, and a no-plugin ablation arm, and resolves a `~/.claude/skills/<name>` directory as a target.
+- `find-skills` — `/plugin` and `claude plugin install` discover and install skills without the separate `npx skills` ecosystem it assumed.
+
+`apply-review` survives the test because `code-review` generates its own findings rather than consuming a human reviewer's comments, and the `/pr-comments` command that once did is gone.
+
+Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones (as `create-repo` does) instead of reintroducing a command.
+
+## Vendored skills
+
+`llm/upstream-skills.tsv` records the upstream commit each vendored skill (or hook directory) has been reviewed through. `scripts/llm.sh` prints a compare URL when upstream has moved past that commit; it applies nothing, because these are prompts that have to be read before they're taken. It fails open on a missing `gh`, an unreachable network, or a missing manifest.
+
+### `visual-pr` (from `humanlayer/skills`)
+
+Replaces the hand-written `create-pr`. What upstream is worth taking is the discipline it imposes on a PR body: the reason for the change in exactly one sentence, one to three reviewer warnings, and a change outline built from structural views (SQL and endpoint contracts, key types, pseudocode, a shallow file tree, component trees, call and data flow) instead of prose or a file-by-file changelog.
+
+The local copy:
+
+- drops upstream's HumanLayer assumptions (`.humanlayer/tasks/` body paths, a cloud permalink in the report) and its bundled second copy of `show-me` (which would have drifted from `llm/skills/show-me/`)
+- re-adds what `create-pr` did and upstream does not: a draft PR assigned to `@me` against the detected default branch, the Jira ticket id read off the branch name, `gh pr view --web`
+- leaves a repository's own `.github/PULL_REQUEST_TEMPLATE.md` in charge of the headings when one exists, placing the structural views inside its sections rather than overwriting them with the three-section form
+
+`create-pr`'s second template path, `${HOME}/dotfiles/.github/PULL_REQUEST_TEMPLATE.md`, was dropped rather than carried over — it has never existed on this machine.
+
+Vendoring beat `claude plugin install` because none of those deviations survive a plugin update, and the plugin would write a `.humanlayer/` directory into every repository it ran in.
+
+`show-me` is listed in the manifest too, pinned past `Make show-me user-invocable` — that commit adds `disable-model-invocation: true`, which `llm/AGENTS.md` needs off, and it had already landed upstream unnoticed before the manifest existed, which is the failure the manifest is meant to make visible.
+
+### `retro` and `writing-for-agents` (from `mattpocock/skills`)
+
+`retro`'s first step calls `writing-for-agents` for its style guide, so vendoring `retro` alone would leave that call dangling.
+
+No built-in covers this gap: the built-in `code-review` skill reviews a diff against coding standards, while `retro` reviews the session and the agent's environment itself (steering files, missing automated checks, tool economy) to suggest what should change before the next session — a different input entirely.
+
+Both ship `disable-model-invocation: true` upstream and keep it here: `retro` is genuinely user-invoked ("the user has asked for a retrospective"), and `writing-for-agents` is pulled in only to satisfy `retro`'s dependency, not for its own standing use, so neither should fire unprompted.
+
+`writing-for-agents` governs the structure of agent-facing documents (context pointers, information hierarchy, leading words); it doesn't overlap `show-me`, which governs visuals inside those documents.
+
+Upstream's `writing-for-agents/agents/openai.yaml` was dropped as an OpenAI-format export — the same call `visual-pr` makes dropping upstream's bundled second `show-me`.
+
+`retro` lives in upstream's `skills/in-progress/`, so its manifest entry is expected to drift more often than the others.
+
+### `shut-up-and-code` (from `chl03ks/shut-up-and-code`)
+
+Vendored for the same reason `visual-pr` exists: a `CLAUDE.md` line asking for comment restraint does not reliably stop the model from narrating code back to the user in comments (a known failure mode, cited in upstream's README against anthropics/claude-code#65961) — a skill loads as a document at the point the model decides how to write, where a config line competes for attention with everything else.
+
+The skill alone still depends on the model choosing to invoke it, so `llm/hooks/shut-up-and-code-always-on.sh` and `llm/hooks/shut-up-and-code-audit-on-commit.sh` (vendored from the same upstream repo's `hooks/` directory) force the ruleset into context instead. See `scripts/llm.sh`'s comments for when each fires and how they're gated.
+
+`llm/upstream-skills.tsv` tracks the skill and the `hooks/` directory as two separate rows against the same repo, since they can drift independently.
+
+## herdr integration
+
+`scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs), overrides its generated `description` (see the script's comments for why), and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel). `llm/AGENTS.md` carries the standing instruction that makes the herdr skill fire without being asked for each time.
