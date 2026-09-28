@@ -68,5 +68,3 @@
 	what = show -w
 [ghq]
 	root = ~/dev/src
-[credential]
-	helper = /usr/local/share/gcm-core/git-credential-manager

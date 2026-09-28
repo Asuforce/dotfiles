@@ -10,8 +10,8 @@ lot per app:
 config/                         fate on omarchy
 ├── git/config      (~/.config/git/config)
 │                    → repo wins (force-overwrite)
-│                      delta, ghq root, credential helper, full alias set;
-│                      omarchy's own is a minimal generic set, and some
+│                      delta, ghq root, full alias set; omarchy's own is a
+│                      minimal generic set, and some
 │                      alias names collide with different definitions
 │                      (e.g. `ci` = "commit" vs repo's "commit -v")
 ├── herdr/config.toml (~/.config/herdr/config.toml)
@@ -35,7 +35,7 @@ config/                         fate on omarchy
                      → see below / mac-only (2026-09-28-repo-structure.md)
 ```
 
-Within git config, two settings are mac-only and need an OS split via
+Within git config, one setting is mac-only and needs an OS split via
 `[include] path = ...` (git supports this natively, silently skipping a
 missing file — same mechanism as Ghostty's own `?config-file` include, which
 is why this repo's Ghostty file could have used the same pattern if it were
@@ -46,8 +46,12 @@ still shared):
   1Password `op-ssh-sign` path (commonly `/opt/1Password/op-ssh-sign`) once
   1Password is added to the omarchy package list (see
   2026-09-28-package-management.md — it's not in omarchy's base packages).
-- `credential.helper = /usr/local/share/gcm-core/...` — also a mac Homebrew
-  path, needs the Linux install path for `git-credential-manager`.
+
+`credential.helper` (`git-credential-manager`/gcm-core) no longer needs this
+treatment: checking actual remotes across every tracked repo on the mac
+machine turned up zero `https://` origins (all 24 are ssh), so the cask and
+this config line were dead weight and got removed outright rather than
+carried to omarchy.
 
 `config/ssh/config` needs its own OS split: `UseKeychain yes` is a fatal
 "Bad configuration option" error on non-Apple OpenSSH (would break ssh
