@@ -2,7 +2,7 @@
 
 ## Usage
 
-### Initial Setup (First Time)
+### Initial Setup
 
 ```sh
 # Run bootstrap script (automatically clones repository and runs full setup)
@@ -12,7 +12,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/Asuforce/dotfiles/master/s
 exec $SHELL -l
 ```
 
-### Subsequent Setup (After Repository Cloned)
+### Subsequent Setup
 
 Navigate to the repository and use Make:
 
@@ -23,12 +23,12 @@ cd ~/dev/src/github.com/Asuforce/dotfiles
 make all
 
 # Or run individual setup targets
-make link      # Create dotfile symlinks only
-make brew      # Install Homebrew packages only
-make macos     # Apply macOS settings only
-make llm       # Setup Claude Code configuration only
-make runtime   # Setup language runtimes only
-make xcode     # Install Xcode Command Line Tools only
+make link      # Create dotfile symlinks
+make brew      # Install Homebrew packages
+make macos     # Apply macOS settings
+make llm       # Setup Claude Code configuration
+make runtime   # Setup language runtimes
+make xcode     # Install Xcode Command Line Tools
 
 # Show available targets
 make help
@@ -45,22 +45,6 @@ that manages its own applications:
 make personal
 ```
 
-That creates `~/.config/dotfiles/personal`, which is equivalent to:
+That creates the empty, untracked marker `~/.config/dotfiles/personal`.
+Run `brew bundle list --all` to confirm which entries are active.
 
-```sh
-mkdir -p "$HOME/.config/dotfiles"
-touch "$HOME/.config/dotfiles/personal"
-```
-
-The path ignores `XDG_CONFIG_HOME` deliberately, because `brew bundle` scrubs
-the environment before reading the `Brewfile` and cannot see that variable.
-
-The marker is empty and is not tracked, so a machine opts in by its presence
-alone. Run `brew bundle list --all` to confirm which entries are active.
-
-## Backup
-
-- .ssh
-- .zsh_history
-- .gitconfig-work
-- .config/herdr/session.json
