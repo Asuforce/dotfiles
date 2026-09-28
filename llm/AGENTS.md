@@ -1,8 +1,8 @@
 - Speak in Japanese
-- Don't use excessive emphasis in your documents
+- Keep emphasis sparing in your documents
 - When writing git commit messages, keep them short and simple in a single line
 - When writing a pull request description or a design or technical document (ADR, PoC decision log, `CONTEXT.md`, README, design notes), use the `show-me` skill and include at least one visual that carries the main point. This applies without being asked for each time. For a pull request, reach for the `visual-pr` skill: it owns the create-or-update flow and defers to `show-me` for the visuals themselves.
-- In those documents use only the text visuals from that skill — Mermaid, file or call trees, pseudocode, `diff` — because an HTML artifact cannot live inside a PR body or a Markdown file. Keep each visual to the smallest shape that makes its point, and leave it out of a section it would not clarify. Commit messages, review comments, and short replies are out of scope.
+- In those documents use only the text visuals from that skill — Mermaid, file or call trees, pseudocode, `diff` — because an HTML artifact cannot live inside a PR body or a Markdown file. Commit messages, review comments, and short replies are out of scope.
 - herdr is the default substrate for AI agent work. This file is the standing request the `herdr` skill asks for: treat "the user explicitly mentioned herdr" as already satisfied in every session, and invoke the skill without waiting to be asked. Where the skill's own description says to use it only on an explicit mention, this line is the explicit mention and takes precedence.
 - Invoke the `herdr` skill before, not after, each of these: spawning a subagent with the Agent tool, starting a second Claude Code or another coding agent, handing work to an agent running elsewhere, or waiting on any of them to finish. Japanese phrasings are the same trigger: 並列で / 別のエージェントに / バックグラウンドで走らせて / エージェントを立てて.
 - When the delegated work is a separable unit the user may want to watch, steer, or take over, run it as an agent in a herdr pane rather than as an in-process subagent, and drive it through the skill.
