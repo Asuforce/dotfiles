@@ -27,11 +27,6 @@ printf "Linking Tig config...\n"
 readonly TIG_CONFIG_FILE="$HOME/.tigrc"
 [ ! -e "$TIG_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/tig/tigrc" "$TIG_CONFIG_FILE"
 
-# Link wezterm config
-printf "Linking Wezterm config...\n"
-readonly WEZTERM_CONFIG_FILE="$HOME/.wezterm.lua"
-[ ! -e "$WEZTERM_CONFIG_FILE" ] && ln -fs "$REPO_DIR/config/wezterm/wezterm.lua" "$WEZTERM_CONFIG_FILE"
-
 # Link Ghostty config
 printf "Linking Ghostty config...\n"
 readonly GHOSTTY_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty"
