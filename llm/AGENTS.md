@@ -7,3 +7,5 @@
 - Invoke the `herdr` skill before, not after, each of these: spawning a subagent with the Agent tool, starting a second Claude Code or another coding agent, handing work to an agent running elsewhere, or waiting on any of them to finish. Japanese phrasings are the same trigger: 並列で / 別のエージェントに / バックグラウンドで走らせて / エージェントを立てて.
 - When the delegated work is a separable unit the user may want to watch, steer, or take over, run it as an agent in a herdr pane rather than as an in-process subagent, and drive it through the skill.
 - If `HERDR_ENV` is not `1`, herdr control is unavailable: say so and keep the work in the current session instead.
+- End every turn's final message with three headings: `Blocked on me`, `Changed`, `Found`. This replaces the Concise output style's one/two-sentence summary.
+- Once you've answered something, treat that answer as settled: don't re-litigate an earlier answer unless asked about it or shown a problem with it.
