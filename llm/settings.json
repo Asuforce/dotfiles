@@ -1,9 +1,5 @@
 {
   "model": "haiku",
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
   "permissions": {
     "allow": [
       "List(*)",
