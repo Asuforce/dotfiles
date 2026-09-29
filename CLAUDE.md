@@ -4,12 +4,9 @@
 
 This repository manages macOS dotfiles via symlinks. The `config/` directory holds the source-of-truth config files; `scripts/link.sh` creates symlinks from there to the appropriate locations. See `Makefile` for available commands.
 
-All setup scripts are idempotent: they check for file/directory existence before creating symlinks or copying files, so re-running them will not overwrite existing configurations.
-
 ### Key notes
 
-- All scripts use `set -euo pipefail` and check existence before creating links/dirs.
-- Architecture detection (arm64 vs x86) determines Homebrew prefix (`/opt/homebrew` vs `/usr/local`).
+- All scripts use `set -euo pipefail` and are idempotent: they check for file/directory existence before creating links/dirs, so re-running them will not overwrite existing configurations.
 - `config/git/.gitconfig`, `config/git/.gitconfig-work`, SSH config, and the work-specific zsh config (`~/.zshrc.work`, not git-managed) are copied rather than symlinked to allow local modification.
 - Terminal multiplexing (panes, tabs, workspaces, copy mode) is owned by herdr, not by the terminal emulator. `config/ghostty/config.ghostty` deliberately binds no leader key and no pane/tab keys; herdr holds the prefix `ctrl+g` (`config/herdr/config.toml`). Do not re-add pane or tab bindings to the terminal config; they would shadow herdr's prefix.
 - Ghostty is the terminal herdr runs on. herdr vendors Ghostty's VT engine for pane emulation, and Ghostty implements both protocols herdr depends on: the kitty keyboard protocol, and the kitty graphics virtual placeholders pane images are drawn with. Hammerspoon's Option+Space hotkey points at Ghostty.
