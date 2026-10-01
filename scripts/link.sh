@@ -54,6 +54,16 @@ link_config "$REPO_DIR/config/bat/config" "$CONFIG_HOME/bat/config"
 printf "Linking zsh-abbr abbreviations...\n"
 link_config "$REPO_DIR/config/zsh/abbreviations" "$CONFIG_HOME/zsh-abbr/abbreviations"
 
+# Link Ghostty config. Ghostty also reads the legacy ~/.config/ghostty/config, and
+# omarchy-install-terminal seeds that name, so on Linux it is moved aside or its
+# settings would merge with the repo's.
+printf "Linking Ghostty config...\n"
+if [[ "$OS" == "Linux" ]] && [ -f "$CONFIG_HOME/ghostty/config" ] && [ ! -L "$CONFIG_HOME/ghostty/config" ]; then
+  mv "$CONFIG_HOME/ghostty/config" "$CONFIG_HOME/ghostty/config.omarchy.bak"
+  printf "  moved aside: %s\n" "$CONFIG_HOME/ghostty/config"
+fi
+link_config "$REPO_DIR/config/ghostty/config.ghostty" "$CONFIG_HOME/ghostty/config.ghostty"
+
 # Link git config files. os-<kernel> carries the 1Password signing program path.
 printf "Linking Git config files...\n"
 adopt_config "$REPO_DIR/config/git/config" "$CONFIG_HOME/git/config"
@@ -66,10 +76,6 @@ if [[ "$OS" == "Darwin" ]]; then
   else
     BREW_DIR="/usr/local"
   fi
-
-  # Link Ghostty config
-  printf "Linking Ghostty config...\n"
-  link_config "$REPO_DIR/config/ghostty/config.ghostty" "$CONFIG_HOME/ghostty/config.ghostty"
 
   # Link herdr config
   printf "Linking herdr config...\n"
@@ -181,6 +187,21 @@ $FCITX5_MARKER
 0=Muhenkan
 EOF
     command -v fcitx5-remote >/dev/null 2>&1 && fcitx5-remote -r >/dev/null 2>&1 || true
+  fi
+
+  # omarchy seeds herdr's config with a tmux-mirroring keymap that is kept; only
+  # the prefix is changed, to match the mac. `herdr config check` guards the edit.
+  printf "Patching herdr prefix...\n"
+  readonly HERDR_CONFIG="$CONFIG_HOME/herdr/config.toml"
+  if [ -f "$HERDR_CONFIG" ] && grep -q '^prefix = "ctrl+space"' "$HERDR_CONFIG"; then
+    cp "$HERDR_CONFIG" "$HERDR_CONFIG.dotfiles.bak"
+    sed -i 's/^prefix = "ctrl+space"/prefix = "ctrl+g"/' "$HERDR_CONFIG"
+    if command -v herdr >/dev/null 2>&1 && ! herdr config check >/dev/null 2>&1; then
+      mv "$HERDR_CONFIG.dotfiles.bak" "$HERDR_CONFIG"
+      printf "  herdr config check failed; prefix patch reverted\n" >&2
+    else
+      rm -f "$HERDR_CONFIG.dotfiles.bak"
+    fi
   fi
 
   # The mac IdentityAgent path does not exist here, so ~/.ssh/config is generated
