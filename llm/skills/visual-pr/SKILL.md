@@ -126,7 +126,6 @@ gh pr create \
   --draft \
   --assignee @me \
   --base "$DEFAULT_BRANCH" \
-  --title "[<Jira チケット ID>] <タイトル>" \
   --body-file "$body"
 ```
 
