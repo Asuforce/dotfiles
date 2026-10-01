@@ -60,7 +60,11 @@ inputrc) is not ported to zsh; zsh stays as the repo's own setup.
 Verified on the omarchy machine: the 1Password SSH agent works; after `make pkg
 link llm runtime`, `ssh -T git@github.com` authenticates, git resolves
 `gpg.ssh.program` to `/opt/1Password/op-ssh-sign` through the include, the herdr
-prefix is `ctrl+g`, and python and ruby install through mise.
+prefix is `ctrl+g`, and python and ruby install through mise. Also observed:
+`herdr pane layout` returns `.result.layout.panes` (herdr 0.8.2), `zsh -ic`
+starts, installs the sheldon plugins on first run and leaves `EDITOR=nvim`,
+`BAT_THEME` is `ansi`, and the Bash tool runs under bash with `SHELL` still
+bash (`$ZSH_VERSION` empty).
 
 Verified on the mac only, with `HOME` pointed at a temporary directory and `uname`
 stubbed to report Linux: `link.sh`'s Linux branch is idempotent and reports
