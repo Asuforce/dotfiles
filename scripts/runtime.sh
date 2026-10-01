@@ -23,18 +23,21 @@ if ! type mise > /dev/null 2>&1; then
   "$BREW_DIR/bin/brew" install mise
 fi
 
-# Setup mise configuration
-printf "Setting up mise configuration...\n"
+# mise owns ~/.config/mise/config.toml, as on omarchy: omarchy seeds it and its
+# own tooling edits it, so it is not linked from the repo. Each runtime below is
+# added with `mise use -g` only when the file does not name it yet, which keeps
+# whatever version omarchy (or the user) already chose.
+readonly MISE_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/mise/config.toml"
+readonly RUNTIMES=(python@3.12.10 node@lts ruby@3.4.8)
 
-readonly MISE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/mise"
-if [ ! -d "$MISE_CONFIG_DIR" ]; then
-  mkdir -p "$MISE_CONFIG_DIR"
-fi
-
-readonly MISE_CONFIG_FILE="$MISE_CONFIG_DIR/config.toml"
-if [ ! -e "$MISE_CONFIG_FILE" ]; then
-  ln -fs "$REPO_DIR/runtime/config.toml" "$MISE_CONFIG_FILE"
-fi
+printf "Setting up mise runtimes...\n"
+for spec in "${RUNTIMES[@]}"; do
+  if [ -f "$MISE_CONFIG_FILE" ] && grep -qE "^${spec%%@*}[[:space:]]*=" "$MISE_CONFIG_FILE"; then
+    printf "  skipped, already in mise config: %s\n" "${spec%%@*}"
+  else
+    mise use -g "$spec"
+  fi
+done
 
 # Install all tools defined in config.toml
 printf "Installing language runtimes...\n"

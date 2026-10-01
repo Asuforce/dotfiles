@@ -86,8 +86,6 @@ test:
 		[ -f scripts/runtime.sh ] && echo "✓ scripts/runtime.sh found" || { echo "✗ scripts/runtime.sh missing"; errors=1; }; \
 		[ -d macos ] && echo "✓ macos directory found" || { echo "✗ macos directory missing"; errors=1; }; \
 		[ -f macos/defaults.sh ] && echo "✓ macos/defaults.sh found" || { echo "✗ macos/defaults.sh missing"; errors=1; }; \
-		[ -d runtime ] && echo "✓ runtime directory found" || { echo "✗ runtime directory missing"; errors=1; }; \
-		[ -f runtime/config.toml ] && echo "✓ runtime/config.toml found" || { echo "✗ runtime/config.toml missing"; errors=1; }; \
 		[ -f Makefile ] && echo "✓ Makefile found" || { echo "✗ Makefile missing"; errors=1; }; \
 		exit $$errors; \
 	'
