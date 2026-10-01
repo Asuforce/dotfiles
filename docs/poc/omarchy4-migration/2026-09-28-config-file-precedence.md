@@ -20,13 +20,10 @@ config/                         fate on omarchy
 ├── starship/starship.toml
 │                    → omarchy wins, untouched
 ├── ghostty/config.ghostty
-│                    → omarchy wins for now; Ghostty is installed with
-│                      `omarchy-install-terminal ghostty` (see
-│                      2026-09-28-herdr-integration.md). The repo file is
-│                      mac-only: `macos-*` options, `cmd` binds, HackGen,
-│                      a fixed theme that would defeat omarchy's theme sync.
-│                      Sharing part of it through `config-file = ?...` is
-│                      an open decision (2026-10-01-status-for-omarchy-agent.md)
+│                    → repo wins (decided 2026-10-01). Linked on both OSes;
+│                      omarchy's legacy ~/.config/ghostty/config is moved
+│                      aside because Ghostty reads both names. omarchy's theme
+│                      sync and JetBrainsMono do not apply any more.
 ├── btop/btop.conf
 │                    → omarchy wins, untouched
 ├── nvim/init.lua
@@ -70,9 +67,11 @@ invoked automatically against `git/config` (no migration references it for
 that path), so the git symlink isn't at risk from omarchy's own updates —
 unlike herdr's config, which is (see 2026-09-28-herdr-integration.md).
 
-`~/.config/mise/config.toml` is a smaller, lower-probability version of the
-same class of risk: one historical omarchy migration does a one-time `sed`
-on a `node = "x.y.z"`-shaped line in that file, which would match this repo's
-own `runtime/config.toml` format if it's ever symlinked there. Low risk since
-it's a single past migration, not a routine operation, but worth knowing
-before assuming the symlink is inert.
+`~/.config/mise/config.toml` follows omarchy's way on both OSes (decided
+2026-10-01): mise owns the file, so `runtime/config.toml` was deleted and is no
+longer symlinked. omarchy seeds it with `claude`, `codex`, `gemini`, `gh` and a
+pinned `node`, and one historical omarchy migration `sed`s a `node = "x.y.z"`
+line in it, so a symlink into the repo would have been rewritten underneath the
+repo. `scripts/runtime.sh` runs `mise use -g` for python, node (`lts`) and ruby,
+and skips any tool the file already names, so omarchy's node version wins on
+Linux. On the mac this moves node from the old pin `24.10.0` to `lts`.

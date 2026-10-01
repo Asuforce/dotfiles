@@ -24,7 +24,8 @@ make all
 
 # Or run individual setup targets
 make link      # Create dotfile symlinks
-make brew      # Install Homebrew packages
+make brew      # Install Homebrew packages (macOS)
+make pkg       # Install Linux packages from config/packages/linux.txt (omarchy)
 make macos     # Apply macOS settings
 make llm       # Setup Claude Code configuration
 make runtime   # Setup language runtimes
@@ -33,6 +34,13 @@ make xcode     # Install Xcode Command Line Tools
 # Show available targets
 make help
 ```
+
+### omarchy (Arch Linux)
+
+`make all` branches on `uname -s`: on Linux it runs `pkg → link → llm → runtime`
+and skips the macOS-only targets. Several files are replaced by the repo's
+version and the original is kept next to it as `<name>.omarchy.bak`. Read the
+output of `make link` for `skipped, already exists` and `moved aside` lines.
 
 ### Personal Machines
 

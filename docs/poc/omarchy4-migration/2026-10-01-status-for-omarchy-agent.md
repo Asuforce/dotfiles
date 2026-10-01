@@ -7,63 +7,60 @@ the user settles them.
 
 ## Implemented
 
-One change so far, covering the OS branch and the shell hand-over. Everything
-else below is decided but not written.
-
 ```text
 make all
 ├── Darwin: xcode → link → brew → macos → llm → runtime
-└── Linux : link → llm → runtime              (xcode, brew, macos skip)
+└── Linux : pkg → link → llm → runtime        (xcode, brew, macos skip)
+
+scripts/pkg.sh     : config/packages/linux.txt → `omarchy pkg add` (official)
+                     and `yay -S --needed` (aur)
 
 scripts/link.sh
-├── both   : zsh, tig, sheldon, bat, zsh-abbr
-├── Darwin : ghostty, herdr, git, nvim, starship, btop, ssh, karabiner,
-│            hammerspoon, /etc/shells, diff-highlight
-└── Linux  : keyd (pacman install, /etc/keyd/default.conf copied from
-             config/keyd, service enabled), marked blocks appended to
-             ~/.config/hypr/input.lua (ctrl:nocaps, no compose:caps) and
-             ~/.config/fcitx5/config (Henkan/Muhenkan), and ~/.bashrc gets
-             a guarded `exec zsh` block (marker comment)
+├── both   : zsh, tig, sheldon, bat, zsh-abbr, ghostty, git (config, ignore,
+│            os-<kernel> as ~/.config/git/os, which carries the 1Password
+│            signing program path)
+├── Darwin : herdr, nvim, starship, btop, ssh, karabiner, hammerspoon,
+│            /etc/shells, diff-highlight, .gitconfig copies
+└── Linux  : keyd, marked blocks in hypr/input.lua and fcitx5/config, herdr
+             prefix patched to ctrl+g (guarded by `herdr config check`),
+             ~/.ssh/config generated from config/ssh/config with the Linux
+             1Password socket, ~/.bashrc guarded `exec zsh` block
 
-scripts/llm.sh
-├── settings.json : no longer tracked (llm/settings.json is deleted);
-│                   created as `{}` when absent, and only the hook
-│                   registrations edit it, with jq
-└── skills        : linked one by one into ~/.claude/skills; a legacy
-                    directory-level link to llm/skills is replaced
+adopt_config       : on Linux moves a regular file in the way to
+                     <name>.omarchy.bak, then links (git config)
+                     the legacy ~/.config/ghostty/config and ~/.ssh/config are
+                     moved aside the same way
 
-scripts/runtime.sh : installs mise through brew on Darwin only; on Linux it
-                     exits with a message if mise is missing
-config/zsh/zshrc   : the Homebrew PATH block runs on Darwin only
+scripts/llm.sh     : settings.json untracked (created as `{}`, hooks merged
+                     with jq); skills linked one by one
+scripts/runtime.sh : mise owns ~/.config/mise/config.toml; python, node (lts)
+                     and ruby are added with `mise use -g` unless the file
+                     already names them. runtime/config.toml is gone.
 ```
 
 `link_config` in `link.sh` prints `skipped, already exists: <path>` when it
 meets a path it did not create. On omarchy that line means the distro seeded the
 file first and the repo's version is not applied.
 
+Settled with the user on 2026-10-01: git `user.name` is `Shun Nishitsuji`;
+Ghostty uses the repo's `config.ghostty` on Linux (omarchy's theme sync and
+JetBrainsMono no longer apply; `ttf-hackgen` is in the package list); CSI-u
+keybinds for shift+enter are not added, since herdr uses the kitty keyboard
+protocol.
+
 ## Not implemented yet
 
-Decided in the 2026-09-28 files; none of it exists in the repo.
-
-- Linux package list and the script that feeds it to `omarchy pkg add` and
-  `yay -S --needed` (2026-09-28-package-management.md). `make brew` skips on
-  Linux until then. Without zsh installed the `.bashrc` guard keeps bash; once
-  zsh is installed without `sheldon`, `~/.zshrc` errors at `sheldon source`, and
-  `ghq` and `git-delta` stay missing.
-- Linux handling for git and ssh: an `[include]` split for the 1Password signing
-  program, and `UseKeychain` plus the `IdentityAgent` path in `config/ssh/config`
-  (2026-09-28-config-file-precedence.md). `link.sh` links neither on Linux, so
-  git signing and the repo's aliases are not in effect there.
-- The herdr prefix patch to `ctrl+g` with `herdr config check`
-  (2026-09-28-herdr-integration.md).
-- A Ghostty install step (`omarchy-install-terminal ghostty`).
 - zsh-side ports of omarchy's bash integration (2026-09-28-shell-and-editor.md).
-- `CLAUDE.md` and `README.md` still describe a mac-only repository.
+- Linux sources for `hunk` and `blogsync`.
+- `~/.ssh/config` no longer sets `IdentityAgent` for hosts other than
+  github.com; add a `Host *` block if 1Password should serve them.
 
 ## Verified and not verified
 
-Verified on the omarchy machine: the 1Password SSH agent works and its key shows
-in `ssh-add -L`.
+Verified on the omarchy machine: the 1Password SSH agent works; after `make pkg
+link llm runtime`, `ssh -T git@github.com` authenticates, git resolves
+`gpg.ssh.program` to `/opt/1Password/op-ssh-sign` through the include, the herdr
+prefix is `ctrl+g`, and python and ruby install through mise.
 
 Verified on the mac only, with `HOME` pointed at a temporary directory and `uname`
 stubbed to report Linux: `link.sh`'s Linux branch is idempotent and reports
@@ -115,9 +112,6 @@ Each line gives the command and what counts as a pass.
 
 The user has not settled these. Do not choose for them.
 
-- Ghostty config: include a shared repo file through `config-file = ?...`, or use
-  omarchy's config only.
-- Whether `ttf-hackgen` is wanted, or omarchy's JetBrainsMono Nerd Font is enough.
 - Whether the terraform (aqua, tfenv) PATH lines in `zshrc` and the gcloud fzf
   widget come to Linux. 2026-09-28-repo-structure.md keeps gcloud mac-only; the
   first version of 2026-09-28-shell-and-editor.md wanted it ported.
