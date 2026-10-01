@@ -39,6 +39,4 @@ aur slack-desktop
 aur ttf-hackgen
 aur visual-studio-code-bin
 
-# Undecided, see docs/poc/omarchy4-migration/2026-10-01-status-for-omarchy-agent.md
-# aur kube-ps1
 # No Linux source known: hunk, blogsync

@@ -111,10 +111,6 @@ Each line gives the command and what counts as a pass.
 
 ## Open decisions
 
-The user has not settled these. Do not choose for them.
-
-- Whether the terraform (aqua, tfenv) PATH lines in `zshrc` and the gcloud fzf
-  widget come to Linux. 2026-09-28-repo-structure.md keeps gcloud mac-only; the
-  first version of 2026-09-28-shell-and-editor.md wanted it ported.
-- Whether to give up kube-ps1, which omarchy's own `starship.toml` replaces, or
-  enable starship's `kubernetes` module.
+None. Settled 2026-10-01: the terraform (aqua, tfenv) PATH lines and the gcloud
+fzf widget stay mac-only, gated on Darwin in `zshrc`; kube-ps1 is dropped from
+the `Brewfile` and the Linux list, and omarchy's starship config applies.
