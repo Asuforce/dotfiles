@@ -118,8 +118,8 @@ if [[ "$OS" == "Darwin" ]]; then
   link_config "$REPO_DIR/config/hammerspoon/init.lua" "$HOME/.hammerspoon/init.lua"
 else
   # keyd reads only /etc/keyd, so the file is copied there rather than linked.
-  # keyd is installed here on its own because the Linux package list is not
-  # implemented yet.
+  # keyd is in config/packages/linux.txt; the guard below only covers running
+  # `make link` on its own.
   printf "Setting up keyd...\n"
   readonly KEYD_SRC="$REPO_DIR/config/keyd/default.conf"
   readonly KEYD_DEST="/etc/keyd/default.conf"

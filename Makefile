@@ -1,11 +1,11 @@
-.PHONY: all help xcode link brew llm runtime macos personal clean test
+.PHONY: all help xcode link brew pkg llm runtime macos personal clean test
 
 OS := $(shell uname -s)
 
 ifeq ($(OS),Darwin)
 all: xcode link brew macos llm runtime
 else
-all: link llm runtime
+all: pkg link llm runtime
 endif
 	@printf "\033[32m✓ Setup completed\033[0m\n"
 
@@ -16,6 +16,7 @@ help:
 	@printf "  make xcode     - Install Xcode Command Line Tools\n"
 	@printf "  make link      - Create symbolic links for dotfiles\n"
 	@printf "  make brew      - Install Homebrew and related tools\n"
+	@printf "  make pkg       - Install Linux packages (omarchy pkg add, yay)\n"
 	@printf "  make macos     - Apply macOS settings\n"
 	@printf "  make llm       - Apply Claude Code (LLM) settings\n"
 	@printf "  make runtime   - Setup mise language runtimes\n"
@@ -36,6 +37,11 @@ brew:
 	@[ "$(OS)" = Darwin ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
 		printf "Setting up Homebrew and related tools...\n"; \
 		bash scripts/brew.sh
+
+pkg:
+	@[ "$(OS)" = Linux ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
+		printf "Installing Linux packages...\n"; \
+		bash scripts/pkg.sh
 
 llm:
 	@printf "Setting up Claude Code configuration...\n"
@@ -73,6 +79,7 @@ test:
 		echo "Checking dotfiles structure..."; \
 		[ -d scripts ] && echo "✓ scripts directory found" || { echo "✗ scripts directory missing"; errors=1; }; \
 		[ -f scripts/xcode.sh ] && echo "✓ scripts/xcode.sh found" || { echo "✗ scripts/xcode.sh missing"; errors=1; }; \
+		[ -f scripts/pkg.sh ] && echo "✓ scripts/pkg.sh found" || { echo "✗ scripts/pkg.sh missing"; errors=1; }; \
 		[ -f scripts/brew.sh ] && echo "✓ scripts/brew.sh found" || { echo "✗ scripts/brew.sh missing"; errors=1; }; \
 		[ -f scripts/link.sh ] && echo "✓ scripts/link.sh found" || { echo "✗ scripts/link.sh missing"; errors=1; }; \
 		[ -f scripts/llm.sh ] && echo "✓ scripts/llm.sh found" || { echo "✗ scripts/llm.sh missing"; errors=1; }; \

@@ -1,0 +1,44 @@
+# Linux (omarchy) package list, the counterpart of the Brewfile.
+# One "<source> <package>" per line; scripts/pkg.sh feeds `official` entries to
+# `omarchy pkg add` and `aur` entries to `yay -S --needed`.
+#
+# Packages omarchy already ships (bat btop eza fd fzf git herdr jq lazydocker
+# lazygit mise neovim ripgrep starship zoxide docker tmux ...) are left out, and
+# so is gh, which mise installs.
+
+official argocd
+official ghostty
+official ghq
+official git-delta
+official go
+official helix
+official helm
+official ipcalc
+official jo
+official k9s
+official keyd
+official kubectl
+official kubectx
+official kubeseal
+official kustomize
+official php
+official procps-ng
+official sheldon
+official tig
+official tree
+official wget
+official yq
+official zsh
+
+aur 1password
+aur 1password-cli
+aur envchain
+aur go-jsonnet
+aur google-chrome
+aur slack-desktop
+aur ttf-hackgen
+aur visual-studio-code-bin
+
+# Undecided, see docs/poc/omarchy4-migration/2026-10-01-status-for-omarchy-agent.md
+# aur kube-ps1
+# No Linux source known: hunk, blogsync
