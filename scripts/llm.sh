@@ -193,4 +193,31 @@ else
   fi
 fi
 
+# Install AutoHarness: a self-learning skill layer that distills skills from
+# real sessions. Plugin-installed rather than vendored like visual-pr/retro/etc
+# -- it ships a Python backend, an MCP server, and its own hooks, none of which
+# a skill-only copy under llm/skills/ would run.
+if ! command -v jq >/dev/null 2>&1; then
+  printf "jq not found; skipping AutoHarness plugin install.\n"
+elif ! command -v claude >/dev/null 2>&1; then
+  printf "claude not found; skipping AutoHarness plugin install.\n"
+else
+  readonly AUTOHARNESS_SOURCE="tigerless-labs/autoharness"
+  if claude plugin marketplace list --json 2>/dev/null \
+      | jq -e --arg repo "$AUTOHARNESS_SOURCE" '.[] | select(.repo == $repo)' >/dev/null 2>&1; then
+    printf "autoharness marketplace already configured.\n"
+  else
+    printf "Adding autoharness marketplace...\n"
+    claude plugin marketplace add "$AUTOHARNESS_SOURCE"
+  fi
+
+  if claude plugin list --json 2>/dev/null \
+      | jq -e '.[] | select(.id == "autoharness@autoharness")' >/dev/null 2>&1; then
+    printf "autoharness plugin already installed.\n"
+  else
+    printf "Installing autoharness plugin...\n"
+    claude plugin install autoharness@autoharness --scope user -y
+  fi
+fi
+
 printf "Claude Code setup complete.\n"

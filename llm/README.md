@@ -73,6 +73,10 @@ Calibrates an explanation to a named audience (age, grade level, job role, relat
 
 Upstream ships only the single `skills/eli5/SKILL.md` file; nothing was dropped or changed in the local copy.
 
+## AutoHarness
+
+`scripts/llm.sh` adds the `tigerless-labs/autoharness` marketplace and installs `autoharness@autoharness` (scope `user`), both idempotently via `claude plugin marketplace list --json` / `claude plugin list --json` checks. It is plugin-installed rather than vendored like the skills above: it ships a Python backend, an MCP server (`stage_skill`), and its own `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks, none of which a skill-only copy under `llm/skills/` would run. It self-learns skills from session work into `.claude/skills/` and prunes them by usage rate — no local deviations are needed, so there is nothing to fork and no entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update autoharness && claude plugin update autoharness@autoharness`, then a restart.
+
 ## herdr integration
 
 `scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs), overrides its generated `description` (see the script's comments for why), and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel). `llm/AGENTS.md` carries the standing instruction that makes the herdr skill fire without being asked for each time.
