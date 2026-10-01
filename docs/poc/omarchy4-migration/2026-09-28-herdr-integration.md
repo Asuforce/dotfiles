@@ -1,14 +1,19 @@
-# herdr on omarchy: no separate Ghostty install, patch only the prefix key
+# herdr on omarchy: use the shipped herdr, patch only the prefix key
 
 Initially assumed herdr's pane/tab model was a mac-side import that might
-clash with Hyprland's own tiling, and that Ghostty would need installing
-specifically for the kitty-graphics pane-image protocol. Both turned out to
-be wrong: herdr ships in `install/omarchy-base.packages` and is a default of
-omarchy4 (Quattro) — DHH confirmed on X ("Herdr is shipping as part of
-Omarchy Quattro"), and omarchy wires it deeply (Hyprland keybind `SUPER+CTRL+
-RETURN`, a keybinding-help menu, theme sync across `herdr machine list`).
-Runs fine inside whatever terminal omarchy already provides; installing
-Ghostty is unnecessary.
+clash with Hyprland's own tiling. That turned out to be wrong: herdr ships in
+`install/omarchy-base.packages` and is a default of omarchy4 (Quattro) — DHH
+confirmed on X ("Herdr is shipping as part of Omarchy Quattro"), and omarchy
+wires it deeply (Hyprland keybind `SUPER+CTRL+RETURN`, a keybinding-help menu,
+theme sync across `herdr machine list`). It runs inside whatever terminal
+omarchy launches.
+
+Revised 2026-10-01: the same log first claimed Ghostty needs no install. It is
+not in the base packages (the default terminal is foot), and the user wants
+Ghostty on this machine. `omarchy-install-terminal ghostty` installs it from
+`extra`, copies omarchy's own Ghostty config when `~/.config/ghostty` is
+missing, and rewrites `~/.config/xdg-terminals.list` so Super+Return opens it.
+See 2026-09-28-config-file-precedence.md for which Ghostty config applies.
 
 Considered symlinking this repo's mac-style `config/herdr/config.toml`
 (minimal: theme + `prefix=ctrl+g` + ui bits, relying on herdr's own built-in

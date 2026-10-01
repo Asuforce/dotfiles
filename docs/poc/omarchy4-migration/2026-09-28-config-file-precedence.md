@@ -20,17 +20,23 @@ config/                         fate on omarchy
 ├── starship/starship.toml
 │                    → omarchy wins, untouched
 ├── ghostty/config.ghostty
-│                    → omarchy wins, untouched (no Ghostty install needed
-│                      either, see 2026-09-28-herdr-integration.md)
+│                    → omarchy wins for now; Ghostty is installed with
+│                      `omarchy-install-terminal ghostty` (see
+│                      2026-09-28-herdr-integration.md). The repo file is
+│                      mac-only: `macos-*` options, `cmd` binds, HackGen,
+│                      a fixed theme that would defeat omarchy's theme sync.
+│                      Sharing part of it through `config-file = ?...` is
+│                      an open decision (2026-10-01-status-for-omarchy-agent.md)
 ├── btop/btop.conf
 │                    → omarchy wins, untouched
 ├── nvim/init.lua
 │                    → omarchy wins (omarchy-nvim/LazyVim), repo file stays
 │                      mac-only — see 2026-09-28-shell-and-editor.md
 ├── zsh/*, sheldon/*, tig/tigrc, bat/config
-│                    → mac-only, no omarchy equivalent (omarchy has no
-│                      shipped default at these paths, but the shell itself
-│                      is bash on omarchy — see 2026-09-28-shell-and-editor.md)
+│                    → linked on both OSes, omarchy has no shipped default at
+│                      these paths (zsh is entered from ~/.bashrc, see
+│                      2026-09-28-shell-and-editor.md). `BAT_THEME=ansi`
+│                      exported by omarchy overrides bat's `--theme`
 └── ssh/config, hammerspoon/, karabiner/
                      → see below / mac-only (2026-09-28-repo-structure.md)
 ```

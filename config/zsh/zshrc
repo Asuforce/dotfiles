@@ -19,12 +19,14 @@ export EDITOR=nvim
 export GOPATH="$HOME/dev"
 
 # Homebrew PATH configuration (ARM64 and Intel support)
-if [[ "$(uname -m)" == "arm64" ]]; then
-  export PATH="/opt/homebrew/bin:$PATH"
-  export PATH="/opt/homebrew/sbin:$PATH"
-else
-  export PATH="/usr/local/bin:$PATH"
-  export PATH="/usr/local/sbin:$PATH"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  if [[ "$(uname -m)" == "arm64" ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+    export PATH="/opt/homebrew/sbin:$PATH"
+  else
+    export PATH="/usr/local/bin:$PATH"
+    export PATH="/usr/local/sbin:$PATH"
+  fi
 fi
 
 # Go binaries

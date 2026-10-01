@@ -34,13 +34,10 @@ readonly DOTFILES_LLM="$REPO_DIR/llm"
 readonly CLAUDE_AGENTS_FILE="$CLAUDE_CONFIG_DIR/CLAUDE.md"
 [ ! -e "$CLAUDE_AGENTS_FILE" ] && ln -fs "$DOTFILES_LLM/AGENTS.md" "$CLAUDE_AGENTS_FILE"
 
-# Copy settings.json
+# settings.json is per-machine and not tracked here; only the hook registrations
+# below edit it, with jq, which needs the file to exist.
 readonly CLAUDE_SETTINGS_FILE="$CLAUDE_CONFIG_DIR/settings.json"
-[ ! -e "$CLAUDE_SETTINGS_FILE" ] && cp "$DOTFILES_LLM/settings.json" "$CLAUDE_SETTINGS_FILE"
-
-# Link skills directory
-readonly CLAUDE_SKILLS_DIR="$CLAUDE_CONFIG_DIR/skills"
-[ ! -e "$CLAUDE_SKILLS_DIR" ] && ln -fs "$DOTFILES_LLM/skills" "$CLAUDE_SKILLS_DIR"
+[ ! -e "$CLAUDE_SETTINGS_FILE" ] && echo '{}' >"$CLAUDE_SETTINGS_FILE"
 
 # Report vendored skills whose upstream has moved past the commit they were
 # reviewed through. Forking these skills is deliberate -- the local copies carry
@@ -112,8 +109,7 @@ if command -v herdr >/dev/null 2>&1; then
     && ln -fs "$DOTFILES_LLM/hooks/herdr-repo-workspace.sh" "$REPO_WORKSPACE_HOOK"
 
   # Register it on SessionStart. This has to append to the same hooks block that
-  # `herdr integration install claude` writes, so it is merged in with jq rather
-  # than carried in llm/settings.json (which is only copied on a fresh machine).
+  # `herdr integration install claude` writes, so it is merged in with jq.
   readonly REPO_WORKSPACE_HOOK_COMMAND='bash "$HOME/.claude/hooks/herdr-repo-workspace.sh"'
   if ! command -v jq >/dev/null 2>&1; then
     printf "jq not found; skipping SessionStart hook registration.\n"
@@ -135,6 +131,24 @@ if command -v herdr >/dev/null 2>&1; then
 else
   printf "herdr not found; skipping herdr skill and integration.\n"
 fi
+
+# Link each skill on its own. omarchy creates ~/.claude/skills as a real
+# directory holding its own skills, so a directory-level link would be skipped
+# there; per-skill links also keep skills written into ~/.claude/skills (by
+# AutoHarness, omarchy) out of this repository. This runs after the herdr block
+# so the generated herdr skill is linked on the first run too.
+printf "Linking skills...\n"
+readonly CLAUDE_SKILLS_DIR="$CLAUDE_CONFIG_DIR/skills"
+if [ "$(readlink "$CLAUDE_SKILLS_DIR" 2>/dev/null || true)" = "$DOTFILES_LLM/skills" ]; then
+  rm "$CLAUDE_SKILLS_DIR"
+fi
+mkdir -p "$CLAUDE_SKILLS_DIR"
+for skill_dir in "$DOTFILES_LLM"/skills/*/; do
+  skill_dest="$CLAUDE_SKILLS_DIR/$(basename "$skill_dir")"
+  if [ ! -e "$skill_dest" ] && [ ! -L "$skill_dest" ]; then
+    ln -s "${skill_dir%/}" "$skill_dest"
+  fi
+done
 
 # Link the shut-up-and-code hooks and turn always-on mode on by default. The
 # skill's own routing description ("use when writing or editing code") is not

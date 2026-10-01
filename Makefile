@@ -1,6 +1,12 @@
 .PHONY: all help xcode link brew llm runtime macos personal clean test
 
+OS := $(shell uname -s)
+
+ifeq ($(OS),Darwin)
 all: xcode link brew macos llm runtime
+else
+all: link llm runtime
+endif
 	@printf "\033[32m✓ Setup completed\033[0m\n"
 
 help:
@@ -18,16 +24,18 @@ help:
 	@printf "  make test      - Verify configuration files exist\n"
 
 xcode:
-	@printf "Setting up Xcode Command Line Tools...\n"
-	@bash scripts/xcode.sh
+	@[ "$(OS)" = Darwin ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
+		printf "Setting up Xcode Command Line Tools...\n"; \
+		bash scripts/xcode.sh
 
 link:
 	@printf "Creating symbolic links for dotfiles...\n"
 	@bash scripts/link.sh
 
 brew:
-	@printf "Setting up Homebrew and related tools...\n"
-	@bash scripts/brew.sh
+	@[ "$(OS)" = Darwin ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
+		printf "Setting up Homebrew and related tools...\n"; \
+		bash scripts/brew.sh
 
 llm:
 	@printf "Setting up Claude Code configuration...\n"
@@ -38,8 +46,9 @@ runtime:
 	@bash scripts/runtime.sh
 
 macos:
-	@printf "Applying macOS settings...\n"
-	@bash macos/defaults.sh
+	@[ "$(OS)" = Darwin ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
+		printf "Applying macOS settings...\n"; \
+		bash macos/defaults.sh
 
 personal:
 	@printf "Opting this machine into personal-only Brewfile entries...\n"

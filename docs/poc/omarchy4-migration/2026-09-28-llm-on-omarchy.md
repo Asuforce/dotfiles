@@ -20,14 +20,19 @@ as the herdr config-seed issue:
    symlink. (Worth doing on both OSes for one consistent code path, not just
    omarchy.)
 
-2. `scripts/llm.sh` copies `llm/settings.json` to `~/.claude/settings.json`
+2. `scripts/llm.sh` copied `llm/settings.json` to `~/.claude/settings.json`
    only if absent. `bin/omarchy-theme-set-claude` creates/edits that same file
    (`jq '.theme = "custom:omarchy"'`) as part of applying the omarchy theme,
    which happens well before anyone runs `make llm`. So on omarchy the file
-   already exists by the time `llm.sh` runs, and this repo's settings
-   (hooks, permissions) never land. Fix: merge with `jq` on every run, the
-   same way `llm.sh` already merges the herdr-repo-workspace and
-   shut-up-and-code hook registrations into this file — not copy-if-absent.
+   already exists by the time `llm.sh` runs, and the template's permissions
+   would never land.
+
+   Revised 2026-10-01: no fix was needed because the template itself went.
+   `llm/settings.json` had drifted from the mac's real file (model, allow list,
+   no ask or deny there) and held per-machine choices, so settings.json is now
+   untracked. `llm.sh` only creates an empty `{}` when the file is absent and
+   registers the repo's hooks into it with `jq`, which works on the file
+   omarchy already created.
 
 The Homebrew-cask migration check at the top of `llm.sh` (checking for
 Claude Code installed via `brew`) is a no-op on Linux; no change needed

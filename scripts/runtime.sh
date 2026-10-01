@@ -6,20 +6,21 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 
-UNAME_MACHINE="$(/usr/bin/uname -m)"
-
-if [[ "${UNAME_MACHINE}" == "arm64" ]]; then
-  BREW_DIR="/opt/homebrew"
-else
-  BREW_DIR="/usr/local"
-fi
-
-readonly BREW=$BREW_DIR/bin/brew
-
-# Install mise if not already installed
+# mise ships in omarchy's base packages, so only macOS installs it here.
 if ! type mise > /dev/null 2>&1; then
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    printf "mise not found; install the mise-bin package first.\n" >&2
+    exit 1
+  fi
+
+  if [[ "$(uname -m)" == "arm64" ]]; then
+    BREW_DIR="/opt/homebrew"
+  else
+    BREW_DIR="/usr/local"
+  fi
+
   printf "Installing mise...\n"
-  "$BREW" install mise
+  "$BREW_DIR/bin/brew" install mise
 fi
 
 # Setup mise configuration
