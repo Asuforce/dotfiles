@@ -1,6 +1,6 @@
 ---
 name: apply-review
-description: 現在のブランチに紐づくPRのレビューコメントを収集・分類し、must-fix を優先して修正を適用、コミット・プッシュまで自律的に完了する。ユーザーが「レビュー対応して」「レビューコメントを反映して」と依頼したとき、またはPR上に未対応コメントが存在すると判断したときに使う。
+description: Collect and classify the review comments on the current branch's PR, apply fixes with must-fix first, and carry through to commit and push autonomously. Use when the user asks "レビュー対応して" or "レビューコメントを反映して", or when unaddressed comments exist on the PR.
 ---
 
 # apply-review

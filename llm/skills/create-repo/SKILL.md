@@ -1,6 +1,6 @@
 ---
 name: create-repo
-description: カレントディレクトリを Git リポジトリとして初期化し、コミット内容から説明文を組み立てて private な GitHub リポジトリを新規作成・プッシュする。ユーザーが「リポジトリを作って」「GitHub に上げて」と依頼したときに使う。
+description: Initialize the current directory as a Git repository, build a description from the commit contents, then create and push a new private GitHub repository. Use when the user asks "リポジトリを作って" or "GitHub に上げて".
 disable-model-invocation: true
 allowed-tools: Bash(gh:*), Bash(git:*), Bash(basename:*)
 ---

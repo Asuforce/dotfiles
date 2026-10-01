@@ -1,6 +1,6 @@
 ---
 name: visual-pr
-description: 現在のブランチの PR を作成または更新し、レビュアーが変更の理由と実装の形を掴める本文を書く。変更の輪郭は散文やファイル別の変更履歴ではなく構造ビューで示す。ユーザーが「PRを作って」「プルリク作成して」「PRの説明を書き直して」と依頼したときに使う。引数としてPR番号を受け取った場合はその番号のPRを手本として参照する。
+description: Create or update the PR for the current branch, writing a body that lets reviewers grasp why the change was made and the shape of the implementation. Show the outline of the change with structural views, not prose or a per-file changelog. Use when the user asks "PRを作って", "プルリク作成して" or "PRの説明を書き直して". If a PR number is passed as an argument, use that PR as the model.
 ---
 
 # visual-pr
