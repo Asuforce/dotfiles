@@ -53,6 +53,7 @@
 	sw = switch
 
 	amend = commit --amend
+	delete-merged = branch --delete-merged origin
 	swc = switch -c
 	contributors = shortlog -s -n
 	history = log -20 --format=format:'%Cgreen%h %Creset• %s (%cN, %ar)'
