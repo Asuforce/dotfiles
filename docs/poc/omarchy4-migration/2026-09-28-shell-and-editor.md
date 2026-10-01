@@ -38,7 +38,8 @@ What the exec buys and what it costs:
 - Aliases and functions do not carry over. omarchy's `default/bash/` provides
   the herdr layout helpers (`hdl`/`hds`/`hdlm`/`hsl`), `alias h='herdr'`, an
   ssh-reconnect wrapper, eza-based `ls` and a zoxide-backed `cd`/`zd`; none is
-  available in zsh until ported. `aliases`, `envs`, `init`, `shell` and every
+  available in zsh, and porting them was ruled out (2026-10-01): zsh stays as the
+  repo's own setup. `aliases`, `envs`, `init`, `shell` and every
   file under `fns/` pass `zsh -n`, but nothing was run, and zsh arrays are
   1-indexed, which `fns/herdr` and `fns/tmux` rely on.
 - `omarchy-zsh` was previously claimed to exist as a package; no package of that

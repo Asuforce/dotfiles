@@ -46,11 +46,11 @@ Settled with the user on 2026-10-01: git `user.name` is `Shun Nishitsuji`;
 Ghostty uses the repo's `config.ghostty` on Linux (omarchy's theme sync and
 JetBrainsMono no longer apply; `ttf-hackgen` is in the package list); CSI-u
 keybinds for shift+enter are not added, since herdr uses the kitty keyboard
-protocol.
+protocol. omarchy's bash integration (aliases, `fns/`, `omarchy` completion,
+inputrc) is not ported to zsh; zsh stays as the repo's own setup.
 
 ## Not implemented yet
 
-- zsh-side ports of omarchy's bash integration (2026-09-28-shell-and-editor.md).
 - Linux sources for `hunk` and `blogsync`.
 - `~/.ssh/config` no longer sets `IdentityAgent` for hosts other than
   github.com; add a `Host *` block if 1Password should serve them.
@@ -97,12 +97,9 @@ Each line gives the command and what counts as a pass.
    runs under bash and sources `.bashrc`, not `.zshrc`; PATH entries that exist
    only in `zshrc` (`$GOPATH/bin`, the aqua bin) are not visible to it. Note
    whether any tool the agent needs is missing there.
-6. In zsh, `source /usr/share/omarchy/default/bash/fns/herdr` and run `hdl` in a
-   herdr pane; repeat for `fns/tmux`. Pass: no wrong or empty pane layout.
-   zsh arrays start at 1, which these files do not account for.
-7. `echo $BAT_THEME` and `bat <file>`. Pass: the output is acceptable with
+6. `echo $BAT_THEME` and `bat <file>`. Pass: the output is acceptable with
    omarchy's `ansi` theme in place of the repo's `OneHalfDark`.
-8. `omarchy-refresh-shell` (or the equivalent that rewrites `~/.bashrc`), then
+7. `omarchy-refresh-shell` (or the equivalent that rewrites `~/.bashrc`), then
    `tail -5 ~/.bashrc`. Pass: the marked block is still the last thing in the
    file. Anything appended below it never runs in an interactive shell, because
    `exec` has already replaced bash; if the block is gone or no longer last,
