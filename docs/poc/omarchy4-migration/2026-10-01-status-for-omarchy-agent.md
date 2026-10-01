@@ -19,7 +19,11 @@ scripts/link.sh
 ├── both   : zsh, tig, sheldon, bat, zsh-abbr
 ├── Darwin : ghostty, herdr, git, nvim, starship, btop, ssh, karabiner,
 │            hammerspoon, /etc/shells, diff-highlight
-└── Linux  : ~/.bashrc gets a guarded `exec zsh` block (marker comment)
+└── Linux  : keyd (pacman install, /etc/keyd/default.conf copied from
+             config/keyd, service enabled), marked blocks appended to
+             ~/.config/hypr/input.lua (ctrl:nocaps, no compose:caps) and
+             ~/.config/fcitx5/config (Henkan/Muhenkan), and ~/.bashrc gets
+             a guarded `exec zsh` block (marker comment)
 
 scripts/llm.sh
 ├── settings.json : no longer tracked (llm/settings.json is deleted);

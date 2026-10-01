@@ -117,6 +117,61 @@ if [[ "$OS" == "Darwin" ]]; then
   printf "Linking Hammerspoon config...\n"
   link_config "$REPO_DIR/config/hammerspoon/init.lua" "$HOME/.hammerspoon/init.lua"
 else
+  # keyd reads only /etc/keyd, so the file is copied there rather than linked.
+  # keyd is installed here on its own because the Linux package list is not
+  # implemented yet.
+  printf "Setting up keyd...\n"
+  readonly KEYD_SRC="$REPO_DIR/config/keyd/default.conf"
+  readonly KEYD_DEST="/etc/keyd/default.conf"
+  if ! command -v keyd >/dev/null 2>&1; then
+    sudo pacman -S --needed --noconfirm keyd
+  fi
+  if ! cmp -s "$KEYD_SRC" "$KEYD_DEST"; then
+    sudo install -Dm644 "$KEYD_SRC" "$KEYD_DEST"
+  fi
+  sudo systemctl enable --now keyd
+  sudo keyd reload
+
+  # omarchy seeds these two files, so link_config would skip them. A marked
+  # block is appended instead, and a file that already carries the setting is
+  # reported and left alone.
+  # ctrl:nocaps puts Control on Caps Lock; dropping omarchy's compose:caps is
+  # what lets that take effect, and Compose sequences are not used here.
+  printf "Applying Hyprland keyboard options...\n"
+  readonly HYPR_INPUT="$CONFIG_HOME/hypr/input.lua"
+  readonly HYPR_INPUT_MARKER="-- dotfiles: Caps Lock is Control"
+  if [ ! -f "$HYPR_INPUT" ] || ! grep -qF -- "$HYPR_INPUT_MARKER" "$HYPR_INPUT"; then
+    mkdir -p "$(dirname "$HYPR_INPUT")"
+    cat >>"$HYPR_INPUT" <<EOF
+
+$HYPR_INPUT_MARKER
+hl.config({ input = { kb_options = "ctrl:nocaps,shift:both_capslock_cancel" } })
+EOF
+    command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
+  fi
+
+  # keyd sends Muhenkan/Henkan on a lone left/right command tap; fcitx5 turns
+  # them into off/on. fcitx5 seeds the file with these sections commented out.
+  printf "Binding Muhenkan/Henkan in fcitx5...\n"
+  readonly FCITX5_CONFIG="$CONFIG_HOME/fcitx5/config"
+  readonly FCITX5_MARKER="# dotfiles: Muhenkan/Henkan switch the input method"
+  if [ -f "$FCITX5_CONFIG" ] && grep -qE '^\[Hotkey/(Activate|Deactivate)Keys\]' "$FCITX5_CONFIG" \
+    && ! grep -qF "$FCITX5_MARKER" "$FCITX5_CONFIG"; then
+    printf "  skipped, already set: %s\n" "$FCITX5_CONFIG"
+  elif [ ! -f "$FCITX5_CONFIG" ] || ! grep -qF "$FCITX5_MARKER" "$FCITX5_CONFIG"; then
+    mkdir -p "$(dirname "$FCITX5_CONFIG")"
+    cat >>"$FCITX5_CONFIG" <<EOF
+
+$FCITX5_MARKER
+[Hotkey/ActivateKeys]
+0=Henkan
+
+[Hotkey/DeactivateKeys]
+0=Muhenkan
+EOF
+    command -v fcitx5-remote >/dev/null 2>&1 && fcitx5-remote -r >/dev/null 2>&1 || true
+  fi
+
   # omarchy owns the login shell and seeds ~/.bashrc, so zsh is entered from
   # there rather than through chsh or a replaced ~/.bashrc. Interactive-only:
   # Claude Code snapshots ~/.bashrc non-interactively, and an exec there would
