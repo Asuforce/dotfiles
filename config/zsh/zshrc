@@ -247,6 +247,7 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
   }
   zle -N google-cloud-project-fzf
   bindkey '^_' google-cloud-project-fzf
+  abbr -S -q -- 'gc'='google-cloud-project-fzf'
 fi
 
 
