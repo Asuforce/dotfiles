@@ -228,24 +228,26 @@ tree-fzf() {
 zle -N tree-fzf
 bindkey "^t" tree-fzf
 
-# Switch Google Cloud project with fzf
-# Keybinding: Ctrl+/
-google-cloud-project-fzf() {
-  if [[ "$1" == "-u" ]]; then
-    gcloud config unset project
-    return
-  fi
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  # Switch Google Cloud project with fzf
+  # Keybinding: Ctrl+/
+  google-cloud-project-fzf() {
+    if [[ "$1" == "-u" ]]; then
+      gcloud config unset project
+      return
+    fi
 
-  local project
-  project=$(gcloud projects list --format="value(projectId)" | fzf --prompt="GCP Project> ")
-  if [[ -n "$project" ]]; then
-    gcloud config set project "$project"
-  fi
+    local project
+    project=$(gcloud projects list --format="value(projectId)" | fzf --prompt="GCP Project> ")
+    if [[ -n "$project" ]]; then
+      gcloud config set project "$project"
+    fi
 
-  zle reset-prompt
-}
-zle -N google-cloud-project-fzf
-bindkey '^_' google-cloud-project-fzf
+    zle reset-prompt
+  }
+  zle -N google-cloud-project-fzf
+  bindkey '^_' google-cloud-project-fzf
+fi
 
 
 ################################################################################
@@ -294,8 +296,10 @@ fi
 # Terraform (aqua / tfenv) Configuration
 ################################################################################
 
-# aquaのパッケージ展開先binをPATH先頭に追加（Homebrewのtfenv/terraformより優先させる）
-export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
-export TFENV_CONFIG_DIR="$HOME/.tfenv"
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  # aquaのパッケージ展開先binをPATH先頭に追加（Homebrewのtfenv/terraformより優先させる）
+  export PATH="${AQUA_ROOT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua}/bin:$PATH"
+  export TFENV_CONFIG_DIR="$HOME/.tfenv"
+fi
 
 [ -f ~/.zshrc.work ] && source ~/.zshrc.work
