@@ -49,7 +49,7 @@ Both ship `disable-model-invocation: true` upstream and keep it here: `retro` is
 
 Upstream's `writing-for-agents/agents/openai.yaml` was dropped as an OpenAI-format export — the same call `visual-pr` makes dropping upstream's bundled second `show-me`.
 
-`retro` lives in upstream's `skills/in-progress/`, so its manifest entry is expected to drift more often than the others.
+`retro` graduated from upstream's `skills/in-progress/` to `skills/engineering/` (2026-03); the manifest path was updated to match, with no content change to vendor.
 
 ### `shut-up-and-code` (from `chl03ks/shut-up-and-code`)
 
