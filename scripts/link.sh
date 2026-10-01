@@ -201,6 +201,8 @@ EOF
       printf "  herdr config check failed; prefix patch reverted\n" >&2
     else
       rm -f "$HERDR_CONFIG.dotfiles.bak"
+      # A running server keeps the old prefix until it reloads.
+      herdr server reload-config >/dev/null 2>&1 || true
     fi
   fi
 

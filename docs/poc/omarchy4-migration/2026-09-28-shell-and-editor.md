@@ -27,8 +27,9 @@ Considered `chsh` to zsh. Rejected in favour of a guarded `exec zsh` in
 `~/.bashrc`: omarchy and its scripts assume bash as the login shell, and Claude
 Code snapshots `~/.bashrc` non-interactively. The `[[ $- == *i* ]]` guard keeps
 that snapshot, ssh commands and uwsm sessions in bash. `scripts/link.sh` appends
-the block once, marked by a comment line. `omarchy-refresh-shell` may rewrite
-`~/.bashrc`, so re-run `make link` afterwards.
+the block once, marked by a comment line. `omarchy-reinstall-configs` and
+`omarchy-upgrade-to-quattro` may rewrite `~/.bashrc`, so re-run `make link`
+afterwards (`omarchy-refresh-shell` only resets `shell.json`).
 
 What the exec buys and what it costs:
 

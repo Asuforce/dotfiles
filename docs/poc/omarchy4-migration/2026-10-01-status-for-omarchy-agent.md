@@ -92,8 +92,10 @@ Each line gives the command and what counts as a pass.
 3. `ls /opt/1Password/op-ssh-sign`. Pass: the file exists. That is the path the
    Linux git config will need; a signed commit proves it once git is linked.
 4. In Ghostty, with fcitx5/Mozc active, press herdr's prefix. Pass: herdr reacts
-   to `ctrl+g` after the prefix patch exists. Until then the default is
-   `ctrl+space`, which fcitx5 may already use for toggling input.
+   to `ctrl+g`. A herdr server started before the prefix patch keeps
+   `ctrl+space` until `herdr server reload-config` runs (`make link` now does
+   that); before the reload, `ctrl+g` reached Claude Code, which opens
+   `$EDITOR` on it.
 5. Open a new Ghostty window and run `echo $ZSH_VERSION`. Then, from Claude Code
    on the same machine, run a Bash tool command that prints `$0` and
    `$ZSH_VERSION`. Pass: zsh in the terminal, and the Bash tool still works
@@ -103,11 +105,12 @@ Each line gives the command and what counts as a pass.
    whether any tool the agent needs is missing there.
 6. `echo $BAT_THEME` and `bat <file>`. Pass: the output is acceptable with
    omarchy's `ansi` theme in place of the repo's `OneHalfDark`.
-7. `omarchy-refresh-shell` (or the equivalent that rewrites `~/.bashrc`), then
-   `tail -5 ~/.bashrc`. Pass: the marked block is still the last thing in the
-   file. Anything appended below it never runs in an interactive shell, because
-   `exec` has already replaced bash; if the block is gone or no longer last,
-   remove it and re-run `make link`.
+7. After running `omarchy-reinstall-configs` or `omarchy-upgrade-to-quattro`
+   (`omarchy-refresh-shell` only resets `shell.json` and leaves `~/.bashrc`
+   alone), `tail -5 ~/.bashrc`. Pass: the marked block is still the last thing
+   in the file. Anything appended below it never runs in an interactive shell,
+   because `exec` has already replaced bash; if the block is gone or no longer
+   last, remove it and re-run `make link`.
 
 ## Open decisions
 
