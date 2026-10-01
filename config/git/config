@@ -1,11 +1,13 @@
 [user]
-	name = asuforce
+	name = Shun Nishitsuji
 	email = owata.sn@gmail.com
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJdKrFfhU4etC/rv0ceecExuSX2awA00dFfQmTvx5Rca
 [gpg]
 	format = ssh
-[gpg "ssh"]
-	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+[include]
+	# OS-specific settings (the 1Password signing program); scripts/link.sh links
+	# os-darwin or os-linux here. Git skips an include whose file is missing.
+	path = ~/.config/git/os
 [core]
 	editor = nvim
 	pager = delta

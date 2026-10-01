@@ -1,3 +1,6 @@
+# OpenSSH on Linux rejects UseKeychain as a bad option unless it is ignored.
+IgnoreUnknown UseKeychain
+
 Include ~/.ssh/ssh_config
 
 # GitHub - must be before global IdentitiesOnly yes
