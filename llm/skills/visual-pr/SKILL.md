@@ -25,16 +25,6 @@ gh pr view --json url,number,title,state,baseRefName,headRefName 2>/dev/null
 
 ## Phase 2: コンテキスト収集
 
-### Jira チケット ID の取得
-
-ブランチ名の最初のセグメント（`/` 区切り）を Jira チケット ID として使用する。
-
-```bash
-git branch --show-current | cut -d'/' -f1
-```
-
-取得できない場合やブランチ名に `/` が含まれない場合は、Jira チケット ID なしで進める。
-
 ### デフォルトブランチの特定
 
 ```bash

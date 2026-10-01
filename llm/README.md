@@ -28,7 +28,7 @@ Replaces the hand-written `create-pr`. What upstream is worth taking is the disc
 The local copy:
 
 - drops upstream's HumanLayer assumptions (`.humanlayer/tasks/` body paths, a cloud permalink in the report) and its bundled second copy of `show-me` (which would have drifted from `llm/skills/show-me/`)
-- re-adds what `create-pr` did and upstream does not: a draft PR assigned to `@me` against the detected default branch, the Jira ticket id read off the branch name, `gh pr view --web`
+- re-adds what `create-pr` did and upstream does not: a draft PR assigned to `@me` against the detected default branch, `gh pr view --web`
 - leaves a repository's own `.github/PULL_REQUEST_TEMPLATE.md` in charge of the headings when one exists, placing the structural views inside its sections rather than overwriting them with the three-section form
 
 `create-pr`'s second template path, `${HOME}/dotfiles/.github/PULL_REQUEST_TEMPLATE.md`, was dropped rather than carried over — it has never existed on this machine.
