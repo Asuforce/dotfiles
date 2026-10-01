@@ -67,6 +67,12 @@ Upstream ships the skill twice: once at the repo root (for `npx skills add`) and
 
 Upstream's `SKILL.md` warns against running it alongside other Japanese style/proofreading skills, since the instructions can conflict; disable one of them if that happens.
 
+### `eli5` (from `DreambigOu/ELI5`)
+
+Calibrates an explanation to a named audience (age, grade level, job role, relationship) instead of one fixed register. No built-in covers this — `claude-code-guide` answers questions about Claude Code itself, not about recalibrating an explanation's vocabulary and analogies for a given listener.
+
+Upstream ships only the single `skills/eli5/SKILL.md` file; nothing was dropped or changed in the local copy.
+
 ## herdr integration
 
 `scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs), overrides its generated `description` (see the script's comments for why), and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel). `llm/AGENTS.md` carries the standing instruction that makes the herdr skill fire without being asked for each time.
