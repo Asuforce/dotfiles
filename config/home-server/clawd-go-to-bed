@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+import os, select, shutil, sys, termios, time, tty
+
+BODY = (0xD9, 0x77, 0x57)
+EYE = (0x2B, 0x1D, 0x17)
+ROWS = [
+    "..XXXXXXXXXX..",
+    "..XXXXXXXXXX..",
+    "XXXXEXXXXEXXXX",
+    "XXXXEXXXXEXXXX",
+    "..XXXXXXXXXX..",
+    "..XXXXXXXXXX..",
+    "..X.X....X.X..",
+    "..X.X....X.X..",
+]
+PX_W, PX_H = 4, 2
+SECONDS = 25
+FPS = 10
+
+
+def sprite(frame, asleep):
+    rows = [list(r) for r in ROWS]
+    if asleep:
+        rows[2] = [("X" if c == "E" else c) for c in rows[2]]
+    elif frame % 30 in (28, 29):
+        rows[2] = [("X" if c == "E" else c) for c in rows[2]]
+    if frame % 4 < 2:
+        rows[7] = list("..X.X....X.X..")
+    else:
+        rows[7] = list(".X..X....X..X.")
+    return rows
+
+
+def paint(rows, left):
+    out = []
+    for r in rows:
+        line = " " * left
+        for c in r:
+            if c == "X":
+                line += "\x1b[48;2;%d;%d;%dm" % BODY + " " * PX_W + "\x1b[0m"
+            elif c == "E":
+                line += "\x1b[48;2;%d;%d;%dm" % EYE + " " * PX_W + "\x1b[0m"
+            else:
+                line += " " * PX_W
+        out.extend([line] * PX_H)
+    return out
+
+
+def centered(text, cols):
+    width = sum(2 if ord(ch) > 0x2E80 else 1 for ch in text)
+    return " " * max(0, (cols - width) // 2) + text
+
+
+def main():
+    fd = sys.stdin.fileno()
+    saved = termios.tcgetattr(fd)
+    tty.setcbreak(fd)
+    sys.stdout.write("\x1b[?25l\x1b[2J")
+    try:
+        total = SECONDS * FPS
+        for frame in range(total):
+            cols, lines = shutil.get_terminal_size()
+            asleep = frame > total * 0.45
+            art_w = len(ROWS[0]) * PX_W
+            art_h = len(ROWS) * PX_H
+            left = max(0, (cols - art_w) // 2)
+            hop = 0 if asleep else (2 if frame % 6 < 3 else 0)
+            sway = 1 if asleep and frame % 20 < 10 else 0
+            top = max(1, (lines - art_h - 8) // 2) + 2 - hop + sway
+            buf = ["\x1b[H"]
+            blank = "\x1b[K"
+            canvas = [blank] * lines
+            for i, row in enumerate(paint(sprite(frame, asleep), left)):
+                if 0 <= top + i < lines:
+                    canvas[top + i] = row + blank
+            if asleep:
+                z = ["z", "Z", "Zz", "zZz"][(frame // 6) % 4]
+                zy = top - 1 - (frame // 3) % 3
+                if 0 <= zy < lines:
+                    canvas[zy] = " " * (left + art_w) + "\x1b[1;38;2;150;180;255m" + z + "\x1b[0m" + blank
+                title = "おやすみなさい  Zzz..."
+            else:
+                title = "Go to bed!"
+            base = top + art_h + 2
+            msgs = [title, "もう22時だよ。いっしょに寝よう", "(any key to close)"]
+            styles = ["\x1b[1;38;2;217;119;87m", "", "\x1b[2m"]
+            for k, (m, s) in enumerate(zip(msgs, styles)):
+                if base + k < lines:
+                    canvas[base + k] = s + centered(m, cols) + "\x1b[0m" + blank
+            sys.stdout.write("".join(buf) + "\n".join(canvas))
+            sys.stdout.flush()
+            if select.select([sys.stdin], [], [], 1 / FPS)[0]:
+                os.read(fd, 64)
+                # Stray input arrives right after launch and would close the window at once.
+                if frame > 2 * FPS:
+                    break
+    finally:
+        sys.stdout.write("\x1b[0m\x1b[?25h\x1b[2J\x1b[H")
+        termios.tcsetattr(fd, termios.TCSADRAIN, saved)
+
+
+if __name__ == "__main__":
+    main()

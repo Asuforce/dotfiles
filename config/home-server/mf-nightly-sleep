@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+user=@USER@
+runtime_dir="/run/user/$(id -u "$user")"
+
+# Omarchy locks after 5 idle minutes or on lid close, so "locked" is the idle signal.
+# Exit 1 (unlocked) and 2 (undetermined) both mean someone may be at the machine.
+runuser -u "$user" -- env \
+  XDG_RUNTIME_DIR="$runtime_dir" \
+  HYPRLAND_INSTANCE_SIGNATURE="$(ls -t "$runtime_dir/hypr" | head -1)" \
+  omarchy-hyprland-session-locked || exit 0
+
+# After midnight 05:55 is still today, not tomorrow.
+wake=$(date -d 05:55 +%s)
+(( wake > $(date +%s) )) || wake=$(date -d 'tomorrow 05:55' +%s)
+
+# systemctl suspend, not rtcwake -m mem: only the logind path takes the lock-screen
+# inhibitor and honours `stay-awake`.
+rtcwake -m no -t "$wake"
+systemctl suspend
+
+# supercronic's timer does not advance while suspended, so it must recompute 06:00.
+docker restart mf-dashboard-crawler-1

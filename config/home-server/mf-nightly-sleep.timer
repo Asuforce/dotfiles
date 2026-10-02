@@ -1,0 +1,8 @@
+[Unit]
+Description=Suspend overnight once the screen is idle-locked
+
+[Timer]
+OnCalendar=*-*-* 22,23,0,1,2,3,4:00/10:00
+
+[Install]
+WantedBy=timers.target

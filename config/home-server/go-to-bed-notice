@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# A timer-started user service lacks the Hyprland instance signature.
+export HYPRLAND_INSTANCE_SIGNATURE="$(ls -t "$XDG_RUNTIME_DIR/hypr" | head -1)"
+
+# Locked means idle, and the nightly suspend is already on its way; nobody to tell.
+if [[ ${1:-} != --force ]] && omarchy-hyprland-session-locked; then
+  exit 0
+fi
+
+notify-send -a "Go to bed" -u normal -t 0 -i "$HOME/.local/share/go-to-bed/clawd.png" \
+  "Clawd: Go to bed!" \
+  "もう22時だよ。いっしょに寝よう 🛌"
+
+# Foreground: a oneshot service tears down its cgroup the moment the script exits.
+exec uwsm-app -- xdg-terminal-exec --app-id=org.omarchy.bash --title="Go to bed" -e "$HOME/.local/bin/clawd-go-to-bed"

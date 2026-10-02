@@ -1,0 +1,6 @@
+[Unit]
+Description=Suspend when idle at night and wake at 05:55 for the 06:00 crawl
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/mf-nightly-sleep

@@ -1,4 +1,4 @@
-.PHONY: all help xcode link brew pkg llm runtime macos personal clean test
+.PHONY: all help xcode link brew pkg llm runtime macos personal home-server clean test
 
 OS := $(shell uname -s)
 
@@ -21,6 +21,7 @@ help:
 	@printf "  make llm       - Apply Claude Code (LLM) settings\n"
 	@printf "  make runtime   - Setup mise language runtimes\n"
 	@printf "  make personal  - Opt this machine into personal-only Brewfile entries\n"
+	@printf "  make home-server - Run this laptop as an always-on server (omarchy)\n"
 	@printf "  make clean     - Clean up removable files\n"
 	@printf "  make test      - Verify configuration files exist\n"
 
@@ -67,6 +68,11 @@ personal:
 				&& printf "✓ Created %s\n" "$$marker"; \
 		fi; \
 		printf "Run: make brew\n"'
+
+home-server:
+	@[ "$(OS)" = Linux ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
+		printf "Setting up the always-on server host...\n"; \
+		bash scripts/home-server.sh
 
 clean:
 	@printf "Cleaning up...\n"

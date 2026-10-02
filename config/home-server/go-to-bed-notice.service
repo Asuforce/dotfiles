@@ -1,0 +1,6 @@
+[Unit]
+Description=Tell me to go to bed
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/go-to-bed-notice
