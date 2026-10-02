@@ -18,6 +18,8 @@ auto_switch = false
 # herdr owns pane/tab/workspace management, so it takes the prefix that
 # wezterm's leader key used to hold. wezterm no longer binds ctrl+g.
 prefix = "ctrl+g"
+# Unbound by default.
+copy_mode = "prefix+["
 
 [ui]
 tab_bar_right = [

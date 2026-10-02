@@ -225,9 +225,9 @@ EOF
   fi
 
   # omarchy seeds herdr's config with a tmux-mirroring keymap. [keys] is reduced
-  # to the prefix so the bindings are herdr's defaults, as on the mac; the rest of
-  # the file (accent, pane borders, mouse) stays omarchy's. `herdr config check`
-  # guards the edit.
+  # to the prefix and copy_mode (unbound in herdr's defaults), so the bindings are
+  # herdr's defaults, as on the mac; the rest of the file (accent, pane borders,
+  # mouse) stays omarchy's. `herdr config check` guards the edit.
   printf "Aligning herdr keys with the mac...\n"
   readonly HERDR_CONFIG="$CONFIG_HOME/herdr/config.toml"
   if [ -f "$HERDR_CONFIG" ]; then
@@ -235,6 +235,7 @@ EOF
     awk '
       /^\[/ { in_keys = ($0 == "[keys]") }
       in_keys && /^prefix = / { print "prefix = \"ctrl+g\""; next }
+      in_keys && /^copy_mode = / { print; next }
       in_keys && (/^[[:space:]]*#/ || /^[a-z_]+ = / || /^[[:space:]]*$/) { next }
       { print }
     ' "$HERDR_CONFIG" > "$HERDR_TMP"
