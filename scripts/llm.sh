@@ -225,6 +225,12 @@ else
     || rm -f "$settings_tmp"
 fi
 
+# Unbinds ctrl+g, which is herdr's prefix.
+printf "Linking keybindings...\n"
+readonly KEYBINDINGS_DEST="$CLAUDE_CONFIG_DIR/keybindings.json"
+[ ! -e "$KEYBINDINGS_DEST" ] && [ ! -L "$KEYBINDINGS_DEST" ] \
+  && ln -s "$DOTFILES_LLM/keybindings.json" "$KEYBINDINGS_DEST"
+
 # omarchy only: the sudoers file that makes these targets promptless is Linux's.
 # Rules are only ever added, so a machine's own allow entries survive.
 printf "Merging permission rules...\n"
