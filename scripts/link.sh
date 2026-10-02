@@ -209,6 +209,20 @@ EOF
     command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
   fi
 
+  # 1.0 is the top of libinput's pointer speed range, the nearest match to the
+  # mac's fastest tracking speed. The adaptive acceleration profile is kept,
+  # since macOS accelerates too.
+  printf "Applying Hyprland pointer speed...\n"
+  readonly HYPR_POINTER_MARKER="-- dotfiles: pointer speed is maximum"
+  if ! grep -qF -- "$HYPR_POINTER_MARKER" "$HYPR_INPUT"; then
+    cat >>"$HYPR_INPUT" <<EOF
+
+$HYPR_POINTER_MARKER
+hl.config({ input = { sensitivity = 1.0 } })
+EOF
+    command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
+  fi
+
   # keyd sends Muhenkan/Henkan on a lone left/right command tap; fcitx5 turns
   # them into off/on. fcitx5 seeds the file with these sections commented out.
   printf "Binding Muhenkan/Henkan in fcitx5...\n"
