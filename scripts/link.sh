@@ -187,6 +187,21 @@ EOF
     command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
   fi
 
+  # Natural scrolling, three-finger drag and a four-finger workspace swipe, as
+  # on the mac. The swipe takes four fingers because three are the drag's.
+  # Tap-to-click and two-finger right-click are already omarchy's defaults.
+  printf "Applying Hyprland trackpad settings...\n"
+  readonly HYPR_TRACKPAD_MARKER="-- dotfiles: trackpad matches the mac"
+  if ! grep -qF -- "$HYPR_TRACKPAD_MARKER" "$HYPR_INPUT"; then
+    cat >>"$HYPR_INPUT" <<EOF
+
+$HYPR_TRACKPAD_MARKER
+hl.config({ input = { touchpad = { natural_scroll = true, drag_3fg = 1 } } })
+hl.gesture({ fingers = 4, direction = "horizontal", action = "workspace" })
+EOF
+    command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
+  fi
+
   # keyd sends Muhenkan/Henkan on a lone left/right command tap; fcitx5 turns
   # them into off/on. fcitx5 seeds the file with these sections commented out.
   printf "Binding Muhenkan/Henkan in fcitx5...\n"
