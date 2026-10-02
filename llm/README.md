@@ -86,3 +86,5 @@ Upstream ships only the single `skills/eli5/SKILL.md` file; nothing was dropped 
 ## Status line
 
 `llm/statusline.sh` is the Claude Code status line (model, repository, branch, context bar, rate limits, cost). `scripts/llm.sh` symlinks it to `~/.claude/statusline.sh` and adds the `statusLine` entry to `settings.json` only when none exists, so a machine that configured its own keeps it.
+
+`llm/permissions-allow.json` lists the Bash rules (`make link` and the other `make` targets) that `scripts/llm.sh` unions into `permissions.allow` in `settings.json`. Existing entries on a machine are kept.

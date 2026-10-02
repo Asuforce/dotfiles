@@ -35,7 +35,7 @@ readonly CLAUDE_AGENTS_FILE="$CLAUDE_CONFIG_DIR/CLAUDE.md"
 [ ! -e "$CLAUDE_AGENTS_FILE" ] && ln -fs "$DOTFILES_LLM/AGENTS.md" "$CLAUDE_AGENTS_FILE"
 
 # settings.json is per-machine and not tracked here; only the hook registrations
-# below edit it, with jq, which needs the file to exist.
+# below and the permission rules edit it, with jq, which needs the file to exist.
 readonly CLAUDE_SETTINGS_FILE="$CLAUDE_CONFIG_DIR/settings.json"
 [ ! -e "$CLAUDE_SETTINGS_FILE" ] && echo '{}' >"$CLAUDE_SETTINGS_FILE"
 
@@ -220,6 +220,19 @@ else
   printf "Registering statusLine...\n"
   settings_tmp="$(mktemp)"
   jq '.statusLine = { type: "command", command: "~/.claude/statusline.sh", padding: 1 }' \
+    "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+    && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+    || rm -f "$settings_tmp"
+fi
+
+# Rules are only ever added, so a machine's own allow entries survive.
+printf "Merging permission rules...\n"
+if ! command -v jq >/dev/null 2>&1; then
+  printf "jq not found; skipping permission rules.\n"
+else
+  settings_tmp="$(mktemp)"
+  jq --slurpfile rules "$DOTFILES_LLM/permissions-allow.json" \
+    '.permissions.allow = ((.permissions.allow // []) + $rules[0] | unique)' \
     "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
     && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
     || rm -f "$settings_tmp"

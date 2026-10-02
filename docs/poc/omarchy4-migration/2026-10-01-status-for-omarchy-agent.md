@@ -37,9 +37,10 @@ adopt_config       : on Linux deletes a regular file in the way, then links
                      deleted too. ~/.ssh/config alone is moved to
                      config.omarchy.bak
 scripts/llm.sh     : settings.json untracked (created as `{}` if absent; hooks
-                     and statusLine merged with jq, each only when missing);
-                     skills linked one by one. No permissions, theme or model
-                     are written.
+                     and statusLine merged with jq, each only when missing;
+                     llm/permissions-allow.json unioned into
+                     permissions.allow); skills linked one by one. No theme or
+                     model is written.
 scripts/runtime.sh : mise owns ~/.config/mise/config.toml; python, node (lts)
                      and ruby are added with `mise use -g` unless the file
                      already names them.
