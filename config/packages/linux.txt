@@ -40,4 +40,4 @@ aur slack-desktop
 aur ttf-hackgen
 aur visual-studio-code-bin
 
-# No Linux source known: hunk, blogsync
+# No Linux source known: hunk

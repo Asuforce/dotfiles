@@ -1,9 +1,10 @@
-# Status for the agent working on the omarchy machine
+# omarchy setup: what is implemented, why, and what is still owed
 
-Written 2026-10-01 on the mac. Read this first, then the 2026-09-28 files it
-points to for the reasoning behind each decision. Update the "Implemented"
-section whenever a change lands, and move items out of "Open decisions" once
-the user settles them.
+Written 2026-10-01 on the mac, revised 2026-10-02 on the omarchy machine. The
+per-topic logs from 2026-09-28 (config precedence, herdr, llm, packages, repo
+structure, shell and editor) were folded into this file once everything they
+described had landed; they remain in git history. Update "Implemented" whenever
+a change lands.
 
 ## Implemented
 
@@ -21,8 +22,10 @@ scripts/link.sh
 │            signing program path)
 ├── Darwin : herdr, nvim, starship, btop, ssh, karabiner, hammerspoon,
 │            /etc/shells, diff-highlight, .gitconfig copies
-└── Linux  : keyd, marked blocks in hypr/input.lua and fcitx5/config, herdr
-             [keys] cut to prefix = ctrl+g (guarded by `herdr config check`),
+└── Linux  : keyd, T2 Mac fixes, marked blocks in hypr/input.lua (Caps Lock as
+             Control, trackpad) and fcitx5/config (Muhenkan/Henkan), herdr
+             [keys] cut to prefix = ctrl+g and copy_mode (guarded by
+             `herdr config check`, followed by `herdr server reload-config`),
              ~/.ssh/config generated from config/ssh/config with the Linux
              1Password socket, ~/.bashrc guarded `exec zsh` block
 
@@ -30,91 +33,111 @@ adopt_config       : on Linux deletes a regular file in the way, then links
                      (git config); the legacy ~/.config/ghostty/config is
                      deleted too. ~/.ssh/config alone is moved to
                      config.omarchy.bak
-
 scripts/llm.sh     : settings.json untracked (created as `{}` if absent; hooks
                      and statusLine merged with jq, each only when missing);
                      skills linked one by one. No permissions, theme or model
                      are written.
 scripts/runtime.sh : mise owns ~/.config/mise/config.toml; python, node (lts)
                      and ruby are added with `mise use -g` unless the file
-                     already names them. runtime/config.toml is gone.
+                     already names them.
 ```
 
 `link_config` in `link.sh` prints `skipped, already exists: <path>` when it
 meets a path it did not create. On omarchy that line means the distro seeded the
 file first and the repo's version is not applied.
 
-Settled with the user on 2026-10-01: git `user.name` is `Shun Nishitsuji`;
-Ghostty uses the repo's `config.ghostty` on Linux (omarchy's theme sync and
-JetBrainsMono no longer apply; `ttf-hackgen` is in the package list); CSI-u
-keybinds for shift+enter are not added, since herdr uses the kitty keyboard
-protocol. omarchy's bash integration (aliases, `fns/`, `omarchy` completion,
-inputrc) is not ported to zsh; zsh stays as the repo's own setup.
+## Which side wins, per app
 
-## Not implemented yet
+omarchy seeds its own defaults at several paths the repo also configures. There
+is no single rule, so each overlap was decided on its own.
 
-- Linux sources for `hunk` and `blogsync`.
-- `~/.ssh/config` no longer sets `IdentityAgent` for hosts other than
-  github.com; add a `Host *` block if 1Password should serve them.
+```text
+git/config       repo wins. omarchy's is a minimal set whose alias names collide
+                 with different definitions (`ci`). commit.gpgsign and the
+                 1Password signing program live in the included git/os-<kernel>.
+ghostty          repo wins on both OSes. omarchy's theme sync and JetBrainsMono
+                 no longer apply; ttf-hackgen is in the package list.
+herdr            omarchy's file stays; link.sh cuts [keys] to the prefix and
+                 copy_mode so bindings match the mac. omarchy's tmux-mirroring
+                 keymap made the same keys do different things on the two
+                 machines.
+starship, btop   omarchy wins, untouched.
+nvim             omarchy wins (omarchy-nvim, a maintained LazyVim setup); the
+                 repo's init.lua stays mac-only.
+mise config      mise owns it. omarchy seeds it and an old omarchy migration
+                 `sed`s the node line, so a symlink into the repo would be
+                 rewritten underneath it. Hence runtime.sh and no
+                 runtime/config.toml.
+ssh/config       generated, not linked: `UseKeychain` is a fatal bad option on
+                 non-Apple OpenSSH (IgnoreUnknown covers it) and the
+                 1Password socket path differs.
+zsh, sheldon,    linked on both OSes; omarchy ships nothing at these paths.
+tig, bat         BAT_THEME=ansi exported by omarchy overrides bat's --theme.
+```
 
-## Verified and not verified
+## Decisions and the alternatives dropped
 
-Verified on the omarchy machine: the 1Password SSH agent works; after `make pkg
-link llm runtime`, `ssh -T git@github.com` authenticates, git resolves
-`gpg.ssh.program` to `/opt/1Password/op-ssh-sign` through the include, the herdr
-prefix is `ctrl+g`, and python and ruby install through mise. Also observed:
-`herdr pane layout` returns `.result.layout.panes` (herdr 0.8.2), `zsh -ic`
-starts, installs the sheldon plugins on first run and leaves `EDITOR=nvim`,
-`BAT_THEME` is `ansi`, and the Bash tool runs under bash with `SHELL` still
-bash (`$ZSH_VERSION` empty).
+- One repo for both machines, branching on `uname -s`, rather than a second
+  omarchy-only repo. OS is cheap to detect, unlike the `personal` flag, which
+  is a policy choice. Work-only config (`.gitconfig-work`, `zshrc.work`, the
+  gcloud widget, terraform PATH lines) stays on the mac.
+- Packages: a repo-owned list beside the `Brewfile`, not Nix. omarchy is a
+  curated Arch distro and Nix would double-manage its packages. Symlinking onto
+  omarchy's `omarchy-other.packages` was not possible: it is pacman-owned and
+  `omarchy pkg add` does not read it. 1Password is not in omarchy's base
+  packages, so it is an explicit entry; git and ssh depend on it.
+- zsh stays the shell, entered from `~/.bashrc` with `exec zsh`, not `chsh` and
+  not a bash port. bash has no equivalent of autosuggestions, abbr or the `zle`
+  fzf widgets, and omarchy's scripts assume bash as the login shell. The
+  `[[ $- == *i* ]]` guard keeps Claude Code's non-interactive snapshot, ssh
+  commands and uwsm in bash. Variables omarchy exported carry into zsh; its
+  aliases and functions (`hdl`/`hds`, eza `ls`, zoxide `cd`) do not and are not
+  ported.
+- Claude Code skills are linked one by one into `~/.claude/skills`, because
+  omarchy creates that directory first. settings.json is untracked because the
+  template had drifted from the mac's file and held per-machine choices.
+- The mac-only `credential.helper` (gcm-core) was dropped outright; every
+  tracked remote uses ssh.
+- Ghostty is not in omarchy's base packages (the default terminal is foot);
+  `omarchy-install-terminal ghostty` installs it and wires Super+Return.
+- `blogsync` is not wanted on Linux. `hunk` is installed by hand in
+  `~/.local/bin` and has no package source.
+- Mac-only and left out: mas, lima, gnu-sed, grep, appcleaner, the-unarchiver,
+  gitify, gpg-suite, hammerspoon, karabiner-elements, raycast.
+- CSI-u keybinds for shift+enter are not added; herdr uses the kitty keyboard
+  protocol. kube-ps1 is dropped; omarchy's starship config applies.
 
-Verified on the mac only, with `HOME` pointed at a temporary directory and `uname`
-stubbed to report Linux: `link.sh`'s Linux branch is idempotent and reports
-pre-existing files; the `.bashrc` block does not fire in a non-interactive
-shell; the `llm.sh` hook merge adds each entry once and links every skill; a legacy directory-level skills link is
-converted.
+## Verified
 
-Read from `omacom/omarchy@quattro` and never run: everything about omarchy's
-behaviour, including `omarchy-install-terminal`, `omarchy-refresh-shell`, the
-bash defaults under `default/bash/`, and the package lists. Assumed, not
-observed: `env-bootstrap` applies to a zsh login, and omarchy's bash files work
-when sourced from zsh (they only pass `zsh -n`).
+On the omarchy machine, 2026-10-01 and 2026-10-02: the 1Password SSH agent
+works and `ssh -T git@github.com` authenticates; git resolves `gpg.ssh.program`
+to `/opt/1Password/op-ssh-sign` through the include; `herdr config check` is ok,
+the prefix is `ctrl+g`, and `herdr pane layout` (herdr 0.9.3) returns
+`.result.layout.panes`; every package in `linux.txt` is installed; `link.sh`
+re-runs with no `skipped` line; keyd is active; mise has python, node and ruby;
+`zsh -ic` starts and leaves `EDITOR=nvim`; `BAT_THEME` is `ansi`; the Bash tool
+runs under bash with `SHELL` still bash; `tail ~/.bashrc` ends with the marked
+block.
 
-## Checks to run on the omarchy machine
+## Still owed on the omarchy machine
 
-Each line gives the command and what counts as a pass.
+1. In Ghostty with fcitx5/Mozc active, press herdr's prefix. Pass: herdr reacts
+   to `ctrl+g`. A server started before the prefix patch keeps its old prefix
+   until `herdr server reload-config`, which `make link` runs.
+2. `bat <file>`. Pass: the output is acceptable with omarchy's `ansi` theme in
+   place of the repo's `OneHalfDark`.
+3. After `omarchy-reinstall-configs` or `omarchy-upgrade-to-quattro`, `tail -5
+   ~/.bashrc`. Pass: the marked block is still the last thing in the file;
+   anything below it never runs in an interactive shell. If it is gone or no
+   longer last, remove it and re-run `make link`. (`omarchy-refresh-shell` only
+   resets `shell.json`.)
 
-1. `make link llm` then read the output for `skipped, already exists`. Pass:
-   no such line, or each one is understood. Look at `ls -la ~/.ssh
-   ~/.config/mise ~/.claude ~/.config/git` first.
-2. `herdr --version`, then inside a herdr pane `herdr pane layout --pane
-   "$HERDR_PANE_ID"`. Pass: JSON with `.result.layout.panes`, which
-   `llm/hooks/herdr-repo-workspace.sh` reads.
-3. `ls /opt/1Password/op-ssh-sign`. Pass: the file exists. That is the path the
-   Linux git config will need; a signed commit proves it once git is linked.
-4. In Ghostty, with fcitx5/Mozc active, press herdr's prefix. Pass: herdr reacts
-   to `ctrl+g`. A herdr server started before the prefix patch keeps
-   `ctrl+space` until `herdr server reload-config` runs (`make link` now does
-   that); before the reload, `ctrl+g` reached Claude Code, which opens
-   `$EDITOR` on it.
-5. Open a new Ghostty window and run `echo $ZSH_VERSION`. Then, from Claude Code
-   on the same machine, run a Bash tool command that prints `$0` and
-   `$ZSH_VERSION`. Pass: zsh in the terminal, and the Bash tool still works
-   without being replaced. `exec zsh` leaves `$SHELL` as bash, so the Bash tool
-   runs under bash and sources `.bashrc`, not `.zshrc`; PATH entries that exist
-   only in `zshrc` (`$GOPATH/bin`, the aqua bin) are not visible to it. Note
-   whether any tool the agent needs is missing there.
-6. `echo $BAT_THEME` and `bat <file>`. Pass: the output is acceptable with
-   omarchy's `ansi` theme in place of the repo's `OneHalfDark`.
-7. After running `omarchy-reinstall-configs` or `omarchy-upgrade-to-quattro`
-   (`omarchy-refresh-shell` only resets `shell.json` and leaves `~/.bashrc`
-   alone), `tail -5 ~/.bashrc`. Pass: the marked block is still the last thing
-   in the file. Anything appended below it never runs in an interactive shell,
-   because `exec` has already replaced bash; if the block is gone or no longer
-   last, remove it and re-run `make link`.
+`omarchy-refresh-config` does `cp -f` through a symlink, so a manual reset of a
+linked config (git, ghostty) overwrites the repo's file. Nothing calls it
+automatically for those paths, and `git status` shows the damage.
 
-## Open decisions
+## Not implemented
 
-None. Settled 2026-10-01: the terraform (aqua, tfenv) PATH lines and the gcloud
-fzf widget stay mac-only, gated on Darwin in `zshrc`; kube-ps1 is dropped from
-the `Brewfile` and the Linux list, and omarchy's starship config applies.
+- A Linux source for `hunk`.
+- `~/.ssh/config` sets `IdentityAgent` for github.com only; add a `Host *`
+  block if 1Password should serve other hosts.
