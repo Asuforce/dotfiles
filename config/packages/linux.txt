@@ -25,6 +25,7 @@ official php
 official procps-ng
 official sheldon
 official tig
+official tiny-dfr
 official tree
 official wget
 official yq

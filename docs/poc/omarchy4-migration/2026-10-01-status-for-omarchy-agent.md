@@ -22,7 +22,7 @@ scripts/link.sh
 ├── Darwin : herdr, nvim, starship, btop, ssh, karabiner, hammerspoon,
 │            /etc/shells, diff-highlight, .gitconfig copies
 └── Linux  : keyd, marked blocks in hypr/input.lua and fcitx5/config, herdr
-             prefix patched to ctrl+g (guarded by `herdr config check`),
+             [keys] cut to prefix = ctrl+g (guarded by `herdr config check`),
              ~/.ssh/config generated from config/ssh/config with the Linux
              1Password socket, ~/.bashrc guarded `exec zsh` block
 

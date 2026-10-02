@@ -1,4 +1,4 @@
-# herdr on omarchy: use the shipped herdr, patch only the prefix key
+# herdr on omarchy: use the shipped herdr, cut [keys] down to the mac's prefix
 
 Initially assumed herdr's pane/tab model was a mac-side import that might
 clash with Hyprland's own tiling. That turned out to be wrong: herdr ships in
@@ -44,3 +44,11 @@ through a symlink, so a user-triggered "reset herdr config" would overwrite
 the patched file's on-disk content — recoverable via `git status`/`git
 checkout` since it's tracked, but only if noticed. No migration was found
 that calls this automatically for herdr, so the risk is manual-trigger-only.
+
+Revised 2026-10-02: keeping omarchy's tmux-mirroring keymap meant the same
+muscle memory did different things on the two machines (`prefix+h` split on
+Linux, focus-left on the mac; `prefix+k` closed a tab instead of focusing up).
+`scripts/link.sh` now removes everything in `[keys]` except the prefix, so
+herdr's own defaults apply as on the mac, and the omarchy tmux shortcuts
+(`alt+` tabs, `ctrl+alt+` focus, `prefix+d` detach) are gone. Appearance and
+behaviour settings outside `[keys]` stay omarchy's.

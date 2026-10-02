@@ -149,6 +149,26 @@ else
   sudo systemctl enable --now keyd
   sudo keyd reload
 
+  # T2 Macs (MacBookPro15,2 and kin) have an Apple T2 bridge on PCI 106b:1801.
+  if lspci -d 106b:1801 2>/dev/null | grep -q .; then
+    # supergfxd is for hybrid-GPU laptops. With no NVIDIA card its suspend hook
+    # failed to switch to Vfio and held every resume for about 15 seconds.
+    if pacman -Qq supergfxctl >/dev/null 2>&1 && ! lspci | grep -qi nvidia; then
+      printf "Removing supergfxctl (no discrete GPU)...\n"
+      sudo systemctl disable --now supergfxd 2>/dev/null || true
+      sudo pacman -Rns --noconfirm supergfxctl
+      sudo rm -f /etc/supergfxd.conf /etc/modprobe.d/supergfxd.conf /run/omarchy-force-igpu-integrated
+    fi
+
+    printf "Setting up T2 NetworkManager config...\n"
+    readonly IBRIDGE_SRC="$REPO_DIR/config/t2/90-ibridge-unmanaged.conf"
+    readonly IBRIDGE_DEST="/etc/NetworkManager/conf.d/90-ibridge-unmanaged.conf"
+    if ! cmp -s "$IBRIDGE_SRC" "$IBRIDGE_DEST"; then
+      sudo install -Dm644 "$IBRIDGE_SRC" "$IBRIDGE_DEST"
+      sudo systemctl reload NetworkManager
+    fi
+  fi
+
   # omarchy seeds these two files, so link_config would skip them. A marked
   # block is appended instead, and a file that already carries the setting is
   # reported and left alone.
@@ -189,20 +209,34 @@ EOF
     command -v fcitx5-remote >/dev/null 2>&1 && fcitx5-remote -r >/dev/null 2>&1 || true
   fi
 
-  # omarchy seeds herdr's config with a tmux-mirroring keymap that is kept; only
-  # the prefix is changed, to match the mac. `herdr config check` guards the edit.
-  printf "Patching herdr prefix...\n"
+  # omarchy seeds herdr's config with a tmux-mirroring keymap. [keys] is reduced
+  # to the prefix so the bindings are herdr's defaults, as on the mac; the rest of
+  # the file (accent, pane borders, mouse) stays omarchy's. `herdr config check`
+  # guards the edit.
+  printf "Aligning herdr keys with the mac...\n"
   readonly HERDR_CONFIG="$CONFIG_HOME/herdr/config.toml"
-  if [ -f "$HERDR_CONFIG" ] && grep -q '^prefix = "ctrl+space"' "$HERDR_CONFIG"; then
-    cp "$HERDR_CONFIG" "$HERDR_CONFIG.dotfiles.bak"
-    sed -i 's/^prefix = "ctrl+space"/prefix = "ctrl+g"/' "$HERDR_CONFIG"
-    if command -v herdr >/dev/null 2>&1 && ! herdr config check >/dev/null 2>&1; then
-      mv "$HERDR_CONFIG.dotfiles.bak" "$HERDR_CONFIG"
-      printf "  herdr config check failed; prefix patch reverted\n" >&2
+  if [ -f "$HERDR_CONFIG" ]; then
+    HERDR_TMP="$(mktemp)"
+    awk '
+      /^\[/ { in_keys = ($0 == "[keys]") }
+      in_keys && /^prefix = / { print "prefix = \"ctrl+g\""; next }
+      in_keys && (/^[[:space:]]*#/ || /^[a-z_]+ = / || /^[[:space:]]*$/) { next }
+      { print }
+    ' "$HERDR_CONFIG" > "$HERDR_TMP"
+    if cmp -s "$HERDR_TMP" "$HERDR_CONFIG"; then
+      rm -f "$HERDR_TMP"
     else
-      rm -f "$HERDR_CONFIG.dotfiles.bak"
-      # A running server keeps the old prefix until it reloads.
-      herdr server reload-config >/dev/null 2>&1 || true
+      cp "$HERDR_CONFIG" "$HERDR_CONFIG.dotfiles.bak"
+      cp "$HERDR_TMP" "$HERDR_CONFIG"
+      rm -f "$HERDR_TMP"
+      if command -v herdr >/dev/null 2>&1 && ! herdr config check >/dev/null 2>&1; then
+        mv "$HERDR_CONFIG.dotfiles.bak" "$HERDR_CONFIG"
+        printf "  herdr config check failed; key alignment reverted\n" >&2
+      else
+        rm -f "$HERDR_CONFIG.dotfiles.bak"
+        # A running server keeps the old keys until it reloads.
+        herdr server reload-config >/dev/null 2>&1 || true
+      fi
     fi
   fi
 
