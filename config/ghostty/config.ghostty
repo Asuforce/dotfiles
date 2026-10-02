@@ -11,9 +11,6 @@
 # Appearance settings
 # ========================================
 
-# Window transparency. cmd+ctrl+t toggles it, see the keybind below.
-background-opacity = 0.75
-
 # Color scheme (drives pane contents; herdr's own UI has its own theme).
 # Ghostty ships no Gogh variant of One Dark. Atom One Dark is the closest
 # built-in: same red/green/blue/magenta/cyan as wezterm's "OneDark (Gogh)",
@@ -60,4 +57,3 @@ right-click-action = paste
 # No pane or tab bindings: ctrl+g belongs to herdr's prefix. Only bindings that
 # herdr has no equivalent for are kept here.
 keybind = cmd+ctrl+f=toggle_fullscreen
-keybind = cmd+ctrl+t=toggle_background_opacity
