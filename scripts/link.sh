@@ -167,6 +167,13 @@ else
       sudo install -Dm644 "$IBRIDGE_SRC" "$IBRIDGE_DEST"
       sudo systemctl reload NetworkManager
     fi
+
+    printf "Setting up tiny-dfr resume hook...\n"
+    readonly TINYDFR_SRC="$REPO_DIR/config/t2/tiny-dfr-resume"
+    readonly TINYDFR_DEST="/usr/lib/systemd/system-sleep/tiny-dfr"
+    if ! cmp -s "$TINYDFR_SRC" "$TINYDFR_DEST"; then
+      sudo install -Dm755 "$TINYDFR_SRC" "$TINYDFR_DEST"
+    fi
   fi
 
   # omarchy seeds these two files, so link_config would skip them. A marked

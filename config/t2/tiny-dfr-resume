@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# The Touch Bar's /dev/tiny_dfr_* aliases vanish across suspend and come back
+# under new paths, so the udev SYSTEMD_WANTS trigger never fires and BindsTo=
+# leaves tiny-dfr stopped. The devices re-enumerate after this hook runs, hence
+# the retries, and the backgrounding so resume is not held up waiting for them.
+
+if [[ $1 == "post" ]]; then
+  (
+    for _ in {1..10}; do
+      systemctl start tiny-dfr && exit 0
+      sleep 1
+    done
+  ) >/dev/null 2>&1 &
+fi
