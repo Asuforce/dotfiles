@@ -225,9 +225,12 @@ else
     || rm -f "$settings_tmp"
 fi
 
+# omarchy only: the sudoers file that makes these targets promptless is Linux's.
 # Rules are only ever added, so a machine's own allow entries survive.
 printf "Merging permission rules...\n"
-if ! command -v jq >/dev/null 2>&1; then
+if [[ "$(uname -s)" != "Linux" ]]; then
+  printf "Not Linux; skipping permission rules.\n"
+elif ! command -v jq >/dev/null 2>&1; then
   printf "jq not found; skipping permission rules.\n"
 else
   settings_tmp="$(mktemp)"
