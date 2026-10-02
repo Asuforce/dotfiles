@@ -57,3 +57,8 @@ right-click-action = paste
 # No pane or tab bindings: ctrl+g belongs to herdr's prefix. Only bindings that
 # herdr has no equivalent for are kept here.
 keybind = cmd+ctrl+f=toggle_fullscreen
+
+# omarchy turns SUPER+C / SUPER+V into Ctrl+Insert / Shift+Insert in terminals.
+# Ghostty's default Shift+Insert pastes the primary selection, not the clipboard.
+keybind = shift+insert=paste_from_clipboard
+keybind = ctrl+insert=copy_to_clipboard
