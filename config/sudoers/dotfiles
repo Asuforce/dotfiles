@@ -1,0 +1,25 @@
+# Lets the dotfiles scripts run their sudo steps without a password prompt, so
+# `make link` and `make home-server` work from Claude Code. Each entry pins the
+# destination; the source argument stays open because home-server renders its
+# files into a mktemp path first. Installed by hand:
+#   sed "s/@USER@/$(id -un)/" config/sudoers/dotfiles | sudo install -m440 /dev/stdin /etc/sudoers.d/dotfiles
+
+@USER@ ALL=(root) NOPASSWD: \
+  /usr/bin/pacman -S --needed --noconfirm keyd, \
+  /usr/bin/pacman -Rns --noconfirm supergfxctl, \
+  /usr/bin/keyd reload, \
+  /usr/bin/systemctl enable --now keyd, \
+  /usr/bin/systemctl disable --now supergfxd, \
+  /usr/bin/systemctl reload NetworkManager, \
+  /usr/bin/systemctl daemon-reload, \
+  /usr/bin/systemctl restart mf-nightly-sleep.timer, \
+  /usr/bin/systemctl enable --now mf-nightly-sleep.timer, \
+  /usr/bin/rm -f /etc/supergfxd.conf /etc/modprobe.d/supergfxd.conf /run/omarchy-force-igpu-integrated, \
+  /usr/bin/install -Dm644 * /etc/keyd/default.conf, \
+  /usr/bin/install -Dm644 * /etc/NetworkManager/conf.d/90-ibridge-unmanaged.conf, \
+  /usr/bin/install -Dm755 * /usr/lib/systemd/system-sleep/tiny-dfr, \
+  /usr/bin/install -Dm644 * /etc/systemd/logind.conf.d/30-lid-ignore.conf, \
+  /usr/bin/install -Dm755 * /usr/local/bin/mf-nightly-sleep, \
+  /usr/bin/install -Dm755 * /usr/local/bin/stay-awake, \
+  /usr/bin/install -Dm644 * /etc/systemd/system/mf-nightly-sleep.service, \
+  /usr/bin/install -Dm644 * /etc/systemd/system/mf-nightly-sleep.timer
