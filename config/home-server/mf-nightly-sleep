@@ -2,6 +2,12 @@
 set -euo pipefail
 
 user=@USER@
+
+# systemd fires the timer once on resume for the tick missed in sleep; without
+# this guard that run re-suspends at 05:55, before the 06:00 crawl.
+hour=$((10#$(date +%H)))
+(( hour >= 22 || hour <= 4 )) || exit 0
+
 runtime_dir="/run/user/$(id -u "$user")"
 
 # Omarchy locks after 5 idle minutes or on lid close, so "locked" is the idle signal.
