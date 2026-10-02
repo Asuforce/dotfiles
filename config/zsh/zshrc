@@ -57,6 +57,13 @@ export ABBR_USER_ABBREVIATIONS_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/zsh-abbr/
 # Load sheldon plugin manager
 eval "$(sheldon source)"
 
+# bu/ou: upgrade everything the OS's package manager owns
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  abbr -S -q -- 'bu'='brew update && brew upgrade --display-times --no-ask'
+else
+  abbr -S -q -- 'ou'='omarchy update'
+fi
+
 # Zoxide initialization (smart directory jumper)
 eval "$(zoxide init zsh)"
 
