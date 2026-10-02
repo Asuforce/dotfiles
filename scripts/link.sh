@@ -22,14 +22,14 @@ link_config() {
   fi
 }
 
-# Like link_config, but on Linux a regular file in the way is moved aside to
-# <path>.omarchy.bak first. For files where the repo's version is the one that
-# applies and omarchy's seeded copy is only a starting point.
+# Like link_config, but on Linux a regular file in the way is deleted first. For
+# files where the repo's version is the one that applies; omarchy's seeded copy
+# can be fetched from its repository again.
 adopt_config() {
   local src="$1" dest="$2"
   if [[ "$OS" == "Linux" ]] && [ -f "$dest" ] && [ ! -L "$dest" ]; then
-    mv "$dest" "$dest.omarchy.bak"
-    printf "  moved aside: %s -> %s\n" "$dest" "$dest.omarchy.bak"
+    rm "$dest"
+    printf "  replaced omarchy's file: %s\n" "$dest"
   fi
   link_config "$src" "$dest"
 }
@@ -55,12 +55,12 @@ printf "Linking zsh-abbr abbreviations...\n"
 link_config "$REPO_DIR/config/zsh/abbreviations" "$CONFIG_HOME/zsh-abbr/abbreviations"
 
 # Link Ghostty config. Ghostty also reads the legacy ~/.config/ghostty/config, and
-# omarchy-install-terminal seeds that name, so on Linux it is moved aside or its
+# omarchy-install-terminal seeds that name, so on Linux it is removed or its
 # settings would merge with the repo's.
 printf "Linking Ghostty config...\n"
 if [[ "$OS" == "Linux" ]] && [ -f "$CONFIG_HOME/ghostty/config" ] && [ ! -L "$CONFIG_HOME/ghostty/config" ]; then
-  mv "$CONFIG_HOME/ghostty/config" "$CONFIG_HOME/ghostty/config.omarchy.bak"
-  printf "  moved aside: %s\n" "$CONFIG_HOME/ghostty/config"
+  rm "$CONFIG_HOME/ghostty/config"
+  printf "  removed omarchy's file: %s\n" "$CONFIG_HOME/ghostty/config"
 fi
 link_config "$REPO_DIR/config/ghostty/config.ghostty" "$CONFIG_HOME/ghostty/config.ghostty"
 

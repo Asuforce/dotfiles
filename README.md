@@ -39,8 +39,9 @@ make help
 
 `make all` branches on `uname -s`: on Linux it runs `pkg → link → llm → runtime`
 and skips the macOS-only targets. Several files are replaced by the repo's
-version and the original is kept next to it as `<name>.omarchy.bak`. Read the
-output of `make link` for `skipped, already exists` and `moved aside` lines.
+version (omarchy's seeded copy is deleted; `~/.ssh/config` alone is kept as
+`config.omarchy.bak`). Read the output of `make link` for `skipped, already
+exists` and `replaced`/`removed`/`moved aside` lines.
 
 ### Personal Machines
 

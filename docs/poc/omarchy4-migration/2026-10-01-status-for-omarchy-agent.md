@@ -26,13 +26,15 @@ scripts/link.sh
              ~/.ssh/config generated from config/ssh/config with the Linux
              1Password socket, ~/.bashrc guarded `exec zsh` block
 
-adopt_config       : on Linux moves a regular file in the way to
-                     <name>.omarchy.bak, then links (git config)
-                     the legacy ~/.config/ghostty/config and ~/.ssh/config are
-                     moved aside the same way
+adopt_config       : on Linux deletes a regular file in the way, then links
+                     (git config); the legacy ~/.config/ghostty/config is
+                     deleted too. ~/.ssh/config alone is moved to
+                     config.omarchy.bak
 
-scripts/llm.sh     : settings.json untracked (created as `{}`, hooks merged
-                     with jq); skills linked one by one
+scripts/llm.sh     : settings.json untracked (created as `{}` if absent; hooks
+                     and statusLine merged with jq, each only when missing);
+                     skills linked one by one. No permissions, theme or model
+                     are written.
 scripts/runtime.sh : mise owns ~/.config/mise/config.toml; python, node (lts)
                      and ruby are added with `mise use -g` unless the file
                      already names them. runtime/config.toml is gone.
@@ -69,8 +71,7 @@ bash (`$ZSH_VERSION` empty).
 Verified on the mac only, with `HOME` pointed at a temporary directory and `uname`
 stubbed to report Linux: `link.sh`'s Linux branch is idempotent and reports
 pre-existing files; the `.bashrc` block does not fire in a non-interactive
-shell; the `llm.sh` merge keeps `theme` and `model`, unions permissions without
-duplicates, and links every skill; a legacy directory-level skills link is
+shell; the `llm.sh` hook merge adds each entry once and links every skill; a legacy directory-level skills link is
 converted.
 
 Read from `omacom/omarchy@quattro` and never run: everything about omarchy's
