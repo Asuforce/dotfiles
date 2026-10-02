@@ -1,6 +1,6 @@
 [user]
 	name = Shun Nishitsuji
-	email = owata.sn@gmail.com
+	email = 9331040+Asuforce@users.noreply.github.com
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJdKrFfhU4etC/rv0ceecExuSX2awA00dFfQmTvx5Rca
 [gpg]
 	format = ssh
