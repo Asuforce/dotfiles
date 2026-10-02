@@ -218,9 +218,39 @@ EOF
     cat >>"$HYPR_INPUT" <<EOF
 
 $HYPR_POINTER_MARKER
-hl.config({ input = { sensitivity = 1.0 } })
+hl.config({ input = { sensitivity = 1.0, accel_profile = "adaptive" } })
 EOF
     command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
+  fi
+
+  printf "Applying Hyprland clipboard manager binding...\n"
+  readonly HYPR_BINDINGS="$CONFIG_HOME/hypr/bindings.lua"
+  readonly HYPR_CLIPBOARD_MARKER="-- dotfiles: clipboard manager on Super+Shift+V"
+  if [ ! -f "$HYPR_BINDINGS" ] || ! grep -qF -- "$HYPR_CLIPBOARD_MARKER" "$HYPR_BINDINGS"; then
+    mkdir -p "$(dirname "$HYPR_BINDINGS")"
+    cat >>"$HYPR_BINDINGS" <<EOF
+
+$HYPR_CLIPBOARD_MARKER
+o.bind("SUPER + SHIFT + V", "Clipboard manager", "omarchy menu clipboard")
+EOF
+    command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
+  fi
+
+  # The installer seeds 1.25 here; 1 is the scale chosen on this machine.
+  printf "Applying Hyprland monitor scale...\n"
+  readonly HYPR_MONITORS="$CONFIG_HOME/hypr/monitors.lua"
+  if [ -f "$HYPR_MONITORS" ] && ! grep -qxF "local omarchy_monitor_scale = 1" "$HYPR_MONITORS"; then
+    sed -i 's/^local omarchy_monitor_scale = .*/local omarchy_monitor_scale = 1/' "$HYPR_MONITORS"
+    command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
+  fi
+
+  # Same HackGen35 family as the mac's Ghostty; the NF variant carries the icon
+  # glyphs the omarchy bar needs.
+  printf "Setting the system monospace font...\n"
+  readonly MONO_FONT="HackGen35 Console NF"
+  if command -v omarchy-font-set >/dev/null 2>&1 \
+    && ! grep -qF -- "<string>$MONO_FONT</string>" "$CONFIG_HOME/fontconfig/fonts.conf" 2>/dev/null; then
+    omarchy-font-set "$MONO_FONT" || printf "  omarchy-font-set failed for %s\n" "$MONO_FONT" >&2
   fi
 
   # keyd sends Muhenkan/Henkan on a lone left/right command tap; fcitx5 turns

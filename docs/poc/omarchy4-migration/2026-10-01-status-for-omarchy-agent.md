@@ -23,7 +23,10 @@ scripts/link.sh
 ├── Darwin : herdr, nvim, btop, ssh, karabiner, hammerspoon,
 │            /etc/shells, diff-highlight, .gitconfig copies
 └── Linux  : keyd, T2 Mac fixes, marked blocks in hypr/input.lua (Caps Lock as
-             Control, trackpad) and fcitx5/config (Muhenkan/Henkan), herdr
+             Control, trackpad, pointer speed) and hypr/bindings.lua
+             (clipboard manager), hypr/monitors.lua scale 1, system
+             monospace HackGen35 Console NF via omarchy-font-set,
+             fcitx5/config (Muhenkan/Henkan), herdr
              [keys] cut to prefix = ctrl+g and copy_mode (guarded by
              `herdr config check`, followed by `herdr server reload-config`),
              ~/.ssh/config generated from config/ssh/config with the Linux
