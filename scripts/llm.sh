@@ -207,6 +207,24 @@ else
   fi
 fi
 
+# An existing statusLine entry is left alone so a machine can keep its own.
+printf "Linking status line...\n"
+readonly STATUSLINE_DEST="$CLAUDE_CONFIG_DIR/statusline.sh"
+[ ! -e "$STATUSLINE_DEST" ] && [ ! -L "$STATUSLINE_DEST" ] \
+  && ln -s "$DOTFILES_LLM/statusline.sh" "$STATUSLINE_DEST"
+if ! command -v jq >/dev/null 2>&1; then
+  printf "jq not found; skipping statusLine registration.\n"
+elif jq -e '.statusLine' "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+  printf "statusLine already configured.\n"
+else
+  printf "Registering statusLine...\n"
+  settings_tmp="$(mktemp)"
+  jq '.statusLine = { type: "command", command: "~/.claude/statusline.sh", padding: 1 }' \
+    "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+    && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+    || rm -f "$settings_tmp"
+fi
+
 # Install AutoHarness: a self-learning skill layer that distills skills from
 # real sessions. Plugin-installed rather than vendored like visual-pr/retro/etc
 # -- it ships a Python backend, an MCP server, and its own hooks, none of which
