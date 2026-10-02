@@ -209,6 +209,19 @@ EOF
     command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
   fi
 
+  # A palm brushing the pad while typing registers as a tap and moves the caret
+  # out of the field, so the next keys reach the page. Physical clicks remain.
+  printf "Applying Hyprland tap-to-click setting...\n"
+  readonly HYPR_TAP_MARKER="-- dotfiles: tap-to-click is off"
+  if ! grep -qF -- "$HYPR_TAP_MARKER" "$HYPR_INPUT"; then
+    cat >>"$HYPR_INPUT" <<EOF
+
+$HYPR_TAP_MARKER
+hl.config({ input = { touchpad = { tap_to_click = false } } })
+EOF
+    command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
+  fi
+
   # 1.0 is the top of libinput's pointer speed range, the nearest match to the
   # mac's fastest tracking speed. The adaptive acceleration profile is kept,
   # since macOS accelerates too.
