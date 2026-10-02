@@ -70,6 +70,10 @@ adopt_config "$REPO_DIR/config/git/config" "$CONFIG_HOME/git/config"
 link_config "$REPO_DIR/config/git/ignore" "$CONFIG_HOME/git/ignore"
 link_config "$REPO_DIR/config/git/os-$(uname -s | tr '[:upper:]' '[:lower:]')" "$CONFIG_HOME/git/os"
 
+# Link Starship config
+printf "Linking Starship config...\n"
+adopt_config "$REPO_DIR/config/starship/starship.toml" "$CONFIG_HOME/starship.toml"
+
 if [[ "$OS" == "Darwin" ]]; then
   if [[ "$(uname -m)" == "arm64" ]]; then
     BREW_DIR="/opt/homebrew"
@@ -95,10 +99,6 @@ if [[ "$OS" == "Darwin" ]]; then
   # Link Neovim config
   printf "Linking Neovim config...\n"
   link_config "$REPO_DIR/config/nvim/init.lua" "$CONFIG_HOME/nvim/init.lua"
-
-  # Link Starship config
-  printf "Linking Starship config...\n"
-  link_config "$REPO_DIR/config/starship/starship.toml" "$CONFIG_HOME/starship.toml"
 
   # Link btop config
   printf "Linking btop config...\n"

@@ -17,10 +17,10 @@ scripts/pkg.sh     : config/packages/linux.txt → `omarchy pkg add` (official)
                      and `yay -S --needed` (aur)
 
 scripts/link.sh
-├── both   : zsh, tig, sheldon, bat, zsh-abbr, ghostty, git (config, ignore,
-│            os-<kernel> as ~/.config/git/os, which carries the 1Password
-│            signing program path)
-├── Darwin : herdr, nvim, starship, btop, ssh, karabiner, hammerspoon,
+├── both   : zsh, tig, sheldon, bat, zsh-abbr, ghostty, starship, git (config,
+│            ignore, os-<kernel> as ~/.config/git/os, which carries the
+│            1Password signing program path)
+├── Darwin : herdr, nvim, btop, ssh, karabiner, hammerspoon,
 │            /etc/shells, diff-highlight, .gitconfig copies
 └── Linux  : keyd, T2 Mac fixes, marked blocks in hypr/input.lua (Caps Lock as
              Control, trackpad) and fcitx5/config (Muhenkan/Henkan), herdr
@@ -61,7 +61,8 @@ herdr            omarchy's file stays; link.sh cuts [keys] to the prefix and
                  copy_mode so bindings match the mac. omarchy's tmux-mirroring
                  keymap made the same keys do different things on the two
                  machines.
-starship, btop   omarchy wins, untouched.
+btop             omarchy wins, untouched.
+starship         repo wins (adopt_config replaces omarchy's file).
 nvim             omarchy wins (omarchy-nvim, a maintained LazyVim setup); the
                  repo's init.lua stays mac-only.
 mise config      mise owns it. omarchy seeds it and an old omarchy migration
@@ -105,7 +106,7 @@ tig, bat         BAT_THEME=ansi exported by omarchy overrides bat's --theme.
 - Mac-only and left out: mas, lima, gnu-sed, grep, appcleaner, the-unarchiver,
   gitify, gpg-suite, hammerspoon, karabiner-elements, raycast.
 - CSI-u keybinds for shift+enter are not added; herdr uses the kitty keyboard
-  protocol. kube-ps1 is dropped; omarchy's starship config applies.
+  protocol. The repo's starship config applies.
 
 ## Verified
 
