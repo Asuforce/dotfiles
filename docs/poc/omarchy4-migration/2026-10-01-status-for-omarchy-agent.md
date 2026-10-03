@@ -84,8 +84,9 @@ tig, bat         BAT_THEME=ansi exported by omarchy overrides bat's --theme.
 
 - One repo for both machines, branching on `uname -s`, rather than a second
   omarchy-only repo. OS is cheap to detect, unlike the `personal` flag, which
-  is a policy choice. Work-only config (`.gitconfig-work`, `zshrc.work`, the
-  gcloud widget, terraform PATH lines) stays on the mac.
+  is a policy choice. Work-only config (`.gitconfig-work`, `zshrc.work`,
+  terraform PATH lines) stays on the mac. gcloud and its project-switch widget
+  run on both; on Linux `runtime.sh` adds gcloud through mise.
 - Packages: a repo-owned list beside the `Brewfile`, not Nix. omarchy is a
   curated Arch distro and Nix would double-manage its packages. Symlinking onto
   omarchy's `omarchy-other.packages` was not possible: it is pacman-owned and
