@@ -7,6 +7,7 @@
 # so is gh, which mise installs.
 
 official argocd
+official cloudflared
 official ghostty
 official ghq
 official git-delta
@@ -21,6 +22,7 @@ official kubectl
 official kubectx
 official kubeseal
 official kustomize
+official openssh
 official php
 official procps-ng
 official sheldon
