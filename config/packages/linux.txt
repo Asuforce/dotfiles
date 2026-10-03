@@ -6,6 +6,7 @@
 # lazygit mise neovim ripgrep starship zoxide docker tmux ...) are left out, and
 # so is gh, which mise installs.
 
+official ansible
 official argocd
 official cloudflared
 official ghostty
