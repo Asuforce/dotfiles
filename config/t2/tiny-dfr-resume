@@ -4,14 +4,13 @@
 # under new paths, so the udev SYSTEMD_WANTS trigger never fires. tiny-dfr is
 # still active when this hook runs and only gets stopped once its devices drop
 # out a moment later, so a single start at resume time is a no-op. Poll for a
-# while and start it whenever it is found down; backgrounded so resume is not
-# held up.
+# while and start it whenever it is found down.
+#
+# systemd-suspend.service uses KillMode=control-group, so a plain backgrounded
+# loop dies with the service about a second after resume; run it as its own
+# transient unit instead.
 
 if [[ $1 == "post" ]]; then
-  (
-    for _ in {1..30}; do
-      systemctl is-active --quiet tiny-dfr || systemctl start tiny-dfr
-      sleep 1
-    done
-  ) >/dev/null 2>&1 &
+  systemd-run --no-block --collect --quiet --unit=tiny-dfr-resume \
+    bash -c 'for _ in {1..30}; do systemctl is-active --quiet tiny-dfr || systemctl start tiny-dfr; sleep 1; done'
 fi
