@@ -128,6 +128,29 @@ if command -v herdr >/dev/null 2>&1; then
       && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
       || rm -f "$settings_tmp"
   fi
+
+  printf "Linking herdr tab-title hook...\n"
+  readonly TAB_TITLE_HOOK="$CLAUDE_HOOKS_DIR/herdr-tab-title.sh"
+  [ ! -e "$TAB_TITLE_HOOK" ] \
+    && ln -fs "$DOTFILES_LLM/hooks/herdr-tab-title.sh" "$TAB_TITLE_HOOK"
+
+  readonly TAB_TITLE_HOOK_COMMAND='bash "$HOME/.claude/hooks/herdr-tab-title.sh"'
+  if ! command -v jq >/dev/null 2>&1; then
+    printf "jq not found; skipping Stop hook registration.\n"
+  elif jq -e --arg cmd "$TAB_TITLE_HOOK_COMMAND" \
+      '[(.hooks.Stop // [])[].hooks[]?.command] | index($cmd)' \
+      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+    printf "herdr tab-title hook already registered.\n"
+  else
+    printf "Registering herdr tab-title hook on Stop...\n"
+    settings_tmp="$(mktemp)"
+    jq --arg cmd "$TAB_TITLE_HOOK_COMMAND" \
+      '.hooks.Stop = ((.hooks.Stop // []) + [{
+         hooks: [{ type: "command", command: $cmd, timeout: 10 }]
+       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+      || rm -f "$settings_tmp"
+  fi
 else
   printf "herdr not found; skipping herdr skill and integration.\n"
 fi
