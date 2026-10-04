@@ -75,6 +75,34 @@ Calibrates an explanation to a named audience (age, grade level, job role, relat
 
 Upstream ships only the single `skills/eli5/SKILL.md` file; nothing was dropped or changed in the local copy.
 
+## `autopilot` (adapted from `cursor/plugins` pstack)
+
+Runs a task from requirements to a merged PR with one up-front interview and no further questions, except for the stop conditions listed in the skill. It is modelled on pstack's `poteto-mode` (`autonomous-run`, `opening-a-pr`, `shipping` and `never-block-on-the-human`) but is not vendored: pstack is a Cursor plugin built around a multi-model panel (grok for code, opus for judgment) and 23 playbooks, and neither carries over. Claude Code has one model plus `advisor()`, so the panel becomes an advisor consultation whenever evidence is thin and a PR review before merge.
+
+No built-in covers this: `grill-with-docs`, `visual-pr`, `apply-review` and `code-review` each own one step, and nothing sequences them, defines the stop conditions, or merges.
+
+```mermaid
+flowchart LR
+  G["grill-with-docs<br/>(only point that waits on the user)"] --> X["execute<br/>commands + chrome-devtools MCP"]
+  X -->|unsure| A1["advisor()"]
+  A1 --> X
+  X --> P["visual-pr (draft)"]
+  P --> A2["advisor() review"]
+  A2 -->|must-fix| X
+  A2 -->|clear| C["gh pr checks --watch"]
+  C -->|red, under 3 tries| X
+  C -->|green| M["gh pr merge --squash"]
+  M --> R["report: Blocked on me / Changed / Found"]
+```
+
+Choices that deviate from pstack:
+
+- Parallel work runs as Claude Code sessions in herdr panes rather than in-process subagents, so the user can watch and take over, and each pane has its own `advisor()`.
+- Merge is gated on the exit condition, green CI and resolved must-fix items. `--admin`, force pushes and pushes to main stay outside the grant.
+- It sets `disable-model-invocation: true` because it merges.
+
+`autoMode.allow` in `~/.claude/settings.json` is per-machine and untracked, so the rule that lets the classifier accept `gh pr merge` is not in this repository. Without it, auto mode stops at the merge step.
+
 ## AutoHarness
 
 `scripts/llm.sh` adds the `tigerless-labs/autoharness` marketplace and installs `autoharness@autoharness` (scope `user`), both idempotently via `claude plugin marketplace list --json` / `claude plugin list --json` checks. It is plugin-installed rather than vendored like the skills above: it ships a Python backend, an MCP server (`stage_skill`), and its own `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks, none of which a skill-only copy under `llm/skills/` would run. It self-learns skills from session work into `.claude/skills/` and prunes them by usage rate — no local deviations are needed, so there is nothing to fork and no entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update autoharness && claude plugin update autoharness@autoharness`, then a restart.
