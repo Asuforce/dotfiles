@@ -28,7 +28,11 @@ fi
 # added with `mise use -g` only when the file does not name it yet, which keeps
 # whatever version omarchy (or the user) already chose.
 readonly MISE_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/mise/config.toml"
-readonly RUNTIMES=(python@3.12.10 node@lts ruby@3.4.8)
+RUNTIMES=(python@3.12.10 node@lts ruby@3.4.8)
+# gcloud is mise-managed on Linux only; macOS gets it outside this repo.
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  RUNTIMES+=(gcloud@latest)
+fi
 
 printf "Setting up mise runtimes...\n"
 for spec in "${RUNTIMES[@]}"; do

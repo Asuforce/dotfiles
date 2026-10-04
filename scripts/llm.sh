@@ -128,6 +128,29 @@ if command -v herdr >/dev/null 2>&1; then
       && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
       || rm -f "$settings_tmp"
   fi
+
+  printf "Linking herdr tab-title hook...\n"
+  readonly TAB_TITLE_HOOK="$CLAUDE_HOOKS_DIR/herdr-tab-title.sh"
+  [ ! -e "$TAB_TITLE_HOOK" ] \
+    && ln -fs "$DOTFILES_LLM/hooks/herdr-tab-title.sh" "$TAB_TITLE_HOOK"
+
+  readonly TAB_TITLE_HOOK_COMMAND='bash "$HOME/.claude/hooks/herdr-tab-title.sh"'
+  if ! command -v jq >/dev/null 2>&1; then
+    printf "jq not found; skipping Stop hook registration.\n"
+  elif jq -e --arg cmd "$TAB_TITLE_HOOK_COMMAND" \
+      '[(.hooks.Stop // [])[].hooks[]?.command] | index($cmd)' \
+      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+    printf "herdr tab-title hook already registered.\n"
+  else
+    printf "Registering herdr tab-title hook on Stop...\n"
+    settings_tmp="$(mktemp)"
+    jq --arg cmd "$TAB_TITLE_HOOK_COMMAND" \
+      '.hooks.Stop = ((.hooks.Stop // []) + [{
+         hooks: [{ type: "command", command: $cmd, timeout: 10 }]
+       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+      || rm -f "$settings_tmp"
+  fi
 else
   printf "herdr not found; skipping herdr skill and integration.\n"
 fi
@@ -225,6 +248,12 @@ else
     || rm -f "$settings_tmp"
 fi
 
+# Unbinds ctrl+g, which is herdr's prefix.
+printf "Linking keybindings...\n"
+readonly KEYBINDINGS_DEST="$CLAUDE_CONFIG_DIR/keybindings.json"
+[ ! -e "$KEYBINDINGS_DEST" ] && [ ! -L "$KEYBINDINGS_DEST" ] \
+  && ln -s "$DOTFILES_LLM/keybindings.json" "$KEYBINDINGS_DEST"
+
 # omarchy only: the sudoers file that makes these targets promptless is Linux's.
 # Rules are only ever added, so a machine's own allow entries survive.
 printf "Merging permission rules...\n"
@@ -241,31 +270,42 @@ else
     || rm -f "$settings_tmp"
 fi
 
-# Install AutoHarness: a self-learning skill layer that distills skills from
-# real sessions. Plugin-installed rather than vendored like visual-pr/retro/etc
-# -- it ships a Python backend, an MCP server, and its own hooks, none of which
-# a skill-only copy under llm/skills/ would run.
+# Plugin-installed rather than vendored like visual-pr/retro/etc: each ships
+# hooks, an MCP server or a backend that a skill-only copy under llm/skills/
+# would not run.
+readonly PLUGINS_MANIFEST="$DOTFILES_LLM/plugins.tsv"
 if ! command -v jq >/dev/null 2>&1; then
-  printf "jq not found; skipping AutoHarness plugin install.\n"
+  printf "jq not found; skipping plugin install.\n"
 elif ! command -v claude >/dev/null 2>&1; then
-  printf "claude not found; skipping AutoHarness plugin install.\n"
+  printf "claude not found; skipping plugin install.\n"
 else
-  readonly AUTOHARNESS_SOURCE="tigerless-labs/autoharness"
-  if claude plugin marketplace list --json 2>/dev/null \
-      | jq -e --arg repo "$AUTOHARNESS_SOURCE" '.[] | select(.repo == $repo)' >/dev/null 2>&1; then
-    printf "autoharness marketplace already configured.\n"
-  else
-    printf "Adding autoharness marketplace...\n"
-    claude plugin marketplace add "$AUTOHARNESS_SOURCE"
-  fi
+  while IFS=$'\t' read -r source plugin || [ -n "${plugin:-}" ]; do
+    case "$source" in '' | '#'*) continue ;; esac
+    if [ "$source" = "-" ]; then
+      # Built-in plugins are not in claude plugin list, so check the setting.
+      if jq -e --arg id "$plugin" '.enabledPlugins[$id] == true' "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+        printf "%s already enabled.\n" "$plugin"
+      else
+        printf "Enabling %s...\n" "$plugin"
+        claude plugin enable "$plugin" </dev/null
+      fi
+      continue
+    fi
 
-  if claude plugin list --json 2>/dev/null \
-      | jq -e '.[] | select(.id == "autoharness@autoharness")' >/dev/null 2>&1; then
-    printf "autoharness plugin already installed.\n"
-  else
-    printf "Installing autoharness plugin...\n"
-    claude plugin install autoharness@autoharness --scope user -y
-  fi
+    if ! claude plugin marketplace list --json 2>/dev/null \
+        | jq -e --arg repo "$source" '.[] | select(.repo == $repo)' >/dev/null 2>&1; then
+      printf "Adding marketplace %s...\n" "$source"
+      claude plugin marketplace add "$source" </dev/null
+    fi
+
+    if claude plugin list --json 2>/dev/null \
+        | jq -e --arg id "$plugin" '.[] | select(.id == $id)' >/dev/null 2>&1; then
+      printf "%s already installed.\n" "$plugin"
+    else
+      printf "Installing %s...\n" "$plugin"
+      claude plugin install "$plugin" --scope user -y </dev/null
+    fi
+  done <"$PLUGINS_MANIFEST"
 fi
 
 printf "Claude Code setup complete.\n"

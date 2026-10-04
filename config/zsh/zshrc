@@ -235,27 +235,25 @@ tree-fzf() {
 zle -N tree-fzf
 bindkey "^t" tree-fzf
 
-if [[ "$(uname -s)" == "Darwin" ]]; then
-  # Switch Google Cloud project with fzf
-  # Keybinding: Ctrl+/
-  google-cloud-project-fzf() {
-    if [[ "$1" == "-u" ]]; then
-      gcloud config unset project
-      return
-    fi
+# Switch Google Cloud project with fzf
+# Keybinding: Ctrl+/
+google-cloud-project-fzf() {
+  if [[ "$1" == "-u" ]]; then
+    gcloud config unset project
+    return
+  fi
 
-    local project
-    project=$(gcloud projects list --format="value(projectId)" | fzf --prompt="GCP Project> ")
-    if [[ -n "$project" ]]; then
-      gcloud config set project "$project"
-    fi
+  local project
+  project=$(gcloud projects list --format="value(projectId)" | fzf --prompt="GCP Project> ")
+  if [[ -n "$project" ]]; then
+    gcloud config set project "$project"
+  fi
 
-    zle reset-prompt
-  }
-  zle -N google-cloud-project-fzf
-  bindkey '^_' google-cloud-project-fzf
-  abbr -S -q -- 'gc'='google-cloud-project-fzf'
-fi
+  zle reset-prompt
+}
+zle -N google-cloud-project-fzf
+bindkey '^_' google-cloud-project-fzf
+abbr -S -q -- 'gc'='google-cloud-project-fzf'
 
 
 ################################################################################

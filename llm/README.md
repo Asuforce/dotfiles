@@ -75,16 +75,63 @@ Calibrates an explanation to a named audience (age, grade level, job role, relat
 
 Upstream ships only the single `skills/eli5/SKILL.md` file; nothing was dropped or changed in the local copy.
 
-## AutoHarness
+## `autopilot` (adapted from `cursor/plugins` pstack)
 
-`scripts/llm.sh` adds the `tigerless-labs/autoharness` marketplace and installs `autoharness@autoharness` (scope `user`), both idempotently via `claude plugin marketplace list --json` / `claude plugin list --json` checks. It is plugin-installed rather than vendored like the skills above: it ships a Python backend, an MCP server (`stage_skill`), and its own `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks, none of which a skill-only copy under `llm/skills/` would run. It self-learns skills from session work into `.claude/skills/` and prunes them by usage rate — no local deviations are needed, so there is nothing to fork and no entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update autoharness && claude plugin update autoharness@autoharness`, then a restart.
+Runs a task from requirements to a merged PR with one up-front interview and no further questions, except for the stop conditions listed in the skill. It is modelled on pstack's `poteto-mode` (`autonomous-run`, `opening-a-pr`, `shipping` and `never-block-on-the-human`) but is not vendored: pstack is a Cursor plugin built around a multi-model panel (grok for code, opus for judgment) and 23 playbooks, and neither carries over. Claude Code has one model plus `advisor()`, so the panel becomes an advisor consultation whenever evidence is thin and a PR review before merge.
+
+No built-in covers this: `grill-with-docs`, `visual-pr`, `apply-review` and `code-review` each own one step, and nothing sequences them, defines the stop conditions, or merges.
+
+```mermaid
+flowchart LR
+  G["grill-with-docs<br/>(only point that waits on the user)"] --> X["execute<br/>commands + chrome-devtools MCP"]
+  X -->|unsure| A1["advisor()"]
+  A1 --> X
+  X --> P["visual-pr (draft)"]
+  P --> A2["advisor() review"]
+  A2 -->|must-fix| X
+  A2 -->|clear| C["gh pr checks --watch"]
+  C -->|red, under 3 tries| X
+  C -->|green| M["gh pr merge --squash"]
+  M --> R["report: Blocked on me / Changed / Found"]
+```
+
+Choices that deviate from pstack:
+
+- Parallel work runs as Claude Code sessions in herdr panes rather than in-process subagents, so the user can watch and take over, and each pane has its own `advisor()`.
+- Merge is gated on the exit condition, green CI and resolved must-fix items. `--admin`, force pushes and pushes to main stay outside the grant.
+- It sets `disable-model-invocation: true` because it merges.
+
+`autoMode.allow` in `~/.claude/settings.json` is per-machine and untracked, so the rule that lets the classifier accept `gh pr merge` is not in this repository. Without it, auto mode stops at the merge step.
+
+## Plugins
+
+`llm/plugins.tsv` lists the plugins `scripts/llm.sh` installs, one `<marketplace source>\t<plugin id>` per line, so a new machine gets the same set from `make llm`. The script adds each marketplace and installs each plugin at scope `user`, skipping what is already there (`claude plugin marketplace list --json` / `claude plugin list --json`). A source of `-` marks a plugin Claude Code ships itself, which is enabled through `enabledPlugins` instead and checked there, since `claude plugin list` does not show it.
+
+```
+llm/plugins.tsv
+├─ tigerless-labs/autoharness   autoharness@autoharness
+├─ hamzafer/claude-code-mods    token-weather, mission-control, usage-meter
+├─ davekiss/env                 env@davekiss
+└─ -                            cc-plugin-you-should-know@builtin
+```
+
+They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update <name> && claude plugin update <id>`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
+
+- `autoharness` self-learns skills from session work into `.claude/skills/` and prunes them by usage rate. It ships a Python backend, an MCP server (`stage_skill`) and `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks.
+- `token-weather` draws the context fill and a prompt-cache countdown above the prompt. Session transcripts here reach 500k to 880k tokens and often sit idle for over five minutes, which is where both readouts pay off.
+- `usage-meter` shows the 5-hour and 7-day plan usage.
+- `mission-control` opens `/mission`, a live tree of agents and tool calls. Its code-map view needs macOS and Chrome, so only the agent view applies on Linux. It makes one small model call per change to summarise it.
+- `env` has Claude ask for a value in a pane it cannot read, so tokens for Cloudflare and Terraform never enter the transcript.
+- `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
 
 ## herdr integration
 
 `scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs), overrides its generated `description` (see the script's comments for why), and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel). `llm/AGENTS.md` carries the standing instruction that makes the herdr skill fire without being asked for each time.
 
+`herdr-tab-title.sh` runs on `Stop` and copies the `ai-title` Claude Code writes into the transcript onto the herdr tab label (24 characters at most). It only replaces a label herdr numbered itself (`1`, `2`, ...) or the title it set earlier for the same session, so a tab renamed by hand, or claimed by another pane's session, keeps its name.
+
 ## Status line
 
-`llm/statusline.sh` is the Claude Code status line (model, repository, branch, context bar, rate limits, cost). `scripts/llm.sh` symlinks it to `~/.claude/statusline.sh` and adds the `statusLine` entry to `settings.json` only when none exists, so a machine that configured its own keeps it.
+`llm/statusline.sh` is the Claude Code status line (model, repository, branch). The context bar, rate limits and cost it used to carry moved to the `token-weather` and `usage-meter` mods, which draw them above the prompt. `scripts/llm.sh` symlinks it to `~/.claude/statusline.sh` and adds the `statusLine` entry to `settings.json` only when none exists, so a machine that configured its own keeps it.
 
 `llm/permissions-allow.json` lists the Bash rules (`make link` and the other `make` targets) that `scripts/llm.sh` unions into `permissions.allow` in `settings.json`. The merge runs on Linux only. Existing entries on a machine are kept.
