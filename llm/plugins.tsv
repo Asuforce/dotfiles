@@ -1,0 +1,7 @@
+# marketplace source (GitHub owner/repo, or - for a plugin Claude Code ships)	plugin id
+tigerless-labs/autoharness	autoharness@autoharness
+hamzafer/claude-code-mods	token-weather@claude-code-mods
+hamzafer/claude-code-mods	mission-control@claude-code-mods
+hamzafer/claude-code-mods	usage-meter@claude-code-mods
+davekiss/env	env@davekiss
+-	cc-plugin-you-should-know@builtin
