@@ -287,7 +287,7 @@ else
         printf "%s already enabled.\n" "$plugin"
       else
         printf "Enabling %s...\n" "$plugin"
-        claude plugin enable "$plugin"
+        claude plugin enable "$plugin" </dev/null
       fi
       continue
     fi
@@ -295,7 +295,7 @@ else
     if ! claude plugin marketplace list --json 2>/dev/null \
         | jq -e --arg repo "$source" '.[] | select(.repo == $repo)' >/dev/null 2>&1; then
       printf "Adding marketplace %s...\n" "$source"
-      claude plugin marketplace add "$source"
+      claude plugin marketplace add "$source" </dev/null
     fi
 
     if claude plugin list --json 2>/dev/null \
@@ -303,7 +303,7 @@ else
       printf "%s already installed.\n" "$plugin"
     else
       printf "Installing %s...\n" "$plugin"
-      claude plugin install "$plugin" --scope user -y
+      claude plugin install "$plugin" --scope user -y </dev/null
     fi
   done <"$PLUGINS_MANIFEST"
 fi
