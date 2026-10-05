@@ -11,14 +11,13 @@ set -u
 
 MAX_CHARS=24
 
-[ "${HERDR_ENV:-}" = 1 ] && [ -n "${HERDR_TAB_ID:-}" ] || exit 0
+[ "${HERDR_ENV:-}" = 1 ] && [ -n "${HERDR_TAB_ID:-}" ] && [ -n "${HERDR_PANE_ID:-}" ] || exit 0
 command -v herdr >/dev/null 2>&1 || exit 0
 command -v jq >/dev/null 2>&1 || exit 0
 
 input="$(cat 2>/dev/null || true)"
-session_id="$(jq -r '.session_id // empty' <<<"$input" 2>/dev/null)"
 transcript="$(jq -r '.transcript_path // empty' <<<"$input" 2>/dev/null)"
-[ -n "$session_id" ] && [ -r "$transcript" ] || exit 0
+[ -r "$transcript" ] || exit 0
 
 title="$(grep -F '"type":"ai-title"' "$transcript" | tail -1 | jq -r '.aiTitle // empty' 2>/dev/null)"
 [ -n "$title" ] || exit 0
@@ -31,9 +30,11 @@ current="$(herdr tab get "$HERDR_TAB_ID" 2>/dev/null | jq -r '.result.tab.label 
 
 # herdr numbers unnamed tabs ("1", "2", ...). Any other label is either one the
 # user typed or one another pane's session claimed, and neither gets overwritten.
-# The one exception is this session's own earlier title, which moves with it.
+# The one exception is the title this pane set earlier. The record is keyed by
+# pane because /clear starts a new session in the same pane, and its title has
+# to replace the old one.
 state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-tab-title"
-state_file="$state_dir/$session_id"
+state_file="$state_dir/${HERDR_PANE_ID//\//_}"
 applied="$(cat "$state_file" 2>/dev/null || true)"
 case "$current" in
   *[!0-9]*) [ -n "$applied" ] && [ "$current" = "$applied" ] || exit 0 ;;
