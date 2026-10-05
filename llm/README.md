@@ -120,6 +120,7 @@ llm/plugins.tsv
 ├─ tigerless-labs/autoharness   autoharness@autoharness
 ├─ hamzafer/claude-code-mods    token-weather, mission-control, usage-meter
 ├─ davekiss/env                 env@davekiss
+├─ aieo-product/claude_qamods   qa-guide@claude-qamods
 └─ -                            cc-plugin-you-should-know@builtin
 ```
 
@@ -130,6 +131,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `usage-meter` shows the 5-hour and 7-day plan usage.
 - `mission-control` opens `/mission`, a live tree of agents and tool calls. Its code-map view needs macOS and Chrome, so only the agent view applies on Linux. It makes one small model call per change to summarise it.
 - `env` has Claude ask for a value in a pane it cannot read, so tokens for Cloudflare and Terraform never enter the transcript.
+- `qa-guide` opens a side pane when Claude asks via `AskUserQuestion`, explaining why it asks and what each option leads to. Explanations come from one Haiku call per question over a prompt capped at 12,000 characters. The pane opens on its own only at 144 columns or wider; `/qa-guide` opens it at any width. It needs the early-access function-hooks API of Claude Code 2.1.286 or later.
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
 
 ## herdr integration
