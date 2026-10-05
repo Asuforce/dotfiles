@@ -145,3 +145,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 `llm/statusline.sh` is the Claude Code status line (model, repository, branch). The context bar, rate limits and cost it used to carry moved to the `token-weather` and `usage-meter` mods, which draw them above the prompt. `scripts/llm.sh` symlinks it to `~/.claude/statusline.sh` and adds the `statusLine` entry to `settings.json` only when none exists, so a machine that configured its own keeps it.
 
 `llm/permissions-allow.json` lists the Bash rules (`make link` and the other `make` targets) that `scripts/llm.sh` unions into `permissions.allow` in `settings.json`. The merge runs on Linux only. Existing entries on a machine are kept.
+
+## auto-handoff
+
+`llm/plugins/auto-handoff/` is vendored from `alexknowshtml/claude-auto-handoff` (reviewed through the commit in `upstream-skills.tsv`). When context reaches the threshold (160k tokens by default) it writes a brief, runs `/clear` and seeds the new session with a pointer to it. It is vendored rather than listed in `plugins.tsv` because upstream ships no `marketplace.json`; `scripts/llm.sh` instead sets `env.CLAUDE_CODE_PLUGIN_DIRS` in `settings.json` to the vendored directory, and leaves an existing value alone. Dropped from upstream: `docs/` (demo media) and `tests/`. The viewer defaults to `tailscale:3846` and falls back to 127.0.0.1 without Tailscale.

@@ -308,4 +308,21 @@ else
   done <"$PLUGINS_MANIFEST"
 fi
 
+# Not a marketplace plugin (no marketplace.json), so it is loaded by directory.
+printf "Registering auto-handoff plugin dir...\n"
+readonly AUTO_HANDOFF_DIR="$DOTFILES_LLM/plugins/auto-handoff"
+if ! command -v jq >/dev/null 2>&1; then
+  printf "jq not found; skipping auto-handoff.\n"
+elif [ "$(jq -r '.env.CLAUDE_CODE_PLUGIN_DIRS // ""' "$CLAUDE_SETTINGS_FILE")" = "$AUTO_HANDOFF_DIR" ]; then
+  printf "auto-handoff already registered.\n"
+elif jq -e '.env.CLAUDE_CODE_PLUGIN_DIRS' "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+  printf "CLAUDE_CODE_PLUGIN_DIRS already set in settings.json; add %s by hand.\n" "$AUTO_HANDOFF_DIR"
+else
+  settings_tmp="$(mktemp)"
+  jq --arg dir "$AUTO_HANDOFF_DIR" '.env.CLAUDE_CODE_PLUGIN_DIRS = $dir' \
+    "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+    && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+    || rm -f "$settings_tmp"
+fi
+
 printf "Claude Code setup complete.\n"
