@@ -75,6 +75,14 @@ Calibrates an explanation to a named audience (age, grade level, job role, relat
 
 Upstream ships only the single `skills/eli5/SKILL.md` file; nothing was dropped or changed in the local copy.
 
+### `i-have-adhd` (from `ayghri/i-have-adhd`)
+
+Shapes responses for a reader with ADHD: next action first, numbered steps, one concrete closing step, no preamble or closers. Invoked with `/i-have-adhd` and stays on until "stop adhd mode". No built-in covers this; the Concise output style only shortens, it does not reorder around the next action.
+
+It ships `disable-model-invocation: true` upstream and keeps it here, so it is opt-in per session. It overlaps the Concise output style and conflicts with the global rule that every turn ends with `Blocked on me` / `Changed` / `Found`; the skill's own "a rule fights the harness" clause lets the harness win.
+
+Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor exports, as with `writing-for-agents`.
+
 ## `autopilot` (adapted from `cursor/plugins` pstack)
 
 Runs a task from requirements to a merged PR with one up-front interview and no further questions, except for the stop conditions listed in the skill. It is modelled on pstack's `poteto-mode` (`autonomous-run`, `opening-a-pr`, `shipping` and `never-block-on-the-human`) but is not vendored: pstack is a Cursor plugin built around a multi-model panel (grok for code, opus for judgment) and 23 playbooks, and neither carries over. Claude Code has one model plus `advisor()`, so the panel becomes an advisor consultation whenever evidence is thin and a PR review before merge.
