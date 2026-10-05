@@ -59,8 +59,8 @@ printf "Configuring Trackpad...\n"
 # Tap to click
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-# Tracking speed: Fast
-defaults write NSGlobalDomain com.apple.trackpad.scaling -float 3.0
+# Tracking speed: above the System Settings maximum (3.0)
+defaults write NSGlobalDomain com.apple.trackpad.scaling -float 4.0
 # Click: Light
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad FirstClickThreshold -int 0
 
