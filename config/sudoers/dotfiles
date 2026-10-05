@@ -8,6 +8,8 @@
   /usr/bin/pacman -S --needed --noconfirm keyd, \
   /usr/bin/pacman -Rns --noconfirm supergfxctl, \
   /usr/bin/keyd reload, \
+  /usr/bin/ufw allow 22/tcp comment ssh, \
+  /usr/bin/ufw allow 60000\:61000/udp comment mosh, \
   /usr/bin/systemctl enable --now keyd, \
   /usr/bin/systemctl disable --now supergfxd, \
   /usr/bin/systemctl reload NetworkManager, \
