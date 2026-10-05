@@ -29,6 +29,7 @@ make pkg       # Install Linux packages from config/packages/linux.txt (omarchy)
 make macos     # Apply macOS settings
 make llm       # Setup Claude Code configuration
 make runtime   # Setup language runtimes
+make moshi     # Install moshi-hook, open mosh UDP ports (Linux)
 make xcode     # Install Xcode Command Line Tools
 
 # Show available targets
@@ -37,7 +38,7 @@ make help
 
 ### omarchy (Arch Linux)
 
-`make all` branches on `uname -s`: on Linux it runs `pkg → link → llm → runtime`
+`make all` branches on `uname -s`: on Linux it runs `pkg → link → llm → runtime → moshi`
 and skips the macOS-only targets. Several files are replaced by the repo's
 version (omarchy's seeded copy is deleted; `~/.ssh/config` alone is kept as
 `config.omarchy.bak`). Read the output of `make link` for `skipped, already

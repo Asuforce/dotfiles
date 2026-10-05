@@ -1,11 +1,11 @@
-.PHONY: all help xcode link brew pkg llm runtime macos personal home-server clean test
+.PHONY: all help xcode link brew pkg llm runtime moshi macos personal home-server clean test
 
 OS := $(shell uname -s)
 
 ifeq ($(OS),Darwin)
 all: xcode link brew macos llm runtime
 else
-all: pkg link llm runtime
+all: pkg link llm runtime moshi
 endif
 	@printf "\033[32m✓ Setup completed\033[0m\n"
 
@@ -20,6 +20,7 @@ help:
 	@printf "  make macos     - Apply macOS settings\n"
 	@printf "  make llm       - Apply Claude Code (LLM) settings\n"
 	@printf "  make runtime   - Setup mise language runtimes\n"
+	@printf "  make moshi     - Install moshi-hook and open mosh's UDP ports (Linux)\n"
 	@printf "  make personal  - Opt this machine into personal-only Brewfile entries\n"
 	@printf "  make home-server - Run this laptop as an always-on server (omarchy)\n"
 	@printf "  make clean     - Clean up removable files\n"
@@ -51,6 +52,11 @@ llm:
 runtime:
 	@printf "Setting up mise language runtimes...\n"
 	@bash scripts/runtime.sh
+
+moshi:
+	@[ "$(OS)" = Linux ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
+		printf "Setting up moshi...\n"; \
+		bash scripts/moshi.sh
 
 macos:
 	@[ "$(OS)" = Darwin ] || { printf "Skipping on %s\n" "$(OS)"; exit 0; }; \
