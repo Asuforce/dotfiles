@@ -11,3 +11,5 @@
 - Once you've answered something, treat that answer as settled: don't re-litigate an earlier answer unless asked about it or shown a problem with it.
 - Run commands yourself with the Bash tool. Do not ask the user to run a command, or hand them a command to paste, unless it is interactive (login, password prompt) or the permission classifier has actually denied it. If a command is denied, report the denial once instead of retrying through other tools.
 - Ask the user every question through the AskUserQuestion tool rather than as plain text in the reply. Offer concrete options, with your recommendation first.
+
+@~/.claude/pstack-models.md
