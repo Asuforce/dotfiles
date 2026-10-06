@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # [Stop] Name the herdr tab after the task the session is working on.
+# [SessionStart:clear] Give the tab its default number back.
 #
 # Claude Code writes an AI-generated session title ("ai-title") into the
 # transcript after the first turn, so the name costs no extra model call and
@@ -16,6 +17,23 @@ command -v herdr >/dev/null 2>&1 || exit 0
 command -v jq >/dev/null 2>&1 || exit 0
 
 input="$(cat 2>/dev/null || true)"
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-tab-title"
+state_file="$state_dir/${HERDR_PANE_ID//\//_}"
+
+# /clear ends the task the title described. Only the title this pane applied is
+# reset; a label the user typed or another pane claimed stays.
+if [ "$(jq -r '.hook_event_name // empty' <<<"$input" 2>/dev/null)" = SessionStart ]; then
+  [ "$(jq -r '.source // empty' <<<"$input" 2>/dev/null)" = clear ] || exit 0
+  tab="$(herdr tab get "$HERDR_TAB_ID" 2>/dev/null)" || exit 0
+  current="$(jq -r '.result.tab.label // empty' <<<"$tab")"
+  number="$(jq -r '.result.tab.number // empty' <<<"$tab")"
+  applied="$(cat "$state_file" 2>/dev/null || true)"
+  [ -n "$applied" ] && [ "$current" = "$applied" ] && [ -n "$number" ] || exit 0
+  herdr tab rename "$HERDR_TAB_ID" "$number" >/dev/null 2>&1 && rm -f "$state_file"
+  exit 0
+fi
+
 transcript="$(jq -r '.transcript_path // empty' <<<"$input" 2>/dev/null)"
 [ -r "$transcript" ] || exit 0
 
@@ -33,8 +51,6 @@ current="$(herdr tab get "$HERDR_TAB_ID" 2>/dev/null | jq -r '.result.tab.label 
 # The one exception is the title this pane set earlier. The record is keyed by
 # pane because /clear starts a new session in the same pane, and its title has
 # to replace the old one.
-state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-tab-title"
-state_file="$state_dir/${HERDR_PANE_ID//\//_}"
 applied="$(cat "$state_file" 2>/dev/null || true)"
 case "$current" in
   *[!0-9]*) [ -n "$applied" ] && [ "$current" = "$applied" ] || exit 0 ;;

@@ -151,6 +151,22 @@ if command -v herdr >/dev/null 2>&1; then
       && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
       || rm -f "$settings_tmp"
   fi
+
+  # The same script resets the tab label on /clear. It has to be its own
+  # SessionStart entry because the Stop entry above carries no matcher.
+  if command -v jq >/dev/null 2>&1 && ! jq -e --arg cmd "$TAB_TITLE_HOOK_COMMAND" \
+      '[(.hooks.SessionStart // [])[] | select(.matcher == "clear") | .hooks[]?.command] | index($cmd)' \
+      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+    printf "Registering herdr tab-title hook on SessionStart (clear)...\n"
+    settings_tmp="$(mktemp)"
+    jq --arg cmd "$TAB_TITLE_HOOK_COMMAND" \
+      '.hooks.SessionStart = ((.hooks.SessionStart // []) + [{
+         matcher: "clear",
+         hooks: [{ type: "command", command: $cmd, timeout: 10 }]
+       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+      || rm -f "$settings_tmp"
+  fi
 else
   printf "herdr not found; skipping herdr skill and integration.\n"
 fi
