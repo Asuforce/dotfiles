@@ -1,4 +1,4 @@
-# marketplace source (GitHub owner/repo, or - for a plugin Claude Code ships)	plugin id
+# marketplace source (GitHub owner/repo, or - for a plugin Claude Code ships)	plugin id	optional OS from uname -s; other systems skip the row
 tigerless-labs/autoharness	autoharness@autoharness
 hamzafer/claude-code-mods	token-weather@claude-code-mods
 hamzafer/claude-code-mods	mission-control@claude-code-mods
@@ -6,3 +6,4 @@ hamzafer/claude-code-mods	usage-meter@claude-code-mods
 davekiss/env	env@davekiss
 -	cc-plugin-you-should-know@builtin
 aieo-product/claude_qamods	qa-guide@claude-qamods
+michael-denyer/pstack-claude	pstack@pstack-claude	Linux

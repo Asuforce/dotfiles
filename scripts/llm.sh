@@ -286,6 +286,18 @@ else
     || rm -f "$settings_tmp"
 fi
 
+# pstack's own session hook defers to CLAUDE.md, so on the machine that installs
+# it (plugins.tsv, Linux only) the precedence has to be written on the user's side.
+printf "Linking pstack priority rules...\n"
+if [[ "$(uname -s)" != "Linux" ]]; then
+  printf "Not Linux; skipping.\n"
+else
+  readonly PSTACK_RULES_DEST="$CLAUDE_CONFIG_DIR/rules/pstack-priority.md"
+  mkdir -p "$CLAUDE_CONFIG_DIR/rules"
+  [ ! -e "$PSTACK_RULES_DEST" ] && [ ! -L "$PSTACK_RULES_DEST" ] \
+    && ln -s "$DOTFILES_LLM/linux/pstack-priority.md" "$PSTACK_RULES_DEST"
+fi
+
 # Plugin-installed rather than vendored like visual-pr/retro/etc: each ships
 # hooks, an MCP server or a backend that a skill-only copy under llm/skills/
 # would not run.
@@ -295,8 +307,12 @@ if ! command -v jq >/dev/null 2>&1; then
 elif ! command -v claude >/dev/null 2>&1; then
   printf "claude not found; skipping plugin install.\n"
 else
-  while IFS=$'\t' read -r source plugin || [ -n "${plugin:-}" ]; do
+  while IFS=$'\t' read -r source plugin only_os || [ -n "${plugin:-}" ]; do
     case "$source" in '' | '#'*) continue ;; esac
+    if [ -n "${only_os:-}" ] && [ "$only_os" != "$(uname -s)" ]; then
+      printf "%s is %s only; skipping.\n" "$plugin" "$only_os"
+      continue
+    fi
     if [ "$source" = "-" ]; then
       # Built-in plugins are not in claude plugin list, so check the setting.
       if jq -e --arg id "$plugin" '.enabledPlugins[$id] == true' "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
