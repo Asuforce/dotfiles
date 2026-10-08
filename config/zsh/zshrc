@@ -183,7 +183,7 @@ zle -N fzf-z-search
 bindkey '^v' fzf-z-search
 
 # Search ghq repositories with fzf
-# Keybinding: Ctrl+j
+# Keybinding: Ctrl+o
 fzf-src() {
   local selected_dir=$(ghq list -p | fzf --query "$LBUFFER")
   if [[ -n "$selected_dir" ]]; then
@@ -192,7 +192,7 @@ fzf-src() {
   fi
 }
 zle -N fzf-src
-bindkey '^j' fzf-src
+bindkey '^o' fzf-src
 
 # Search command history with fzf
 # Keybinding: Ctrl+]
