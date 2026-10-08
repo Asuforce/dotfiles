@@ -83,6 +83,18 @@ It ships `disable-model-invocation: true` upstream and keeps it here, so it is o
 
 Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor exports, as with `writing-for-agents`.
 
+### `orca-cli` (from `stablyai/orca`)
+
+Lets Claude Code drive Orca through its CLI: `orca worktree create --agent <id> --prompt ...` starts another agent (Codex, Copilot, ...) in its own worktree, and `orca terminal read/send/wait` follows it. Without it, fanning one task out to several agents means pasting the prompt into each worktree by hand in the Orca UI. No built-in covers this; it is specific to Orca-managed worktrees and terminals.
+
+Upstream's `SKILL.md` is a stub that runs `orca skills get orca-cli` to load the guide bundled with the installed Orca, so the vendored copy stays correct across Orca upgrades and is taken unchanged. `npx skills add` was not used because it writes into `~/.claude/skills` outside this repository. Orca itself comes from the `Brewfile` (mac cask) and `config/packages/linux.txt` (AUR); the stub calls `orca-ide` on Linux so it does not collide with the GNOME screen reader.
+
+### `orchestration` (from `stablyai/orca`)
+
+Supervised multi-agent runs on top of Orca: a Run with a coordinator inbox, Tasks with dependencies, one Dispatch per attempt, `worker_done` / `ask` / decision gates. `orca-cli` covers handing work to another agent and walking away; this one is for a coordinator that waits for results and tracks each worker to completion. Upstream's own descriptions split the two the same way, so both are installed and neither overrides the other.
+
+Same stub shape as `orca-cli`, vendored unchanged for the same reason; the full guide comes from `orca skills get orchestration`. Orca 1.4.222 answers `orca orchestration` without an opt-in, although the published docs still say it sits behind Settings → Experimental.
+
 ## `autopilot` (adapted from `cursor/plugins` pstack)
 
 Runs a task from requirements to a merged PR with one up-front interview and no further questions, except for the stop conditions listed in the skill. It is modelled on pstack's `poteto-mode` (`autonomous-run`, `opening-a-pr`, `shipping` and `never-block-on-the-human`) but is not vendored: pstack is a Cursor plugin built around a multi-model panel (grok for code, opus for judgment) and 23 playbooks, and neither carries over. Claude Code has one model plus `advisor()`, so the panel becomes an advisor consultation whenever evidence is thin and a PR review before merge.
@@ -105,7 +117,7 @@ flowchart LR
 
 Choices that deviate from pstack:
 
-- Parallel work runs as Claude Code sessions in herdr panes rather than in-process subagents, so the user can watch and take over, and each pane has its own `advisor()`.
+- Parallel work runs as Claude Code sessions in herdr panes, or in their own Orca worktrees and terminals when the session is inside Orca, rather than in-process subagents, so the user can watch and take over, and each session has its own `advisor()`.
 - Merge is gated on the exit condition, green CI and resolved must-fix items. `--admin`, force pushes and pushes to main stay outside the grant.
 - It sets `disable-model-invocation: true` because it merges.
 
@@ -136,7 +148,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 
 ## herdr integration
 
-`scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs), overrides its generated `description` (see the script's comments for why), and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel). `llm/AGENTS.md` carries the standing instruction that makes the herdr skill fire without being asked for each time.
+`scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs), overrides its generated `description` (see the script's comments for why), and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel). `llm/AGENTS.md` carries the standing instruction that makes the herdr skill fire without being asked for each time. The same instruction covers Orca: it picks the substrate from the environment (`HERDR_ENV=1` for herdr, `ORCA_TERMINAL_HANDLE` for an Orca-managed terminal, herdr when both are set) and sends delegation through `herdr` or `orca-cli` accordingly. `orca-cli` is vendored unchanged, so only the standing instruction, not the skill description, makes it fire unprompted.
 
 `herdr-tab-title.sh` runs on `Stop` and copies the `ai-title` Claude Code writes into the transcript onto the herdr tab label (24 characters at most). It only replaces a label herdr numbered itself (`1`, `2`, ...) or the title it set earlier from the same pane, so a tab renamed by hand, or claimed by another pane's session, keeps its name. On `/clear` (`SessionStart`) it puts the herdr-assigned number back on a tab still carrying the title it set, and the next session's first `Stop` names it afresh.
 

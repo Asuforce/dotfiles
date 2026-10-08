@@ -12,13 +12,14 @@ disable-model-invocation: true
 
 ```bash
 test "${HERDR_ENV:-}" = 1 && echo herdr-ok
+test -n "${ORCA_TERMINAL_HANDLE:-}" && echo orca-ok
 gh auth status
 gh repo view --json owner --jq .owner.login
 ```
 
 オーナーが `Asuforce` 以外のリポジトリでは、マージまで進めない。Phase 4 の draft PR までで止めて報告する。
 
-herdr が使えなければ並列化せず、このセッションで直列に進める。`gh` が未認証なら対話ログインが必要なので、そこで止まって `! gh auth login` を案内する。
+herdr も Orca も使えなければ並列化せず、このセッションで直列に進める。`gh` が未認証なら対話ログインが必要なので、そこで止まって `! gh auth login` を案内する。
 
 ## Phase 1: Grill
 
@@ -51,7 +52,7 @@ herdr が使えなければ並列化せず、このセッションで直列に�
 - 同じ原因の修正を3回試しても終了条件に近づかない行き詰まり
 - `advisor()` の呼び出しが1タスクで5回前後に達しても、方針が定まらないとき
 
-止まるときは、herdr の通知と `PushNotification` で知らせてから報告を書く。
+止まるときは、`PushNotification`(herdr のペイン内なら herdr の通知も)で知らせてから報告を書く。
 
 分類器にコマンドを拒否されたら、迂回せず拒否を1回だけ報告し、`! ` 付きのコマンドを案内する。
 
@@ -60,7 +61,7 @@ herdr が使えなければ並列化せず、このセッションで直列に�
 - 作業は専用ブランチか worktree で行う(`git-worktree-branch-isolation`)。main には書かない。
 - 作業単位ごとに実物で検証してから次へ進む。ビルドが通るだけで完了にしない。
 - ブラウザ操作は `chrome-devtools` MCP を使う(`llm/mcps/browser.json`)。ツールは遅延ロードなので、`ToolSearch` で `chrome-devtools` を検索してから呼ぶ。動作確認はスナップショットかスクリーンショットを取って自分で見る。
-- 独立した作業単位が2つ以上あるときだけ、別エージェントに分ける。それ以外は1セッションで直列に進める。分けるときは `herdr` スキルに従い、herdr のペインで通常の Claude Code として起動する。ペイン内のエージェントは自分の `advisor()` を持つ。渡す指示には Phase 1 の合意、終了条件、このスキルの Phase 2 を含める。
+- 独立した作業単位が2つ以上あるときだけ、別エージェントに分ける。それ以外は1セッションで直列に進める。分けるときは、herdr なら `herdr` スキルに従ってペインで、Orca なら `orca-cli` スキルに従って専用の worktree とターミナルで、通常の Claude Code として起動する。ペイン内のエージェントは自分の `advisor()` を持つ。渡す指示には Phase 1 の合意、終了条件、このスキルの Phase 2 を含める。
 - 数時間かかる作業は組み込みの `/loop` で再開点を作る。
 
 ## Phase 4: PR 作成
