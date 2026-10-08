@@ -40,6 +40,7 @@ aur 1password-cli
 aur envchain
 aur go-jsonnet
 aur google-chrome
+aur orca-ide-bin
 aur slack-desktop
 aur ttf-hackgen
 aur visual-studio-code-bin
