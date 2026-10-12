@@ -1,15 +1,22 @@
-- Speak in Japanese
-- Keep emphasis sparing in your documents
-- When writing git commit messages, keep them short and simple
-- When writing a pull request description or a design or technical document (ADR, PoC decision log, `CONTEXT.md`, README, design notes), use the `show-me` skill and include at least one visual that carries the main point. This applies without being asked for each time. For a pull request, reach for the `visual-pr` skill: it owns the create-or-update flow and defers to `show-me` for the visuals themselves.
-- In those documents use only the text visuals from that skill — Mermaid, file or call trees, pseudocode, `diff` — because an HTML artifact cannot live inside a PR body or a Markdown file. Commit messages, review comments, and short replies are out of scope.
-- herdr is the default substrate for AI agent work. This file is the standing request the `herdr` skill asks for: treat "the user explicitly mentioned herdr" as already satisfied in every session, and invoke the skill without waiting to be asked. Where the skill's own description says to use it only on an explicit mention, this line is the explicit mention and takes precedence.
-- Invoke the `herdr` skill before, not after, each of these: spawning a subagent with the Agent tool, starting a second Claude Code or another coding agent, handing work to an agent running elsewhere, or waiting on any of them to finish. Japanese phrasings are the same trigger: 並列で / 別のエージェントに / バックグラウンドで走らせて / エージェントを立てて.
-- When the delegated work is a separable unit the user may want to watch, steer, or take over, run it as an agent in a herdr pane rather than as an in-process subagent, and drive it through the skill.
-- If `HERDR_ENV` is not `1`, herdr control is unavailable: say so and keep the work in the current session instead.
-- End every turn's final message with three headings: `Blocked on me`, `Changed`, `Found`. This replaces the Concise output style's one/two-sentence summary.
-- Once you've answered something, treat that answer as settled: don't re-litigate an earlier answer unless asked about it or shown a problem with it.
-- Run commands yourself with the Bash tool. Do not ask the user to run a command, or hand them a command to paste, unless it is interactive (login, password prompt) or the permission classifier has actually denied it. If a command is denied, report the denial once instead of retrying through other tools.
-- Ask the user every question through the AskUserQuestion tool rather than as plain text in the reply. Offer concrete options, with your recommendation first.
+## Style
+- Speak in Japanese.
+- Keep emphasis sparing in documents.
+- Keep commit messages short and simple.
+
+## Documents
+PR descriptions and design or technical documents (ADR, PoC decision log, `CONTEXT.md`, README, design notes) go through `show-me`, unprompted, with at least one visual carrying the main point. PRs go through `visual-pr`.
+Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since HTML cannot live in a PR body or Markdown file. Commit messages, review comments, and short replies are exempt.
+
+## Agents
+herdr is the default substrate. This section is the explicit mention the `herdr` skill asks for and overrides its "only on explicit mention" wording.
+Invoke `herdr` before spawning a subagent, starting another agent, handing work off, or waiting on one (並列で / 別のエージェントに / バックグラウンドで走らせて / エージェントを立てて).
+Separable work the user may want to watch or steer runs as an agent in a herdr pane, not an in-process subagent.
+Without `HERDR_ENV=1`, say so and stay in the session.
+
+## Replies
+- End the final message with `Blocked on me`, `Changed`, `Found`, replacing the Concise style's summary.
+- A settled answer stays settled unless asked or shown a problem.
+- Run commands yourself. Hand over only interactive ones (login, password) or ones the classifier denied, and report a denial once.
+- Ask every question through AskUserQuestion, recommendation first.
 
 @~/.claude/pstack-models.md
