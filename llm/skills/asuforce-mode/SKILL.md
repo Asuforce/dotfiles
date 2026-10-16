@@ -1,12 +1,19 @@
 ---
-name: autopilot
-description: Drive a task from requirements to a merged PR autonomously. Grill the plan up front with grill-with-docs, then run commands and browser work without asking, consult advisor() when unsure, review the PR with advisor, and merge it. Use when the user says "autopilot", "自律で進めて", "マージまで任せる", or hands over a task to finish unattended.
+name: asuforce-mode
+description: Work in Asuforce's style, and drive a task from requirements to a merged PR autonomously. Grill the plan up front with grill-with-docs, then run commands and browser work without asking, consult advisor() when unsure, review the PR independently, and merge it. Use for Asuforce, /asuforce-mode, "自律で進めて", "マージまで任せる", or when the user hands over a task to finish unattended.
 disable-model-invocation: true
 ---
 
-# autopilot
+# Asuforce mode
 
 最初の grill でユーザーと合意を取り、その後はマージまで止まらずに進める。ユーザーの回答を待つのは Phase 1 と「止まる条件」のときだけ。
+
+## 習慣
+
+- 判断を求められたら(「評価してほしい」「pros/cons」)、推奨を 1 つ、理由、別案の費用を答える。選択肢の一覧を返さない。
+- ユーザーが「絶対条件」とした要件は最初の絞り込みに使い、掲載面や実機で検証する。検証できない候補は緩めずに落とす。
+- 本番に影響する差分は、書いたエージェント自身がレビューしない。独立したレビュー(Phase 5)を通す。
+- 委譲した作業者の報告は信じず、テスト、ビルド、差分を自分で再実行する。
 
 ## Phase 0: 前提
 
@@ -49,6 +56,7 @@ herdr も Orca も使えなければ並列化せず、このセッションで�
 - 本番デプロイ、データ削除、人への外部メッセージ送信
 - 対話が必須の認証、権限の追加
 - 実験で決められない好みや製品方針で、Phase 1 の既定値が使えないもの
+- 見た目に関わる変更(UI、レイアウト、動き)。動くプレビューを見せ、承認をもらってから Phase 4 に進む。フィードバックは小さな視覚の修正として来るので、1 つずつ反映する
 - 同じ原因の修正を3回試しても終了条件に近づかない行き詰まり
 - `advisor()` の呼び出しが1タスクで5回前後に達しても、方針が定まらないとき
 
@@ -68,10 +76,10 @@ herdr も Orca も使えなければ並列化せず、このセッションで�
 
 `visual-pr` スキルで PR を作る。Draft で作られるので、Phase 5 を通過してから `gh pr ready` で外す。
 
-## Phase 5: advisor レビュー
+## Phase 5: 独立レビュー
 
 1. `gh pr diff` とテスト結果をこのセッションで実際に表示する。advisor は会話履歴しか見えない。
-2. `advisor()` を呼び、指摘を must-fix とそれ以外に分ける。
+2. 本番に影響する差分は `interrogate` にかける。小さな infra や dotfiles の差分は `advisor()` を呼ぶ。指摘を must-fix とそれ以外に分ける。
 3. must-fix は直して push し、直した内容が指摘と食い違っていないか再度 `advisor()` に確認する。それ以外は直すか、理由を添えて見送る。
 4. 追加で機械的な確認が欲しいときは `code-review` と `security-review` を併用してよい。
 
@@ -98,7 +106,7 @@ gh pr merge --squash --delete-branch
 gh pr view --json state,mergedAt
 ```
 
-`state` が `MERGED` であることを自分で確認する。承認が必要で merge が拒否された場合は `--admin` を使わず、状況を報告して止まる。マージ後は worktree とローカルブランチを片付ける。
+`state` が `MERGED` であることを自分で確認する。承認が必要、または分類器に merge を拒否された場合は `--admin` や迂回を使わず、`gh pr merge` の一行をユーザーに渡し、実行したと言われたら続ける。マージ後は worktree とローカルブランチを片付ける。
 
 ## Phase 7: 報告
 

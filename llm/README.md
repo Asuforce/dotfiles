@@ -95,9 +95,9 @@ Supervised multi-agent runs on top of Orca: a Run with a coordinator inbox, Task
 
 Same stub shape as `orca-cli`, vendored unchanged for the same reason; the full guide comes from `orca skills get orchestration`. Orca 1.4.222 answers `orca orchestration` without an opt-in, although the published docs still say it sits behind Settings → Experimental.
 
-## `autopilot` (adapted from `cursor/plugins` pstack)
+## `asuforce-mode` (adapted from `cursor/plugins` pstack)
 
-Runs a task from requirements to a merged PR with one up-front interview and no further questions, except for the stop conditions listed in the skill. It is modelled on pstack's `poteto-mode` (`autonomous-run`, `opening-a-pr`, `shipping` and `never-block-on-the-human`) but is not vendored: pstack is a Cursor plugin built around a multi-model panel (grok for code, opus for judgment) and 23 playbooks, and neither carries over. Claude Code has one model plus `advisor()`, so the panel becomes an advisor consultation whenever evidence is thin and a PR review before merge.
+Carries the user's working habits (recommend rather than survey, absolute requirements first, independent review of production diffs, preview before a visible PR) and runs a task from requirements to a merged PR with one up-front interview and no further questions, except for the stop conditions listed in the skill. It is modelled on pstack's `poteto-mode` (`autonomous-run`, `opening-a-pr`, `shipping` and `never-block-on-the-human`) but is not vendored: pstack is a Cursor plugin built around a multi-model panel (grok for code, opus for judgment) and 23 playbooks, and neither carries over. Claude Code has one model plus `advisor()`, so the panel becomes an advisor consultation whenever evidence is thin and a PR review before merge.
 
 No built-in covers this: `grill-with-docs`, `visual-pr`, `apply-review` and `code-review` each own one step, and nothing sequences them, defines the stop conditions, or merges.
 
@@ -120,6 +120,7 @@ Choices that deviate from pstack:
 - Parallel work runs as Claude Code sessions in herdr panes, or in their own Orca worktrees and terminals when the session is inside Orca, rather than in-process subagents, so the user can watch and take over, and each session has its own `advisor()`.
 - Merge is gated on the exit condition, green CI and resolved must-fix items. `--admin`, force pushes and pushes to main stay outside the grant.
 - It sets `disable-model-invocation: true` because it merges.
+- It replaced the standalone `autopilot` skill; "autopilot" and "自律で進めて" still trigger it through the description.
 
 `autoMode.allow` in `~/.claude/settings.json` is per-machine and untracked, so the rule that lets the classifier accept `gh pr merge` is not in this repository. Without it, auto mode stops at the merge step.
 
