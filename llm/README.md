@@ -6,7 +6,7 @@ Claude Code configuration for this repository, installed by `scripts/llm.sh`. Se
 
 Reusable agent instructions live in `llm/skills/<name>/SKILL.md` only — there is no `llm/commands/` and no `~/.claude/commands` link. Slash commands and skills overlap in what they can express, but a skill carries a `description` that lets the model reach for it unprompted, so keeping both meant maintaining two mechanisms for one job.
 
-`apply-review`, `create-pr`, and `create-repo` moved over from commands; `create-pr` was later replaced by the vendored `visual-pr` (below). Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
+`apply-review`, `create-pr`, and `create-repo` moved over from commands; `create-pr` was later dropped for pstack's `opening-a-pr`. Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
 
 - `review-pr` — the built-in `code-review` skill takes a PR number and can post or apply its findings.
 - `guide` — plan mode explores read-only and presents options for approval, with the `Plan` and `feature-dev:code-architect` agents for the same job in a subagent.
@@ -21,45 +21,8 @@ Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-inv
 
 ## Vendored skills
 
-`llm/upstream-skills.tsv` records the upstream commit each vendored skill (or hook directory) has been reviewed through. `scripts/llm.sh` prints a compare URL when upstream has moved past that commit; it applies nothing, because these are prompts that have to be read before they're taken. It fails open on a missing `gh`, an unreachable network, or a missing manifest.
+`llm/upstream-skills.tsv` records the upstream commit each vendored skill has been reviewed through. `scripts/llm.sh` prints a compare URL when upstream has moved past that commit; it applies nothing, because these are prompts that have to be read before they're taken. It fails open on a missing `gh`, an unreachable network, or a missing manifest.
 
-### `visual-pr` (from `humanlayer/skills`)
-
-Replaces the hand-written `create-pr`. What upstream is worth taking is the discipline it imposes on a PR body: the reason for the change in exactly one sentence, one to three reviewer warnings, and a change outline built from structural views (SQL and endpoint contracts, key types, pseudocode, a shallow file tree, component trees, call and data flow) instead of prose or a file-by-file changelog.
-
-The local copy:
-
-- drops upstream's HumanLayer assumptions (`.humanlayer/tasks/` body paths, a cloud permalink in the report) and its bundled second copy of `show-me` (which would have drifted from `llm/skills/show-me/`)
-- re-adds what `create-pr` did and upstream does not: a draft PR assigned to `@me` against the detected default branch, `gh pr view --web`
-- leaves a repository's own `.github/PULL_REQUEST_TEMPLATE.md` in charge of the headings when one exists, placing the structural views inside its sections rather than overwriting them with the three-section form
-
-`create-pr`'s second template path, `${HOME}/dotfiles/.github/PULL_REQUEST_TEMPLATE.md`, was dropped rather than carried over — it has never existed on this machine.
-
-Vendoring beat `claude plugin install` because none of those deviations survive a plugin update, and the plugin would write a `.humanlayer/` directory into every repository it ran in.
-
-`show-me` is listed in the manifest too, pinned past `Make show-me user-invocable` — that commit adds `disable-model-invocation: true`, which `llm/AGENTS.md` needs off, and it had already landed upstream unnoticed before the manifest existed, which is the failure the manifest is meant to make visible.
-
-### `retro` and `writing-for-agents` (from `mattpocock/skills`)
-
-`retro`'s first step calls `writing-for-agents` for its style guide, so vendoring `retro` alone would leave that call dangling.
-
-No built-in covers this gap: the built-in `code-review` skill reviews a diff against coding standards, while `retro` reviews the session and the agent's environment itself (steering files, missing automated checks, tool economy) to suggest what should change before the next session — a different input entirely.
-
-Both ship `disable-model-invocation: true` upstream and keep it here: `retro` is genuinely user-invoked ("the user has asked for a retrospective"), and `writing-for-agents` is pulled in only to satisfy `retro`'s dependency, not for its own standing use, so neither should fire unprompted.
-
-`writing-for-agents` governs the structure of agent-facing documents (context pointers, information hierarchy, leading words); it doesn't overlap `show-me`, which governs visuals inside those documents.
-
-Upstream's `writing-for-agents/agents/openai.yaml` was dropped as an OpenAI-format export — the same call `visual-pr` makes dropping upstream's bundled second `show-me`.
-
-`retro` graduated from upstream's `skills/in-progress/` to `skills/engineering/` (2026-03); the manifest path was updated to match, with no content change to vendor.
-
-### `shut-up-and-code` (from `chl03ks/shut-up-and-code`)
-
-Vendored for the same reason `visual-pr` exists: a `CLAUDE.md` line asking for comment restraint does not reliably stop the model from narrating code back to the user in comments (a known failure mode, cited in upstream's README against anthropics/claude-code#65961) — a skill loads as a document at the point the model decides how to write, where a config line competes for attention with everything else.
-
-The skill alone still depends on the model choosing to invoke it, so `llm/hooks/shut-up-and-code-always-on.sh` and `llm/hooks/shut-up-and-code-audit-on-commit.sh` (vendored from the same upstream repo's `hooks/` directory) force the ruleset into context instead. See `scripts/llm.sh`'s comments for when each fires and how they're gated.
-
-`llm/upstream-skills.tsv` tracks the skill and the `hooks/` directory as two separate rows against the same repo, since they can drift independently.
 
 ### `yomiyasu` (from `nanaism/yomiyasu`)
 
@@ -69,11 +32,6 @@ Upstream ships the skill twice: once at the repo root (for `npx skills add`) and
 
 Upstream's `SKILL.md` warns against running it alongside other Japanese style/proofreading skills, since the instructions can conflict; disable one of them if that happens.
 
-### `eli5` (from `DreambigOu/ELI5`)
-
-Calibrates an explanation to a named audience (age, grade level, job role, relationship) instead of one fixed register. No built-in covers this — `claude-code-guide` answers questions about Claude Code itself, not about recalibrating an explanation's vocabulary and analogies for a given listener.
-
-Upstream ships only the single `skills/eli5/SKILL.md` file; nothing was dropped or changed in the local copy.
 
 ### `i-have-adhd` (from `ayghri/i-have-adhd`)
 
@@ -81,48 +39,7 @@ Shapes responses for a reader with ADHD: next action first, numbered steps, one 
 
 It ships `disable-model-invocation: true` upstream and keeps it here, so it is opt-in per session. It overlaps the Concise output style and conflicts with the global rule that every turn ends with `Blocked on me` / `Changed` / `Found`; the skill's own "a rule fights the harness" clause lets the harness win.
 
-Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor exports, as with `writing-for-agents`.
-
-### `orca-cli` (from `stablyai/orca`)
-
-Lets Claude Code drive Orca through its CLI: `orca worktree create --agent <id> --prompt ...` starts another agent (Codex, Copilot, ...) in its own worktree, and `orca terminal read/send/wait` follows it. Without it, fanning one task out to several agents means pasting the prompt into each worktree by hand in the Orca UI. No built-in covers this; it is specific to Orca-managed worktrees and terminals.
-
-Upstream's `SKILL.md` is a stub that runs `orca skills get orca-cli` to load the guide bundled with the installed Orca, so the vendored copy stays correct across Orca upgrades and is taken unchanged. `npx skills add` was not used because it writes into `~/.claude/skills` outside this repository. Orca itself comes from the `Brewfile` (mac cask) and `config/packages/linux.txt` (AUR); the stub calls `orca-ide` on Linux so it does not collide with the GNOME screen reader.
-
-### `orchestration` (from `stablyai/orca`)
-
-Supervised multi-agent runs on top of Orca: a Run with a coordinator inbox, Tasks with dependencies, one Dispatch per attempt, `worker_done` / `ask` / decision gates. `orca-cli` covers handing work to another agent and walking away; this one is for a coordinator that waits for results and tracks each worker to completion. Upstream's own descriptions split the two the same way, so both are installed and neither overrides the other.
-
-Same stub shape as `orca-cli`, vendored unchanged for the same reason; the full guide comes from `orca skills get orchestration`. Orca 1.4.222 answers `orca orchestration` without an opt-in, although the published docs still say it sits behind Settings → Experimental.
-
-## `asuforce-mode` (adapted from `cursor/plugins` pstack)
-
-Carries the user's working habits (recommend rather than survey, absolute requirements first, independent review of production diffs, preview before a visible PR) and runs a task from requirements to a merged PR with one up-front interview and no further questions, except for the stop conditions listed in the skill. It is modelled on pstack's `poteto-mode` (`autonomous-run`, `opening-a-pr`, `shipping` and `never-block-on-the-human`) but is not vendored: pstack is a Cursor plugin built around a multi-model panel (grok for code, opus for judgment) and 23 playbooks, and neither carries over. Claude Code has one model plus `advisor()`, so the panel becomes an advisor consultation whenever evidence is thin and a PR review before merge.
-
-No built-in covers this: `grill-with-docs`, `visual-pr`, `apply-review` and `code-review` each own one step, and nothing sequences them, defines the stop conditions, or merges.
-
-```mermaid
-flowchart LR
-  G["grill-with-docs<br/>(only point that waits on the user)"] --> X["execute<br/>commands + chrome-devtools MCP"]
-  X -->|unsure| A1["advisor()"]
-  A1 --> X
-  X --> P["visual-pr (draft)"]
-  P --> A2["advisor() review"]
-  A2 -->|must-fix| X
-  A2 -->|clear| C["gh pr checks --watch"]
-  C -->|red, under 3 tries| X
-  C -->|green| M["gh pr merge --squash"]
-  M --> R["report: Blocked on me / Changed / Found"]
-```
-
-Choices that deviate from pstack:
-
-- Parallel work runs as Claude Code sessions in herdr panes, or in their own Orca worktrees and terminals when the session is inside Orca, rather than in-process subagents, so the user can watch and take over, and each session has its own `advisor()`.
-- Merge is gated on the exit condition, green CI and resolved must-fix items. `--admin`, force pushes and pushes to main stay outside the grant.
-- It sets `disable-model-invocation: true` because it merges.
-- It replaced the standalone `autopilot` skill; "autopilot" and "自律で進めて" still trigger it through the description.
-
-`autoMode.allow` in `~/.claude/settings.json` is per-machine and untracked, so the rule that lets the classifier accept `gh pr merge` is not in this repository. Without it, auto mode stops at the merge step.
+Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor exports.
 
 ## Plugins
 
@@ -135,9 +52,9 @@ llm/plugins.tsv
 ├─ davekiss/env                 env@davekiss
 ├─ aieo-product/claude_qamods   qa-guide@claude-qamods
 ├─ -                            cc-plugin-you-should-know@builtin
-└─ cursor/plugins               pstack@cursor-plugins         (Linux only)
+└─ cursor/plugins               pstack@cursor-plugins
 
-llm/linux/pstack-priority.md ──link (Linux only)──▶ ~/.claude/rules/pstack-priority.md
+llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
 ```
 
 They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update <name> && claude plugin update <id>`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
@@ -149,11 +66,11 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `env` has Claude ask for a value in a pane it cannot read, so tokens for Cloudflare and Terraform never enter the transcript.
 - `qa-guide` opens a side pane when Claude asks via `AskUserQuestion`, explaining why it asks and what each option leads to. Explanations come from one Haiku call per question over a prompt capped at 12,000 characters. The pane opens on its own only at 144 columns or wider; `/qa-guide` opens it at any width. It needs the early-access function-hooks API of Claude Code 2.1.286 or later.
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
-- `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills, and a `SessionStart` hook asks for that routing on multi-file, design and unknown-cause tasks. It ships only that hook, and the hook states that `CLAUDE.md` wins any conflict. This setup wants the reverse on Linux, so `llm/linux/pstack-priority.md` is linked into `~/.claude/rules/` and names the five points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, subagent dispatch (pstack's `Agent` calls instead of herdr panes), whether to ask, and comment rules. It is not under `llm/skills/`, so macOS never sees it. The routing hook stays on and no `setup-pstack` sheet exists, so subagents run on pstack's defaults (opus, fable and a three-model panel) rather than the session's `sonnet`. The `shut-up-and-code` hooks stay registered; they inject text without blocking, so the rules file outranks them in words only.
+- `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports.
 
 ## herdr integration
 
-`scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs), overrides its generated `description` (see the script's comments for why), and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel). `llm/AGENTS.md` carries the standing instruction that makes the herdr skill fire without being asked for each time. The same instruction covers Orca: it picks the substrate from the environment (`HERDR_ENV=1` for herdr, `ORCA_TERMINAL_HANDLE` for an Orca-managed terminal, herdr when both are set) and sends delegation through `herdr` or `orca-cli` accordingly. `orca-cli` is vendored unchanged, so only the standing instruction, not the skill description, makes it fire unprompted.
+`scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs) and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel).
 
 `herdr-tab-title.sh` runs on `Stop` and copies the `ai-title` Claude Code writes into the transcript onto the herdr tab label (24 characters at most). It only replaces a label herdr numbered itself (`1`, `2`, ...) or the title it set earlier from the same pane, so a tab renamed by hand, or claimed by another pane's session, keeps its name. On `/clear` (`SessionStart`) it puts the herdr-assigned number back on a tab still carrying the title it set, and the next session's first `Stop` names it afresh.
 

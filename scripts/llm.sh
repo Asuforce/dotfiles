@@ -74,25 +74,6 @@ if command -v herdr >/dev/null 2>&1; then
   [ ! -d "$HERDR_SKILL_DIR" ] && mkdir -p "$HERDR_SKILL_DIR"
   herdr --skill >"$HERDR_SKILL_DIR/SKILL.md"
 
-  # Override the generated description. herdr ships one that gates the skill on
-  # the user naming herdr in the prompt ("use only when the user explicitly
-  # mentions Herdr"), which cancels the standing request in llm/AGENTS.md: the
-  # description is what the model reads when deciding which skill to reach for,
-  # so the skill never fires unprompted. Only that one line is rewritten; the
-  # generated body stays as the installed binary produced it.
-  readonly HERDR_SKILL_DESCRIPTION='description: "Control Herdr, a terminal multiplexer for coding agents. Use whenever starting, delegating to, or waiting on another AI agent, and whenever the user mentions Herdr or asks to inspect or control panes, tabs, workspaces, commands, or agents. A standing request in ~/.claude/CLAUDE.md already covers the unprompted case, so no per-task mention is needed. Requires HERDR_ENV=1."'
-  if grep -q '^description:' "$HERDR_SKILL_DIR/SKILL.md"; then
-    skill_tmp="$(mktemp)"
-    awk -v desc="$HERDR_SKILL_DESCRIPTION" '
-      !replaced && /^description:/ { print desc; replaced = 1; next }
-      { print }
-    ' "$HERDR_SKILL_DIR/SKILL.md" >"$skill_tmp" \
-      && mv -f "$skill_tmp" "$HERDR_SKILL_DIR/SKILL.md" \
-      || rm -f "$skill_tmp"
-  else
-    printf "herdr skill has no description line; leaving it unchanged.\n"
-  fi
-
   # Install the agent state hook so herdr can read Claude Code's
   # working/idle/blocked/done state. Re-running reinstalls the current version.
   printf "Installing herdr integration for Claude Code...\n"
@@ -189,63 +170,6 @@ for skill_dir in "$DOTFILES_LLM"/skills/*/; do
   fi
 done
 
-# Link the shut-up-and-code hooks and turn always-on mode on by default. The
-# skill's own routing description ("use when writing or editing code") is not
-# enough on its own -- see llm/skills/shut-up-and-code/SKILL.md's upstream
-# README on why a CLAUDE.md line and skill routing alone do not reliably
-# suppress verbose comments -- so these hooks force the ruleset into context
-# instead of waiting for the model to decide to call the skill.
-printf "Linking shut-up-and-code hooks...\n"
-readonly SUAC_HOOKS_DIR="$CLAUDE_CONFIG_DIR/hooks"
-[ ! -d "$SUAC_HOOKS_DIR" ] && mkdir -p "$SUAC_HOOKS_DIR"
-readonly SUAC_ALWAYS_ON_HOOK="$SUAC_HOOKS_DIR/shut-up-and-code-always-on.sh"
-[ ! -e "$SUAC_ALWAYS_ON_HOOK" ] \
-  && ln -fs "$DOTFILES_LLM/hooks/shut-up-and-code-always-on.sh" "$SUAC_ALWAYS_ON_HOOK"
-readonly SUAC_AUDIT_HOOK="$SUAC_HOOKS_DIR/shut-up-and-code-audit-on-commit.sh"
-[ ! -e "$SUAC_AUDIT_HOOK" ] \
-  && ln -fs "$DOTFILES_LLM/hooks/shut-up-and-code-audit-on-commit.sh" "$SUAC_AUDIT_HOOK"
-
-readonly SUAC_FLAG_FILE="$HOME/.claude/.shut-up-and-code-always"
-[ ! -e "$SUAC_FLAG_FILE" ] && touch "$SUAC_FLAG_FILE"
-
-readonly SUAC_ALWAYS_ON_COMMAND='bash "$HOME/.claude/hooks/shut-up-and-code-always-on.sh"'
-readonly SUAC_AUDIT_COMMAND='bash "$HOME/.claude/hooks/shut-up-and-code-audit-on-commit.sh"'
-if ! command -v jq >/dev/null 2>&1; then
-  printf "jq not found; skipping shut-up-and-code hook registration.\n"
-else
-  if jq -e --arg cmd "$SUAC_ALWAYS_ON_COMMAND" \
-      '[(.hooks.SessionStart // [])[].hooks[]?.command] | index($cmd)' \
-      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
-    printf "shut-up-and-code always-on hook already registered.\n"
-  else
-    printf "Registering shut-up-and-code always-on hook on SessionStart...\n"
-    settings_tmp="$(mktemp)"
-    jq --arg cmd "$SUAC_ALWAYS_ON_COMMAND" \
-      '.hooks.SessionStart = ((.hooks.SessionStart // []) + [{
-         matcher: "startup|resume|clear|compact",
-         hooks: [{ type: "command", command: $cmd, timeout: 5 }]
-       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
-      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
-      || rm -f "$settings_tmp"
-  fi
-
-  if jq -e --arg cmd "$SUAC_AUDIT_COMMAND" \
-      '[(.hooks.PreToolUse // [])[].hooks[]?.command] | index($cmd)' \
-      "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
-    printf "shut-up-and-code audit-on-commit hook already registered.\n"
-  else
-    printf "Registering shut-up-and-code audit-on-commit hook on PreToolUse...\n"
-    settings_tmp="$(mktemp)"
-    jq --arg cmd "$SUAC_AUDIT_COMMAND" \
-      '.hooks.PreToolUse = ((.hooks.PreToolUse // []) + [{
-         matcher: "Bash",
-         hooks: [{ type: "command", command: $cmd, timeout: 5 }]
-       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
-      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
-      || rm -f "$settings_tmp"
-  fi
-fi
-
 # An existing statusLine entry is left alone so a machine can keep its own.
 printf "Linking status line...\n"
 readonly STATUSLINE_DEST="$CLAUDE_CONFIG_DIR/statusline.sh"
@@ -286,19 +210,18 @@ else
     || rm -f "$settings_tmp"
 fi
 
-# pstack's own session hook defers to CLAUDE.md, so on the machine that installs
-# it (plugins.tsv, Linux only) the precedence has to be written on the user's side.
+# pstack's own session hook defers to CLAUDE.md, so the precedence has to be
+# written on the user's side.
 printf "Linking pstack priority rules...\n"
-if [[ "$(uname -s)" != "Linux" ]]; then
-  printf "Not Linux; skipping.\n"
-else
-  readonly PSTACK_RULES_DEST="$CLAUDE_CONFIG_DIR/rules/pstack-priority.md"
-  mkdir -p "$CLAUDE_CONFIG_DIR/rules"
-  [ ! -e "$PSTACK_RULES_DEST" ] && [ ! -L "$PSTACK_RULES_DEST" ] \
-    && ln -s "$DOTFILES_LLM/linux/pstack-priority.md" "$PSTACK_RULES_DEST"
+readonly PSTACK_RULES_DEST="$CLAUDE_CONFIG_DIR/rules/pstack-priority.md"
+mkdir -p "$CLAUDE_CONFIG_DIR/rules"
+if [ -L "$PSTACK_RULES_DEST" ] && [ ! -e "$PSTACK_RULES_DEST" ]; then
+  rm -f "$PSTACK_RULES_DEST"
 fi
+[ ! -e "$PSTACK_RULES_DEST" ] && [ ! -L "$PSTACK_RULES_DEST" ] \
+  && ln -s "$DOTFILES_LLM/pstack-priority.md" "$PSTACK_RULES_DEST"
 
-# Plugin-installed rather than vendored like visual-pr/retro/etc: each ships
+# Plugin-installed rather than vendored like show-me/yomiyasu/etc: each ships
 # hooks, an MCP server or a backend that a skill-only copy under llm/skills/
 # would not run.
 readonly PLUGINS_MANIFEST="$DOTFILES_LLM/plugins.tsv"
