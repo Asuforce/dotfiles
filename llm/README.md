@@ -134,13 +134,12 @@ llm/plugins.tsv
 ├─ hamzafer/claude-code-mods    token-weather, mission-control, usage-meter
 ├─ davekiss/env                 env@davekiss
 ├─ aieo-product/claude_qamods   qa-guide@claude-qamods
-├─ -                            cc-plugin-you-should-know@builtin
-└─ michael-denyer/pstack-claude  pstack@pstack-claude        (Linux only)
+└─ -                            cc-plugin-you-should-know@builtin
 
 llm/linux/pstack-priority.md ──link (Linux only)──▶ ~/.claude/rules/pstack-priority.md
 ```
 
-They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update <name> && claude plugin update <id>`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
+They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update <name> && claude plugin update <id>`, then a restart. `cloudflare@cloudflare` and `pstack@cursor-plugins` (from `cursor/plugins`) are installed by hand on this machine and are not in the list.
 
 - `autoharness` self-learns skills from session work into `.claude/skills/` and prunes them by usage rate. It ships a Python backend, an MCP server (`stage_skill`) and `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks.
 - `token-weather` draws the context fill and a prompt-cache countdown above the prompt. Session transcripts here reach 500k to 880k tokens and often sit idle for over five minutes, which is where both readouts pay off.
@@ -149,7 +148,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `env` has Claude ask for a value in a pane it cannot read, so tokens for Cloudflare and Terraform never enter the transcript.
 - `qa-guide` opens a side pane when Claude asks via `AskUserQuestion`, explaining why it asks and what each option leads to. Explanations come from one Haiku call per question over a prompt capped at 12,000 characters. The pane opens on its own only at 144 columns or wider; `/qa-guide` opens it at any width. It needs the early-access function-hooks API of Claude Code 2.1.286 or later.
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
-- `pstack` is the Claude Code port of Cursor's pstack: `poteto-mode` routes work to playbooks and skills, and a `SessionStart` hook asks for that routing on multi-file, design and unknown-cause tasks. It ships only that hook, and the hook states that `CLAUDE.md` wins any conflict. This setup wants the reverse on Linux, so `llm/linux/pstack-priority.md` is linked into `~/.claude/rules/` and names the five points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, subagent dispatch (pstack's `Agent` calls instead of herdr panes), whether to ask, and comment rules. It is not under `llm/skills/`, so macOS never sees it. The routing hook stays on and no `setup-pstack` sheet exists, so subagents run on pstack's defaults (opus, fable and a three-model panel) rather than the session's `sonnet`. The `shut-up-and-code` hooks stay registered; they inject text without blocking, so the rules file outranks them in words only.
+- `pstack` is Cursor's own plugin, installed by hand: `poteto-mode` routes work to playbooks and skills, and a `SessionStart` hook asks for that routing on multi-file, design and unknown-cause tasks. It ships only that hook, and the hook states that `CLAUDE.md` wins any conflict. This setup wants the reverse on Linux, so `llm/linux/pstack-priority.md` is linked into `~/.claude/rules/` and names the five points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, subagent dispatch (pstack's `Agent` calls instead of herdr panes), whether to ask, and comment rules. It is not under `llm/skills/`, so macOS never sees it. The routing hook stays on and no `setup-pstack` sheet exists, so subagents run on pstack's defaults (opus, fable and a three-model panel) rather than the session's `sonnet`. The `shut-up-and-code` hooks stay registered; they inject text without blocking, so the rules file outranks them in words only.
 
 ## herdr integration
 
