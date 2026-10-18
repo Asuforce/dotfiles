@@ -17,10 +17,10 @@ scripts/pkg.sh     : config/packages/linux.txt → `omarchy pkg add` (official)
                      and `yay -S --needed` (aur)
 
 scripts/link.sh
-├── both   : zsh, tig, sheldon, bat, zsh-abbr, ghostty, starship, git (config,
+├── both   : zsh, tig, sheldon, bat, zsh-abbr, ghostty, starship, nvim, git (config,
 │            ignore, os-<kernel> as ~/.config/git/os, which carries the
 │            1Password signing program path)
-├── Darwin : herdr, nvim, btop, ssh, karabiner, hammerspoon,
+├── Darwin : herdr, btop, ssh, karabiner, hammerspoon,
 │            /etc/shells, diff-highlight, .gitconfig copies
 └── Linux  : keyd, T2 Mac fixes, marked blocks in hypr/input.lua (Caps Lock as
              Control, trackpad, pointer speed) and hypr/bindings.lua
@@ -67,8 +67,9 @@ herdr            omarchy's file stays; link.sh cuts [keys] to the prefix and
                  machines.
 btop             omarchy wins, untouched.
 starship         repo wins (adopt_config replaces omarchy's file).
-nvim             omarchy wins (omarchy-nvim, a maintained LazyVim setup); the
-                 repo's init.lua stays mac-only.
+nvim             repo wins (changed 2026-10-18; omarchy's LazyVim was hard to
+                 use). link.sh moves ~/.config/nvim aside as nvim.omarchy.bak
+                 and links init.lua; the bak is not restored by anything.
 mise config      mise owns it. omarchy seeds it and an old omarchy migration
                  `sed`s the node line, so a symlink into the repo would be
                  rewritten underneath it. Hence runtime.sh and no

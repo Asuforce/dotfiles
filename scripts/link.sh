@@ -74,6 +74,15 @@ link_config "$REPO_DIR/config/git/os-$(uname -s | tr '[:upper:]' '[:lower:]')" "
 printf "Linking Starship config...\n"
 adopt_config "$REPO_DIR/config/starship/starship.toml" "$CONFIG_HOME/starship.toml"
 
+# Link Neovim config. omarchy seeds a whole LazyVim tree at ~/.config/nvim, which
+# would merge with init.lua, so on Linux it is moved aside as a unit.
+printf "Linking Neovim config...\n"
+if [[ "$OS" == "Linux" ]] && [ -d "$CONFIG_HOME/nvim" ] && [ ! -L "$CONFIG_HOME/nvim/init.lua" ]; then
+  mv "$CONFIG_HOME/nvim" "$CONFIG_HOME/nvim.omarchy.bak"
+  printf "  moved aside: %s -> %s\n" "$CONFIG_HOME/nvim" "$CONFIG_HOME/nvim.omarchy.bak"
+fi
+link_config "$REPO_DIR/config/nvim/init.lua" "$CONFIG_HOME/nvim/init.lua"
+
 if [[ "$OS" == "Darwin" ]]; then
   if [[ "$(uname -m)" == "arm64" ]]; then
     BREW_DIR="/opt/homebrew"
@@ -95,10 +104,6 @@ if [[ "$OS" == "Darwin" ]]; then
   # Copy zsh work config (not symlinked, not git-managed)
   readonly ZSHRC_WORK="$HOME/.zshrc.work"
   [ ! -e "$ZSHRC_WORK" ] && cp "$REPO_DIR/config/zsh/zshrc.work" "$ZSHRC_WORK"
-
-  # Link Neovim config
-  printf "Linking Neovim config...\n"
-  link_config "$REPO_DIR/config/nvim/init.lua" "$CONFIG_HOME/nvim/init.lua"
 
   # Link btop config
   printf "Linking btop config...\n"
