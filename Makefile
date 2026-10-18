@@ -16,7 +16,7 @@ help:
 	@printf "  make xcode     - Install Xcode Command Line Tools\n"
 	@printf "  make link      - Create symbolic links for dotfiles\n"
 	@printf "  make brew      - Install Homebrew and related tools\n"
-	@printf "  make pkg       - Install Linux packages (omarchy pkg add, yay)\n"
+	@printf "  make pkg       - Install Linux packages (omarchy pkg add)\n"
 	@printf "  make macos     - Apply macOS settings\n"
 	@printf "  make llm       - Apply Claude Code (LLM) settings\n"
 	@printf "  make runtime   - Setup mise language runtimes\n"

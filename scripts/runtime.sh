@@ -29,9 +29,10 @@ fi
 # whatever version omarchy (or the user) already chose.
 readonly MISE_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/mise/config.toml"
 RUNTIMES=(python@3.12.10 node@lts ruby@3.4.8)
-# gcloud is mise-managed on Linux only; macOS gets it outside this repo.
+# gcloud and go-jsonnet are mise-managed on Linux only; macOS gets them outside
+# mise (the former outside this repo, the latter from the Brewfile).
 if [[ "$(uname -s)" != "Darwin" ]]; then
-  RUNTIMES+=(gcloud@latest)
+  RUNTIMES+=(gcloud@latest go-jsonnet@latest)
 fi
 
 printf "Setting up mise runtimes...\n"

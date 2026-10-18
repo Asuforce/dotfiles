@@ -13,8 +13,8 @@ make all
 ├── Darwin: xcode → link → brew → macos → llm → runtime
 └── Linux : pkg → link → llm → runtime        (xcode, brew, macos skip)
 
-scripts/pkg.sh     : config/packages/linux.txt → `omarchy pkg add` (official)
-                     and `yay -S --needed` (aur)
+scripts/pkg.sh     : config/packages/linux.txt → `omarchy pkg add`; HackGen from
+                     the upstream release (no AUR)
 
 scripts/link.sh
 ├── both   : zsh, tig, sheldon, bat, zsh-abbr, ghostty, starship, nvim, git (config,
@@ -60,7 +60,7 @@ git/config       repo wins. omarchy's is a minimal set whose alias names collide
                  with different definitions (`ci`). commit.gpgsign and the
                  1Password signing program live in the included git/os-<kernel>.
 ghostty          repo wins on both OSes. omarchy's theme sync and JetBrainsMono
-                 no longer apply; ttf-hackgen is in the package list.
+                 no longer apply; pkg.sh installs HackGen.
 herdr            omarchy's file stays; link.sh cuts [keys] to the prefix and
                  copy_mode so bindings match the mac. omarchy's tmux-mirroring
                  keymap made the same keys do different things on the two
