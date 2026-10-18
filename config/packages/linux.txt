@@ -23,7 +23,6 @@ official kubectl
 official kubectx
 official kubeseal
 official kustomize
-official mosh
 official openssh
 official php
 official procps-ng
