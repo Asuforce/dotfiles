@@ -63,6 +63,9 @@ if [[ "$OS" == "Linux" ]] && [ -f "$CONFIG_HOME/ghostty/config" ] && [ ! -L "$CO
   printf "  removed omarchy's file: %s\n" "$CONFIG_HOME/ghostty/config"
 fi
 link_config "$REPO_DIR/config/ghostty/config.ghostty" "$CONFIG_HOME/ghostty/config.ghostty"
+if [[ "$OS" == "Linux" ]]; then
+  link_config "$REPO_DIR/config/ghostty/os-linux" "$CONFIG_HOME/ghostty/os"
+fi
 
 # Link git config files. os-<kernel> carries the 1Password signing program path.
 printf "Linking Git config files...\n"

@@ -23,6 +23,8 @@ font-family = HackGen35
 font-family = Monaco
 font-family = Menlo
 font-size = 14
+# Per-OS overrides (Linux sets a smaller font-size); absent on the mac.
+config-file = ?os
 
 # Window settings
 # "hidden" drops the titlebar but keeps the native frame and rounded corners,
