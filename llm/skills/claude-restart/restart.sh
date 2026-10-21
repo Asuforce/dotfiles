@@ -5,7 +5,10 @@ set -euo pipefail
 # A running claude keeps the binary it started from, so after an auto-update
 # every pane stays on the old version until it is restarted. Each idle stale
 # pane is stopped and resumed with `claude --resume <session>`, using the
-# session id herdr already tracks. Panes that are working or blocked, hold unsent
+# session id the claude process itself records in ~/.claude/sessions/<pid>.json.
+# herdr's tracked id is only a fallback: a subagent session such as the
+# autoharness reflector can overwrite it, which resumes the wrong conversation.
+# Panes that are working or blocked, hold unsent
 # input or run background tasks are skipped; run it again once they settle.
 #
 # Usage: restart.sh [-n]   (-n: only list what would be restarted)
@@ -23,6 +26,11 @@ printf "Installed Claude Code: %s\n" "$latest"
 claude_proc() {
   herdr pane process-info --pane "$1" \
     | jq -c '[.result.process_info.foreground_processes[] | select(.argv0 == "claude")] | first // empty'
+}
+
+# The session the running claude actually holds, empty when it can't be read.
+process_session() {
+  jq -r '.sessionId // empty' "$HOME/.claude/sessions/$1.json" 2>/dev/null || true
 }
 
 # Why an idle pane should still be left alone, or nothing. The prompt box sits
@@ -45,10 +53,13 @@ keep_reason() {
   fi
 }
 
-while IFS=$'\t' read -r pane status session; do
+while IFS=$'\t' read -r pane status herdr_session; do
   proc="$(claude_proc "$pane")"
   version="$(jq -r '.name // empty' <<<"$proc")"
   [ -n "$version" ] && [ "$version" != "$latest" ] || continue
+
+  session="$(process_session "$(jq -r '.pid' <<<"$proc")")"
+  session="${session:-$herdr_session}"
 
   if [ "$status" != idle ] || [ -z "$session" ]; then
     printf "  skip    %s (%s, %s)\n" "$pane" "$version" "$([ -n "$session" ] && echo "$status" || echo "no session id")"
@@ -58,7 +69,7 @@ while IFS=$'\t' read -r pane status session; do
     printf "  skip    %s (%s, %s)\n" "$pane" "$version" "$reason"
     continue
   fi
-  printf "  restart %s (%s -> %s)\n" "$pane" "$version" "$latest"
+  printf "  restart %s (%s -> %s, session %s)\n" "$pane" "$version" "$latest" "$session"
   [ "$dry_run" = 1 ] && continue
 
   args=(--resume "$session")
@@ -72,7 +83,9 @@ while IFS=$'\t' read -r pane status session; do
     sleep 1
   done
   name="claude-$(tr 'A-Z:' 'a-z-' <<<"$pane")"
-  herdr agent start "$name" --kind claude --pane "$pane" -- "${args[@]}" >/dev/null
+  # The stopped agent still holds its name, so fall back to a suffixed one.
+  herdr agent start "$name" --kind claude --pane "$pane" -- "${args[@]}" >/dev/null 2>&1 \
+    || herdr agent start "$name-r$(date +%s)" --kind claude --pane "$pane" -- "${args[@]}" >/dev/null
 done < <(herdr pane list \
   | jq -r '.result.panes[] | select(.agent == "claude")
            | [.pane_id, .agent_status, (.agent_session.value // "")] | @tsv')
