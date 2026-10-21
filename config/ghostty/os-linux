@@ -1,0 +1,3 @@
+# Linux only. Ghostty sizes in 96dpi points here, so the mac's 14 renders about
+# 1.33x larger; 10 matches the mac and the other omarchy apps.
+font-size = 10
