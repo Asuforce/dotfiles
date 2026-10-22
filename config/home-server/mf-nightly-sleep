@@ -8,14 +8,16 @@ user=@USER@
 hour=$((10#$(date +%H)))
 (( hour >= 22 || hour <= 4 )) || exit 0
 
-runtime_dir="/run/user/$(id -u "$user")"
-
-# Omarchy locks after 5 idle minutes or on lid close, so "locked" is the idle signal.
-# Exit 1 (unlocked) and 2 (undetermined) both mean someone may be at the machine.
-runuser -u "$user" -- env \
-  XDG_RUNTIME_DIR="$runtime_dir" \
-  HYPRLAND_INSTANCE_SIGNATURE="$(ls -t "$runtime_dir/hypr" | head -1)" \
-  omarchy-hyprland-session-locked || exit 0
+# From 22:30 the machine suspends even with the screen open; `stay-awake` still blocks it.
+# Before that, and only then, a lock (omarchy locks after 5 idle minutes or on lid close)
+# is the idle signal; exit 1 (unlocked) and 2 (undetermined) both mean someone may be there.
+if (( hour == 22 && 10#$(date +%M) < 30 )); then
+  runtime_dir="/run/user/$(id -u "$user")"
+  runuser -u "$user" -- env \
+    XDG_RUNTIME_DIR="$runtime_dir" \
+    HYPRLAND_INSTANCE_SIGNATURE="$(ls -t "$runtime_dir/hypr" | head -1)" \
+    omarchy-hyprland-session-locked || exit 0
+fi
 
 # After midnight 05:55 is still today, not tomorrow.
 wake=$(date -d 05:55 +%s)
