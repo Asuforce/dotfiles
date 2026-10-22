@@ -6,16 +6,14 @@ Claude Code configuration for this repository, installed by `scripts/llm.sh`. Se
 
 Reusable agent instructions live in `llm/skills/<name>/SKILL.md` only — there is no `llm/commands/` and no `~/.claude/commands` link. Slash commands and skills overlap in what they can express, but a skill carries a `description` that lets the model reach for it unprompted, so keeping both meant maintaining two mechanisms for one job.
 
-`apply-review`, `create-pr`, and `create-repo` moved over from commands; `create-pr` was later dropped for pstack's `opening-a-pr`. Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
+`apply-review`, `create-pr`, and `create-repo` moved over from commands and have since been dropped. `create-pr` gave way to pstack's `opening-a-pr`; `apply-review` and `create-repo` went unused in four weeks of session logs, since `code-review` and a plain request to `gh repo create` cover the same ground. Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
 
 - `review-pr` — the built-in `code-review` skill takes a PR number and can post or apply its findings.
 - `guide` — plan mode explores read-only and presents options for approval, with the `Plan` and `feature-dev:code-architect` agents for the same job in a subagent.
 - `empirical-prompt-tuning` — `claude plugin eval` runs eval cases with LLM graders, repeated runs, and a no-plugin ablation arm, and resolves a `~/.claude/skills/<name>` directory as a target.
 - `find-skills` — `/plugin` and `claude plugin install` discover and install skills without the separate `npx skills` ecosystem it assumed.
 
-`apply-review` survives the test because `code-review` generates its own findings rather than consuming a human reviewer's comments, and the `/pr-comments` command that once did is gone.
-
-Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones (as `create-repo` does) instead of reintroducing a command.
+Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones instead of reintroducing a command.
 
 `scripts/llm.sh` links each skill into `~/.claude/skills/` individually rather than linking the directory, so a skill added under `llm/skills/` appears only after `make llm`, and one removed or renamed leaves a dangling link to delete by hand.
 
