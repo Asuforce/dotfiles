@@ -50,7 +50,8 @@ llm/plugins.tsv
 ├─ davekiss/env                 env@davekiss
 ├─ aieo-product/claude_qamods   qa-guide@claude-qamods
 ├─ -                            cc-plugin-you-should-know@builtin
-└─ cursor/plugins               pstack@cursor-plugins
+├─ cursor/plugins               pstack@cursor-plugins
+└─ pbakaus/impeccable           impeccable@impeccable
 
 llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
 ```
@@ -65,6 +66,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `qa-guide` opens a side pane when Claude asks via `AskUserQuestion`, explaining why it asks and what each option leads to. Explanations come from one Haiku call per question over a prompt capped at 12,000 characters. The pane opens on its own only at 144 columns or wider; `/qa-guide` opens it at any width. It needs the early-access function-hooks API of Claude Code 2.1.286 or later.
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
 - `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports.
+- `impeccable` is a single skill, `/impeccable <command>`, with 24 design commands (`critique`, `audit`, `polish`, `distill`, and so on) for improving a web UI, plus a detector of 61 AI-design tells. It ships `SessionStart`/`PostToolUse`/`Stop` hooks that check UI files after edits; they act per project, switched by `/impeccable hooks on|off`. Run `/impeccable init` once in a project to write `PRODUCT.md`.
 
 ## herdr integration
 
