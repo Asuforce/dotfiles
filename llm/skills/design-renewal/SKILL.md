@@ -25,9 +25,7 @@ Code stays untouched until the user picks.
 
 ## Scoring loop
 
-Awwwards sheet: design 40, usability 30, creativity 20, content 10. Screenshot first, then score while looking at it, then name what holds back the lowest category.
-
-Content is fixed by the user's facts. Leave it out of the loop and the target, since an open content axis makes the agent pad copy and add decoration.
+Scoring and refining until every category passes belongs to the `design-score-loop` skill. Run it after the reference round and each adjustment round.
 
 ## Short commands
 
