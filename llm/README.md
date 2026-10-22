@@ -6,16 +6,14 @@ Claude Code configuration for this repository, installed by `scripts/llm.sh`. Se
 
 Reusable agent instructions live in `llm/skills/<name>/SKILL.md` only — there is no `llm/commands/` and no `~/.claude/commands` link. Slash commands and skills overlap in what they can express, but a skill carries a `description` that lets the model reach for it unprompted, so keeping both meant maintaining two mechanisms for one job.
 
-`apply-review`, `create-pr`, and `create-repo` moved over from commands; `create-pr` was later dropped for pstack's `opening-a-pr`. Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
+`apply-review`, `create-pr`, and `create-repo` moved over from commands and have since been dropped. `create-pr` gave way to pstack's `opening-a-pr`; `apply-review` and `create-repo` went unused in four weeks of session logs, since `code-review` and a plain request to `gh repo create` cover the same ground. Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
 
 - `review-pr` — the built-in `code-review` skill takes a PR number and can post or apply its findings.
 - `guide` — plan mode explores read-only and presents options for approval, with the `Plan` and `feature-dev:code-architect` agents for the same job in a subagent.
 - `empirical-prompt-tuning` — `claude plugin eval` runs eval cases with LLM graders, repeated runs, and a no-plugin ablation arm, and resolves a `~/.claude/skills/<name>` directory as a target.
 - `find-skills` — `/plugin` and `claude plugin install` discover and install skills without the separate `npx skills` ecosystem it assumed.
 
-`apply-review` survives the test because `code-review` generates its own findings rather than consuming a human reviewer's comments, and the `/pr-comments` command that once did is gone.
-
-Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones (as `create-repo` does) instead of reintroducing a command.
+Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones instead of reintroducing a command.
 
 `scripts/llm.sh` links each skill into `~/.claude/skills/` individually rather than linking the directory, so a skill added under `llm/skills/` appears only after `make llm`, and one removed or renamed leaves a dangling link to delete by hand.
 
@@ -52,7 +50,8 @@ llm/plugins.tsv
 ├─ davekiss/env                 env@davekiss
 ├─ aieo-product/claude_qamods   qa-guide@claude-qamods
 ├─ -                            cc-plugin-you-should-know@builtin
-└─ cursor/plugins               pstack@cursor-plugins
+├─ cursor/plugins               pstack@cursor-plugins
+└─ pbakaus/impeccable           impeccable@impeccable
 
 llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
 ```
@@ -67,6 +66,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `qa-guide` opens a side pane when Claude asks via `AskUserQuestion`, explaining why it asks and what each option leads to. Explanations come from one Haiku call per question over a prompt capped at 12,000 characters. The pane opens on its own only at 144 columns or wider; `/qa-guide` opens it at any width. It needs the early-access function-hooks API of Claude Code 2.1.286 or later.
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
 - `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports.
+- `impeccable` is a single skill, `/impeccable <command>`, with 24 design commands (`critique`, `audit`, `polish`, `distill`, and so on) for improving a web UI, plus a detector of 61 AI-design tells. It ships `SessionStart`/`PostToolUse`/`Stop` hooks that check UI files after edits; they act per project, switched by `/impeccable hooks on|off`. Run `/impeccable init` once in a project to write `PRODUCT.md`.
 
 ## herdr integration
 
