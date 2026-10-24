@@ -170,6 +170,24 @@ for skill_dir in "$DOTFILES_LLM"/skills/*/; do
   fi
 done
 
+# Codex reads the same AGENTS.md and skills. Skills are linked one by one for
+# the same reason as above: omarchy and Codex itself write into ~/.codex/skills.
+if command -v codex >/dev/null 2>&1; then
+  printf "Linking Codex config...\n"
+  readonly CODEX_CONFIG_DIR="$HOME/.codex"
+  mkdir -p "$CODEX_CONFIG_DIR/skills"
+  [ ! -e "$CODEX_CONFIG_DIR/AGENTS.md" ] && [ ! -L "$CODEX_CONFIG_DIR/AGENTS.md" ] \
+    && ln -s "$DOTFILES_LLM/AGENTS.md" "$CODEX_CONFIG_DIR/AGENTS.md"
+  for skill_dir in "$DOTFILES_LLM"/skills/*/; do
+    skill_dest="$CODEX_CONFIG_DIR/skills/$(basename "$skill_dir")"
+    if [ ! -e "$skill_dest" ] && [ ! -L "$skill_dest" ]; then
+      ln -s "${skill_dir%/}" "$skill_dest"
+    fi
+  done
+else
+  printf "codex not found; skipping Codex config.\n"
+fi
+
 # An existing statusLine entry is left alone so a machine can keep its own.
 printf "Linking status line...\n"
 readonly STATUSLINE_DEST="$CLAUDE_CONFIG_DIR/statusline.sh"

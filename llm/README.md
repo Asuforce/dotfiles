@@ -17,6 +17,10 @@ Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-inv
 
 `scripts/llm.sh` links each skill into `~/.claude/skills/` individually rather than linking the directory, so a skill added under `llm/skills/` appears only after `make llm`, and one removed or renamed leaves a dangling link to delete by hand.
 
+## Codex
+
+When `codex` is installed, `scripts/llm.sh` also links `llm/AGENTS.md` to `~/.codex/AGENTS.md` and each skill into `~/.codex/skills/`, the same way as for Claude Code. Nothing else here is shared: hooks, plugins, permissions and the status line are Claude Code only, and MCP servers are not converted. `AGENTS.md` ends with an `@~/.claude/pstack-models.md` import that Codex does not expand, and there is no separate Codex copy.
+
 ## Vendored skills
 
 `llm/upstream-skills.tsv` records the upstream commit each vendored skill has been reviewed through. `scripts/llm.sh` prints a compare URL when upstream has moved past that commit; it applies nothing, because these are prompts that have to be read before they're taken. It fails open on a missing `gh`, an unreachable network, or a missing manifest.
