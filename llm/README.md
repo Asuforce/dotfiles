@@ -25,6 +25,7 @@ Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-inv
 llm/AGENTS.md ───────────────▶ ~/.claude/CLAUDE.md
              └──────────────▶ ~/.codex/AGENTS.md
 llm/skills/<name>/ ──────────▶ 両方の skills/<name>/
+npx impeccable install ─────▶ ~/.agents/skills/impeccable/（Codex 用）
 llm/codex.toml ──未設定項目を追加─▶ ~/.codex/config.toml
 llm/mcps/default.json ──変換───▶ config.toml の MCP
 llm/mcps/{coding,browser,infra}.json
@@ -47,7 +48,11 @@ llm/mcps/{coding,browser,infra}.json
 
 Claude の自然言語による `autoMode.allow` / `soft_deny` と Codex の自動レビューは判定方式が異なる。個別のマージ・デプロイ許可や Linux の `make` 許可ルールはコピーしない。管理ポリシーや起動オプションがユーザー設定より優先するため、起動後の `/status` で有効な権限を確認できる。
 
-プラグインは自動移植しない。AutoHarness、pstack、impeccable、env、mission-control、LSP などには別途 Codex 対応の確認が必要。token-weather のキャッシュ表示も標準ステータス行では再現しない。既存の Orca/herdr フックは保持し、タブ名には下記の Codex 専用フックを追加する。`AGENTS.md` の `@~/.claude/pstack-models.md` は Codex では自動展開されず、Claude のモデル別名も移植しない。
+Impeccable は上流の CLI で Codex 用スキルを `~/.agents/skills/impeccable/` に導入する。`scripts/codex.sh` は導入済みならスキップし、`npx` がなければメッセージを出してスキップする。更新は `npx impeccable update --scope=global --no-hooks --yes`。Codex を再起動し、`/skills` または `$impeccable` で呼び出す。
+
+自動チェックのフックはプロジェクトごとに導入する。そのプロジェクトで `npx impeccable install --providers=codex --scope=project --yes` を実行し、Codex の `/hooks` で承認する。dotfiles のセットアップではプロジェクトのフックを追加しない。[上流の導入手順](https://github.com/pbakaus/impeccable#installation)を参照。
+
+ほかのプラグインは自動移植しない。AutoHarness、pstack、env、mission-control、LSP などには別途 Codex 対応の確認が必要。token-weather のキャッシュ表示も標準ステータス行では再現しない。既存の Orca/herdr フックは保持し、タブ名には下記の Codex 専用フックを追加する。`AGENTS.md` の `@~/.claude/pstack-models.md` は Codex では自動展開されず、Claude のモデル別名も移植しない。
 
 設定形式と自動レビューは [OpenAI の設定リファレンス](https://learn.chatgpt.com/docs/config-file/config-reference)、用途別ファイルは [プロファイルの仕様](https://learn.chatgpt.com/docs/config-file/config-advanced) に従う。Codex CLI 0.164.0 で検証。
 

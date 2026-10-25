@@ -27,4 +27,15 @@ for skill_dir in "$REPO_DIR"/llm/skills/*/; do
 done
 
 python3 "$SCRIPT_DIR/codex-config.py" "$REPO_DIR/llm" "$codex_dir"
+
+# Upstream's Codex build lives in the shared user skill directory. Hooks are
+# project-local and must be installed and trusted in each project separately.
+if [ -f "$HOME/.agents/skills/impeccable/SKILL.md" ]; then
+  printf "Impeccable already installed for Codex.\n"
+elif ! command -v npx >/dev/null 2>&1; then
+  printf "npx not found; skipping Impeccable install.\n"
+else
+  printf "Installing Impeccable for Codex...\n"
+  npx --yes impeccable install --providers=codex --scope=global --no-hooks --yes
+fi
 printf "Codex setup complete.\n"
