@@ -8,7 +8,7 @@ The `codex` plugin is installed. While a pstack skill or playbook drives the tas
 |---|---|
 | feature, refactoring, bug-fix, perf-issue | `codex:codex-rescue` |
 | arena runners | one Codex runner next to the Claude ones |
-| interrogate reviewers | `/codex:review` added to the sonnet and opus reviewers |
+| interrogate reviewers | `/codex:review` added to the opus reviewer |
 | swarm workers | haiku, unchanged |
 | judgment and prose, synthesizers, how, why, reflect | Claude, unchanged |
 
