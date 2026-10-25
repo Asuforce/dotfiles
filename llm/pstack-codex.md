@@ -20,9 +20,9 @@ Pass these to `codex:codex-rescue` explicitly, since it leaves both unset otherw
 
 | Task | `--model` | `--effort` |
 |---|---|---|
-| Default implementation, bug-fix, refactoring | `gpt-6.1-sol` | `low` |
+| Default implementation, bug-fix, refactoring, perf work | `gpt-6.1-sol` | `low` |
 | Mechanical edits: renames, boilerplate, test scaffolding, config | `gpt-6-luna` | `medium` |
-| Perf work, or a root cause that a `low` run missed | `gpt-6.1-sol` | `high` |
+| A task a `low` run failed to verify | `gpt-6.1-sol` | `high` |
 
 Raise effort only after a run fails verification; do not start high. `gpt-6-astra` and `xhigh` or above are for a case the user names.
 
