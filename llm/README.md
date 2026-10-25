@@ -47,7 +47,7 @@ llm/mcps/{coding,browser,infra}.json
 
 Claude の自然言語による `autoMode.allow` / `soft_deny` と Codex の自動レビューは判定方式が異なる。個別のマージ・デプロイ許可や Linux の `make` 許可ルールはコピーしない。管理ポリシーや起動オプションがユーザー設定より優先するため、起動後の `/status` で有効な権限を確認できる。
 
-プラグインは自動移植しない。AutoHarness、pstack、impeccable、env、mission-control、LSP などには別途 Codex 対応の確認が必要。token-weather のキャッシュ表示も標準ステータス行では再現しない。既存の Orca/herdr フックは保持するが、Claude の transcript を読むタブ名フックは追加しない。`AGENTS.md` の `@~/.claude/pstack-models.md` は Codex では自動展開されず、Claude のモデル別名も移植しない。
+プラグインは自動移植しない。AutoHarness、pstack、impeccable、env、mission-control、LSP などには別途 Codex 対応の確認が必要。token-weather のキャッシュ表示も標準ステータス行では再現しない。既存の Orca/herdr フックは保持し、タブ名には下記の Codex 専用フックを追加する。`AGENTS.md` の `@~/.claude/pstack-models.md` は Codex では自動展開されず、Claude のモデル別名も移植しない。
 
 設定形式と自動レビューは [OpenAI の設定リファレンス](https://learn.chatgpt.com/docs/config-file/config-reference)、用途別ファイルは [プロファイルの仕様](https://learn.chatgpt.com/docs/config-file/config-advanced) に従う。Codex CLI 0.164.0 で検証。
 
@@ -106,6 +106,20 @@ They are plugin-installed rather than vendored like the skills above, because ea
 `scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs) and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel).
 
 `herdr-tab-title.sh` runs on `Stop` and copies the `ai-title` Claude Code writes into the transcript onto the herdr tab label (24 characters at most). It only replaces a label herdr numbered itself (`1`, `2`, ...) or the title it set earlier from the same pane, so a tab renamed by hand, or claimed by another pane's session, keeps its name. On `/clear` (`SessionStart`) it puts the herdr-assigned number back on a tab still carrying the title it set, and the next session's first `Stop` names it afresh.
+
+Codex では `scripts/codex.sh` が `codex-herdr-tab-title.py` をリンクし、既存の `hooks.json` に次の処理を追加する。再実行しても重複登録しない。設定後は Codex を起動し直し、対話操作の `/hooks` で追加した3つのフックを確認・信頼する必要がある。
+
+```text
+UserPromptSubmit → ユーザー発言を保存
+Stop（バックグラウンド）
+  → 直近6発言と前回のタイトルを codex exec で要約
+  → 24文字以内の日本語タイトルで herdr のタブ名を更新
+SessionStart（startup / clear / fork）→ 自分が付けた名前だけ番号に戻す
+```
+
+各発言は先頭4,000文字まで、状態は `~/.local/state/codex-herdr-tab-title/`（`XDG_STATE_HOME` 対応）に保存する。会話全体の transcript は解析しない。要約には既存の Codex 認証を使い、応答ごとに追加のモデル利用が発生する。モデルの既定値は `gpt-6-luna` で、Codex 起動前の環境変数 `HERDR_TITLE_MODEL` で変更できる。要約用プロセスはユーザー設定を読み込まないため、独自のモデルプロバイダー設定は引き継がない。
+
+要約用の Codex は一時ディレクトリで起動し、hook・プラグイン・MCP・シェルツールを引き継がない。生成が35秒以内に完了しなければタブ名を維持する。手動で付けた名前や別ペインが付けた名前も維持し、生成中に次のターンや新規セッションが始まった場合は古い結果を破棄する。バックグラウンド実行なので通常の応答完了を待たせないが、Codex 終了時に生成中の処理はキャンセルされる。
 
 ## Status line
 
