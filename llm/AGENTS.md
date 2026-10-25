@@ -11,5 +11,6 @@ Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since H
 - End the final message with `Blocked on me`, `Changed`, `Found`.
 - A settled answer stays settled unless asked or shown a problem.
 - Run commands yourself. Hand over only interactive ones (login, password) or ones the classifier denied, and report a denial once.
+- The shell already starts in the working directory. Do not prefix commands with `cd`; use absolute paths or a tool's own directory flag (`git -C`, `pnpm -C`).
 
 @~/.claude/pstack-models.md
