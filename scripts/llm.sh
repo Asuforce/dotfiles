@@ -170,23 +170,8 @@ for skill_dir in "$DOTFILES_LLM"/skills/*/; do
   fi
 done
 
-# Codex reads the same AGENTS.md and skills. Skills are linked one by one for
-# the same reason as above: omarchy and Codex itself write into ~/.codex/skills.
-if command -v codex >/dev/null 2>&1; then
-  printf "Linking Codex config...\n"
-  readonly CODEX_CONFIG_DIR="$HOME/.codex"
-  mkdir -p "$CODEX_CONFIG_DIR/skills"
-  [ ! -e "$CODEX_CONFIG_DIR/AGENTS.md" ] && [ ! -L "$CODEX_CONFIG_DIR/AGENTS.md" ] \
-    && ln -s "$DOTFILES_LLM/AGENTS.md" "$CODEX_CONFIG_DIR/AGENTS.md"
-  for skill_dir in "$DOTFILES_LLM"/skills/*/; do
-    skill_dest="$CODEX_CONFIG_DIR/skills/$(basename "$skill_dir")"
-    if [ ! -e "$skill_dest" ] && [ ! -L "$skill_dest" ]; then
-      ln -s "${skill_dir%/}" "$skill_dest"
-    fi
-  done
-else
-  printf "codex not found; skipping Codex config.\n"
-fi
+# Codex shares the instructions and skills, with its own runtime settings.
+bash "$SCRIPT_DIR/codex.sh"
 
 # An existing statusLine entry is left alone so a machine can keep its own.
 printf "Linking status line...\n"
@@ -231,13 +216,15 @@ fi
 # pstack's own session hook defers to CLAUDE.md, so the precedence has to be
 # written on the user's side.
 printf "Linking pstack priority rules...\n"
-readonly PSTACK_RULES_DEST="$CLAUDE_CONFIG_DIR/rules/pstack-priority.md"
 mkdir -p "$CLAUDE_CONFIG_DIR/rules"
-if [ -L "$PSTACK_RULES_DEST" ] && [ ! -e "$PSTACK_RULES_DEST" ]; then
-  rm -f "$PSTACK_RULES_DEST"
-fi
-[ ! -e "$PSTACK_RULES_DEST" ] && [ ! -L "$PSTACK_RULES_DEST" ] \
-  && ln -s "$DOTFILES_LLM/pstack-priority.md" "$PSTACK_RULES_DEST"
+for rule in pstack-priority pstack-codex; do
+  rule_dest="$CLAUDE_CONFIG_DIR/rules/$rule.md"
+  if [ -L "$rule_dest" ] && [ ! -e "$rule_dest" ]; then
+    rm -f "$rule_dest"
+  fi
+  [ ! -e "$rule_dest" ] && [ ! -L "$rule_dest" ] \
+    && ln -s "$DOTFILES_LLM/$rule.md" "$rule_dest"
+done
 
 # Plugin-installed rather than vendored like show-me/yomiyasu/etc: each ships
 # hooks, an MCP server or a backend that a skill-only copy under llm/skills/

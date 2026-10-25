@@ -18,7 +18,7 @@ help:
 	@printf "  make brew      - Install Homebrew and related tools\n"
 	@printf "  make pkg       - Install Linux packages (omarchy pkg add)\n"
 	@printf "  make macos     - Apply macOS settings\n"
-	@printf "  make llm       - Apply Claude Code (LLM) settings\n"
+	@printf "  make llm       - Apply Claude Code and Codex settings\n"
 	@printf "  make runtime   - Setup mise language runtimes\n"
 	@printf "  make personal  - Opt this machine into personal-only Brewfile entries\n"
 	@printf "  make home-server - Run this laptop as an always-on server (omarchy)\n"
@@ -45,7 +45,7 @@ pkg:
 		bash scripts/pkg.sh
 
 llm:
-	@printf "Setting up Claude Code configuration...\n"
+	@printf "Setting up Claude Code and Codex configuration...\n"
 	@bash scripts/llm.sh
 
 runtime:

@@ -7,3 +7,4 @@ davekiss/env	env@davekiss
 -	cc-plugin-you-should-know@builtin
 cursor/plugins	pstack@cursor-plugins
 pbakaus/impeccable	impeccable@impeccable
+openai/codex-plugin-cc	codex@openai-codex

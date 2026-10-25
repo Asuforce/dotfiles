@@ -1,6 +1,6 @@
 # llm/
 
-Claude Code configuration for this repository, installed by `scripts/llm.sh`. See the root `CLAUDE.md` for the pointers into this directory; this file carries the reasoning behind them.
+Claude Code and Codex configuration for this repository, installed by `scripts/llm.sh`. See the root `CLAUDE.md` for the pointers into this directory; this file carries the reasoning behind them.
 
 ## Skills only, no commands
 
@@ -19,7 +19,37 @@ Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-inv
 
 ## Codex
 
-When `codex` is installed, `scripts/llm.sh` also links `llm/AGENTS.md` to `~/.codex/AGENTS.md` and each skill into `~/.codex/skills/`, the same way as for Claude Code. Nothing else here is shared: hooks, plugins, permissions and the status line are Claude Code only, and MCP servers are not converted. `AGENTS.md` ends with an `@~/.claude/pstack-models.md` import that Codex does not expand, and there is no separate Codex copy.
+`make llm` は `scripts/codex.sh` も実行する。Codex だけを設定するときは `bash scripts/codex.sh` を使う。Codex 本体のインストールは既存のパッケージ管理に任せ、Python 3.11 以降で設定を読み書きする。`CODEX_HOME` 未指定時の配置は次のとおり。
+
+```text
+llm/AGENTS.md ───────────────▶ ~/.claude/CLAUDE.md
+             └──────────────▶ ~/.codex/AGENTS.md
+llm/skills/<name>/ ──────────▶ 両方の skills/<name>/
+llm/codex.toml ──未設定項目を追加─▶ ~/.codex/config.toml
+llm/mcps/default.json ──変換───▶ config.toml の MCP
+llm/mcps/{coding,browser,infra}.json
+                     └─変換──▶ ~/.codex/<用途>.config.toml
+```
+
+| Claude Code の設定・機能 | Codex での対応 |
+|---|---|
+| 日本語、文体、終了時の表記、自作スキル | 共通ファイルをリンク |
+| Sonnet、推論 medium | 既存の Codex モデルを維持し、未設定の推論量を medium にする |
+| permissions.defaultMode = auto | on-request と auto_review。権限外の操作を自動レビューに回す |
+| ローカル編集、ビルド、依存取得 | workspace-write とネットワーク許可 |
+| 各リポジトリの CLAUDE.md | AGENTS.md がない階層でのフォールバックとして読む |
+| モデル、作業先、ブランチ、コンテキスト、利用枠 | Codex 標準ステータス行と通知 |
+| MCP 定義 | stdio/URL、引数、環境変数、無効化状態を TOML に変換 |
+
+用途別 MCP は `codex --profile coding`、`codex --profile browser`、`codex --profile infra` で選ぶ。通常起動でも Context7 を読み込み、各プロファイルはベース設定へ MCP を追加する。サーバー実行時には `npx` または `uvx` とネットワークが必要。
+
+設定追加時は既存の値、コメント、フックの信頼情報、プロジェクト設定を維持する。既存の同名 MCP サーバーは丸ごと優先する。変更前のファイルは初回だけ `<ファイル名>.pre-dotfiles.bak` に保存する。再実行は未設定項目の補充なので、以後の設定変更はローカルファイルで行う。カスタム権限プロファイルが設定済みなら、従来の sandbox 設定は追加しない。
+
+Claude の自然言語による `autoMode.allow` / `soft_deny` と Codex の自動レビューは判定方式が異なる。個別のマージ・デプロイ許可や Linux の `make` 許可ルールはコピーしない。管理ポリシーや起動オプションがユーザー設定より優先するため、起動後の `/status` で有効な権限を確認できる。
+
+プラグインは自動移植しない。AutoHarness、pstack、impeccable、env、mission-control、LSP などには別途 Codex 対応の確認が必要。token-weather のキャッシュ表示も標準ステータス行では再現しない。既存の Orca/herdr フックは保持するが、Claude の transcript を読むタブ名フックは追加しない。`AGENTS.md` の `@~/.claude/pstack-models.md` は Codex では自動展開されず、Claude のモデル別名も移植しない。
+
+設定形式と自動レビューは [OpenAI の設定リファレンス](https://learn.chatgpt.com/docs/config-file/config-reference)、用途別ファイルは [プロファイルの仕様](https://learn.chatgpt.com/docs/config-file/config-advanced) に従う。Codex CLI 0.164.0 で検証。
 
 ## Vendored skills
 
@@ -57,6 +87,7 @@ llm/plugins.tsv
 └─ pbakaus/impeccable           impeccable@impeccable
 
 llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
+llm/pstack-codex.md ────link──▶ ~/.claude/rules/pstack-codex.md
 ```
 
 They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update <name> && claude plugin update <id>`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
@@ -67,7 +98,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `mission-control` opens `/mission`, a live tree of agents and tool calls. Its code-map view needs macOS and Chrome, so only the agent view applies on Linux. It makes one small model call per change to summarise it.
 - `env` has Claude ask for a value in a pane it cannot read, so tokens for Cloudflare and Terraform never enter the transcript.
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
-- `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports.
+- `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports. That file can only name Claude models, so `llm/pstack-codex.md` is linked next to the priority rules to route the coding roles to `codex:codex-rescue` (from `openai/codex-plugin-cc`) and to pin Codex's model and effort per task class for cost: `gpt-6.1-sol` at `low` by default, `gpt-6-luna` for mechanical edits, `high` only after a run fails verification.
 - `impeccable` is a single skill, `/impeccable <command>`, with 24 design commands (`critique`, `audit`, `polish`, `distill`, and so on) for improving a web UI, plus a detector of 61 AI-design tells. It ships `SessionStart`/`PostToolUse`/`Stop` hooks that check UI files after edits; they act per project, switched by `/impeccable hooks on|off`. Run `/impeccable init` once in a project to write `PRODUCT.md`.
 
 ## herdr integration
