@@ -5,6 +5,10 @@ approvals_reviewer = "auto_review"
 sandbox_mode = "workspace-write"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 
+# graphify dispatches its extraction to parallel subagents.
+[features]
+multi_agent = true
+
 [sandbox_workspace_write]
 network_access = true
 

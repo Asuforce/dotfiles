@@ -106,6 +106,25 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports. That file can only name Claude models, so `llm/pstack-codex.md` is linked next to the priority rules to route the coding roles to `codex:codex-rescue` (from `openai/codex-plugin-cc`) and to pin Codex's model and effort per task class for cost: `gpt-6.1-sol` at `low` by default (perf work included), `gpt-6-luna` for mechanical edits, `high` only after a run fails verification.
 - `impeccable` is a single skill, `/impeccable <command>`, with 24 design commands (`critique`, `audit`, `polish`, `distill`, and so on) for improving a web UI, plus a detector of 61 AI-design tells. It ships `SessionStart`/`PostToolUse`/`Stop` hooks that check UI files after edits; they act per project, switched by `/impeccable hooks on|off`. Run `/impeccable init` once in a project to write `PRODUCT.md`.
 
+## graphify
+
+graphify はコードベースを知識グラフにする CLI と `/graphify` スキルの組。プラグインではなく PyPI パッケージ `graphifyy`（y が2つ）として配布されるため、`plugins.tsv` ではなく mise で入れる。スキルはパッケージからのコピーなので、`scripts/runtime.sh` を実行するたびに入れ直して CLI の更新に追従させる。
+
+```text
+scripts/runtime.sh
+  mise use -g uv, pypi:graphifyy
+  CLAUDE_CONFIG_DIR=<一時> graphify install
+    <一時>/skills/graphify ──移動──▶ ~/.claude/skills/graphify
+    <一時>/CLAUDE.md                  # 捨てる
+  graphify install --platform codex ─▶ ~/.codex/skills/graphify（codex があるときだけ）
+```
+
+ユーザースコープの `graphify install` は `~/.claude/CLAUDE.md` に登録ブロックを追記する。この環境ではそれが `llm/AGENTS.md` へのリンクなので、一時ディレクトリに書かせてスキルだけを取り出す。Claude Code はフロントマターからスキルを見つけるため、ブロックがなくても `/graphify` は動く。`make all` は llm を runtime より先に実行するので、この処理は `llm.sh` ではなく `runtime.sh` に置いている。
+
+Codex は並列抽出に `[features] multi_agent = true` を要するため、`llm/codex.toml` に入れている。
+
+検索系ツールの前にグラフ参照を促す PreToolUse フックと、プロジェクトの `CLAUDE.md` / `AGENTS.md` への常時指示は、リポジトリごとに `graphify claude install` / `graphify codex install` で入れる。dotfiles では扱わない。
+
 ## herdr integration
 
 `scripts/llm.sh` regenerates `llm/skills/herdr/SKILL.md` from `herdr --skill` on every run (git-ignored, so herdr upgrades do not show up as diffs) and installs herdr's Claude Code integration hook plus the repository-owned `herdr-repo-workspace.sh` hook, which keeps herdr at "one repository = one workspace = side-by-side worktrees" (adapted from https://zenn.dev/gemcook/articles/herdr-worktree-parallel).

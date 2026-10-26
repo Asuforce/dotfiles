@@ -28,7 +28,7 @@ fi
 # added with `mise use -g` only when the file does not name it yet, which keeps
 # whatever version omarchy (or the user) already chose.
 readonly MISE_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/mise/config.toml"
-RUNTIMES=(python@3.12.10 node@lts ruby@3.4.8)
+RUNTIMES=(python@3.12.10 node@lts ruby@3.4.8 uv@latest pypi:graphifyy@latest)
 # gcloud and go-jsonnet are mise-managed on Linux only; macOS gets them outside
 # mise (the former outside this repo, the latter from the Brewfile).
 if [[ "$(uname -s)" != "Darwin" ]]; then
@@ -37,7 +37,8 @@ fi
 
 printf "Setting up mise runtimes...\n"
 for spec in "${RUNTIMES[@]}"; do
-  if [ -f "$MISE_CONFIG_FILE" ] && grep -qE "^${spec%%@*}[[:space:]]*=" "$MISE_CONFIG_FILE"; then
+  # Backend-prefixed names such as pypi:graphifyy are written as quoted keys.
+  if [ -f "$MISE_CONFIG_FILE" ] && grep -qE "^\"?${spec%%@*}\"?[[:space:]]*=" "$MISE_CONFIG_FILE"; then
     printf "  skipped, already in mise config: %s\n" "${spec%%@*}"
   else
     mise use -g "$spec"
@@ -47,5 +48,26 @@ done
 # Install all tools defined in config.toml
 printf "Installing language runtimes...\n"
 mise install
+
+# graphify copies its skill rather than being linked, so this runs on every
+# pass to pick up upgrades. It lives here, not in llm.sh, because `make all`
+# runs llm before runtime and the CLI would not exist yet on a fresh machine.
+# The Claude install also appends a block to ~/.claude/CLAUDE.md, a link to the
+# tracked llm/AGENTS.md, so it runs against a scratch CLAUDE_CONFIG_DIR and only
+# the skill is moved into place; Claude Code finds it from its frontmatter.
+if graphify_bin="$(mise which graphify 2>/dev/null)"; then
+  printf "Installing graphify skills...\n"
+  graphify_tmp="$(mktemp -d)"
+  CLAUDE_CONFIG_DIR="$graphify_tmp" "$graphify_bin" install >/dev/null
+  mkdir -p "$HOME/.claude/skills"
+  rm -rf "$HOME/.claude/skills/graphify"
+  mv "$graphify_tmp/skills/graphify" "$HOME/.claude/skills/graphify"
+  rm -rf "$graphify_tmp"
+  if command -v codex >/dev/null 2>&1; then
+    "$graphify_bin" install --platform codex >/dev/null
+  fi
+else
+  printf "graphify not found; skipping graphify skills.\n"
+fi
 
 printf "Runtime setup complete.\n"
