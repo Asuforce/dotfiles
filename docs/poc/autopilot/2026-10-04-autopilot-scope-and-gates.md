@@ -13,3 +13,5 @@ pstack のような自律実行を Claude Code で再現するため、grill で
 - PR 本文は日本語で、`visual-pr` の型と Mermaid を使う。
 
 - PR: https://github.com/Asuforce/dotfiles/pull/1
+
+追記(2026-10-26): `autopilot` スキルは `556a1b0` で `asuforce-mode` に置き換わり、`asuforce-mode` も `cab672d` で pstack への移行とともに削除した。自律実行は今は pstack の `poteto-mode` が担う。上の判断は当時の記録として残す。

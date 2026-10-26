@@ -13,6 +13,14 @@ Reusable agent instructions live in `llm/skills/<name>/SKILL.md` only — there 
 - `empirical-prompt-tuning` — `claude plugin eval` runs eval cases with LLM graders, repeated runs, and a no-plugin ablation arm, and resolves a `~/.claude/skills/<name>` directory as a target.
 - `find-skills` — `/plugin` and `claude plugin install` discover and install skills without the separate `npx skills` ecosystem it assumed.
 
+Current roster, each with no built-in or plugin equivalent:
+
+- `before-compact` saves durable memory before `/compact`.
+- `claude-restart` restarts herdr panes still running an outdated Claude Code and resumes each session.
+- `design-renewal` and `design-score-loop` redesign a site from references and refine it until it passes an Awwwards-style score.
+- `grill-me` and `grill-with-docs` interview the user about a plan; the latter also updates `CONTEXT.md`, ADRs and PoC decision logs.
+- `show-me`, `yomiyasu` and `i-have-adhd` are vendored; see [Vendored skills](#vendored-skills).
+
 Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones instead of reintroducing a command.
 
 `scripts/llm.sh` links each skill into `~/.claude/skills/` individually rather than linking the directory, so a skill added under `llm/skills/` appears only after `make llm`, and one removed or renamed leaves a dangling link to delete by hand.
@@ -52,7 +60,7 @@ Impeccable は上流の CLI で Codex 用スキルを `~/.agents/skills/impeccab
 
 自動チェックのフックはプロジェクトごとに導入する。そのプロジェクトで `npx impeccable install --providers=codex --scope=project --yes` を実行し、Codex の `/hooks` で承認する。dotfiles のセットアップではプロジェクトのフックを追加しない。[上流の導入手順](https://github.com/pbakaus/impeccable#installation)を参照。
 
-ほかのプラグインは自動移植しない。AutoHarness、pstack、env、mission-control、LSP などには別途 Codex 対応の確認が必要。token-weather のキャッシュ表示も標準ステータス行では再現しない。既存の Orca/herdr フックは保持し、タブ名には下記の Codex 専用フックを追加する。`AGENTS.md` の `@~/.claude/pstack-models.md` は Codex では自動展開されず、Claude のモデル別名も移植しない。
+ほかのプラグインは自動移植しない。AutoHarness、pstack、env、mission-control、LSP などには別途 Codex 対応の確認が必要。token-weather のキャッシュ表示も標準ステータス行では再現しない。既存の herdr フックは保持し、タブ名には下記の Codex 専用フックを追加する。`AGENTS.md` の `@~/.claude/pstack-models.md` は Codex では自動展開されず、Claude のモデル別名も移植しない。
 
 設定形式と自動レビューは [OpenAI の設定リファレンス](https://learn.chatgpt.com/docs/config-file/config-reference)、用途別ファイルは [プロファイルの仕様](https://learn.chatgpt.com/docs/config-file/config-advanced) に従う。Codex CLI 0.164.0 で検証。
 
@@ -60,6 +68,12 @@ Impeccable は上流の CLI で Codex 用スキルを `~/.agents/skills/impeccab
 
 `llm/upstream-skills.tsv` records the upstream commit each vendored skill has been reviewed through. `scripts/llm.sh` prints a compare URL when upstream has moved past that commit; it applies nothing, because these are prompts that have to be read before they're taken. It fails open on a missing `gh`, an unreachable network, or a missing manifest.
 
+
+### `show-me` (from `humanlayer/skills`)
+
+Turns the current topic into the smallest visual that makes the point: pseudocode, a call or file tree, Mermaid, a `diff`, or a focused HTML file. `llm/AGENTS.md` sends PR descriptions and design documents through it unprompted, so the model has to be able to reach for it on its own.
+
+Upstream's `Make show-me user-invocable` commit adds `disable-model-invocation: true`, which would stop exactly that. The local copy leaves the flag off, and the manifest is pinned past that commit so the next upstream review starts after it.
 
 ### `yomiyasu` (from `nanaism/yomiyasu`)
 

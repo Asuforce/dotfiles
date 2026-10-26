@@ -6,7 +6,7 @@
 
 ```sh
 # Run bootstrap script (automatically clones repository and runs full setup)
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/Asuforce/dotfiles/master/scripts/bootstrap.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Asuforce/dotfiles/main/scripts/bootstrap.sh)"
 
 # Restart your shell
 exec $SHELL -l

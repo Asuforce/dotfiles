@@ -41,9 +41,11 @@ scripts/llm.sh     : settings.json untracked (created as `{}` if absent; hooks
                      llm/permissions-allow.json unioned into
                      permissions.allow, Linux only); skills linked one by one. No theme or
                      model is written.
-scripts/runtime.sh : mise owns ~/.config/mise/config.toml; python, node (lts)
-                     and ruby are added with `mise use -g` unless the file
-                     already names them.
+scripts/runtime.sh : mise owns ~/.config/mise/config.toml; python, node (lts),
+                     ruby, uv and pypi:graphifyy are added with `mise use -g`
+                     unless the file already names them. It then copies the
+                     graphify skill into ~/.claude/skills (and ~/.codex/skills
+                     when codex is on PATH).
 ```
 
 `link_config` in `link.sh` prints `skipped, already exists: <path>` when it
@@ -138,6 +140,11 @@ block.
    anything below it never runs in an interactive shell. If it is gone or no
    longer last, remove it and re-run `make link`. (`omarchy-refresh-shell` only
    resets `shell.json`.)
+4. `make runtime`, then `ls ~/.claude/skills/graphify` and `git -C <repo>
+   status`. Pass: mise installs `pypi:graphifyy` (added after the checks above
+   ran), the skill directory holds `SKILL.md`, and `llm/AGENTS.md` is unchanged.
+   If uv fails with `UnknownIssuer`, the network inspects TLS; set
+   `system-certs = true` in `~/.config/uv/uv.toml` on that machine only.
 
 `omarchy-refresh-config` does `cp -f` through a symlink, so a manual reset of a
 linked config (git, ghostty) overwrites the repo's file. Nothing calls it

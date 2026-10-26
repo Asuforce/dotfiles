@@ -10,7 +10,7 @@ endif
 	@printf "\033[32m✓ Setup completed\033[0m\n"
 
 help:
-	@printf "Phase 1: Modularized Setup\n"
+	@printf "dotfiles setup\n"
 	@printf "\nAvailable targets:\n"
 	@printf "  make all       - Run all setup (default)\n"
 	@printf "  make xcode     - Install Xcode Command Line Tools\n"
