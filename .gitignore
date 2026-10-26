@@ -21,3 +21,4 @@
 /graphify-out/cost.json
 /graphify-out/cache/ast/
 /graphify-out/cache/stat-index.json
+/graphify-out/cache/hook_sessions/
