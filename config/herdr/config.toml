@@ -21,16 +21,8 @@ prefix = "ctrl+g"
 # Unbound by default.
 copy_mode = "prefix+["
 
-# Review an agent's in-progress changes without disturbing the tab layout.
-[[keys.command]]
-key = "prefix+alt+g"
-type = "popup"
-# Through a login shell: the popup's PATH lacks Homebrew's bin.
-command = "$SHELL -lc lazygit"
-width = "80%"
-height = "80%"
-
-# Live diff to the right of the active pane.
+# Live diff to the right of the active pane. Through a login shell: commands
+# run with a PATH that lacks Homebrew's bin.
 [[keys.command]]
 key = "prefix+alt+d"
 type = "shell"
