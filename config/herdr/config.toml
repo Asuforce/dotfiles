@@ -21,6 +21,21 @@ prefix = "ctrl+g"
 # Unbound by default.
 copy_mode = "prefix+["
 
+# Review an agent's in-progress changes without disturbing the tab layout.
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+# Through a login shell: the popup's PATH lacks Homebrew's bin.
+command = "$SHELL -lc lazygit"
+width = "80%"
+height = "80%"
+
+# Live diff to the right of the active pane.
+[[keys.command]]
+key = "prefix+alt+d"
+type = "shell"
+command = '''$SHELL -lc 'p=$(herdr pane split --pane "$HERDR_ACTIVE_PANE_ID" --direction right --cwd "$HERDR_ACTIVE_PANE_CWD" --focus | jq -r .result.pane.pane_id) && herdr pane run "$p" "hunk diff --watch"' '''
+
 [ui]
 tab_bar_right = [
   { type = "hostname" },
