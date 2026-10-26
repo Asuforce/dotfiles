@@ -66,6 +66,35 @@ if graphify_bin="$(mise which graphify 2>/dev/null)"; then
   if command -v codex >/dev/null 2>&1; then
     "$graphify_bin" install --platform codex >/dev/null
   fi
+
+  # The PreToolUse hooks `graphify claude install` would put in a project's
+  # .claude/settings.json, registered user-wide instead: the guard prints
+  # nothing unless ./graphify-out/graph.json exists, so other repos see no
+  # change. The bare command resolves through the mise shim, which survives
+  # graphify upgrades where the absolute path would not.
+  readonly CLAUDE_SETTINGS_FILE="$HOME/.claude/settings.json"
+  if ! command -v jq >/dev/null 2>&1 || [ ! -f "$CLAUDE_SETTINGS_FILE" ]; then
+    printf "jq or Claude settings not found; skipping graphify hooks.\n"
+  else
+    for guard in "Bash|Grep:search" "Read|Glob:read"; do
+      matcher="${guard%%:*}"
+      command="graphify hook-guard ${guard##*:}"
+      if jq -e --arg cmd "$command" \
+          '[(.hooks.PreToolUse // [])[].hooks[]?.command] | index($cmd)' \
+          "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+        continue
+      fi
+      printf "Registering graphify %s hook on PreToolUse...\n" "${guard##*:}"
+      settings_tmp="$(mktemp)"
+      jq --arg matcher "$matcher" --arg cmd "$command" \
+        '.hooks.PreToolUse = ((.hooks.PreToolUse // []) + [{
+           matcher: $matcher,
+           hooks: [{ type: "command", command: $cmd, timeout: 10 }]
+         }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+        && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+        || rm -f "$settings_tmp"
+    done
+  fi
 else
   printf "graphify not found; skipping graphify skills.\n"
 fi

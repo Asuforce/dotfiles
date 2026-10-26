@@ -132,13 +132,16 @@ scripts/runtime.sh
     <一時>/skills/graphify ──移動──▶ ~/.claude/skills/graphify
     <一時>/CLAUDE.md                  # 捨てる
   graphify install --platform codex ─▶ ~/.codex/skills/graphify（codex があるときだけ）
+  jq で ~/.claude/settings.json の PreToolUse に追加（未登録のときだけ）
+    Bash|Grep ─▶ graphify hook-guard search
+    Read|Glob ─▶ graphify hook-guard read
 ```
 
 ユーザースコープの `graphify install` は `~/.claude/CLAUDE.md` に登録ブロックを追記する。この環境ではそれが `llm/AGENTS.md` へのリンクなので、一時ディレクトリに書かせてスキルだけを取り出す。Claude Code はフロントマターからスキルを見つけるため、ブロックがなくても `/graphify` は動く。`make all` は llm を runtime より先に実行するので、この処理は `llm.sh` ではなく `runtime.sh` に置いている。
 
 Codex は並列抽出に `[features] multi_agent = true` を要するため、`llm/codex.toml` に入れている。
 
-検索系ツールの前にグラフ参照を促す PreToolUse フックと、プロジェクトの `CLAUDE.md` / `AGENTS.md` への常時指示は、リポジトリごとに `graphify claude install` / `graphify codex install` で入れる。dotfiles では扱わない。
+検索や読み取りの前にグラフ参照を促す PreToolUse フックは、`graphify claude install` ならプロジェクトの `.claude/settings.json` に入るが、ここではユーザー設定に入れる。ガードはカレントディレクトリに `graphify-out/graph.json` があるときだけ指示を出すので、グラフのないリポジトリでは何も起きない。コマンドは絶対パスではなく `graphify` と書き、mise の shim を通してバージョン更新後も動くようにしている。プロジェクトの `CLAUDE.md` / `AGENTS.md` への常時指示と git フックは dotfiles では扱わない。
 
 ## herdr integration
 
