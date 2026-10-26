@@ -14,3 +14,8 @@ Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since H
 - The shell already starts in the working directory. Do not prefix commands with `cd`; use absolute paths or a tool's own directory flag (`git -C`, `pnpm -C`).
 
 @~/.claude/pstack-models.md
+
+# graphify
+- **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
+When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
+When a question is about a codebase's architecture or file relationships and `graphify-out/` exists in the working directory, read `graphify-out/GRAPH_REPORT.md` before searching files.
