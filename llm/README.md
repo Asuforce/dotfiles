@@ -12,6 +12,7 @@ Reusable agent instructions live in `llm/skills/<name>/SKILL.md` only — there 
 - `guide` — plan mode explores read-only and presents options for approval, with the `Plan` and `feature-dev:code-architect` agents for the same job in a subagent.
 - `empirical-prompt-tuning` — `claude plugin eval` runs eval cases with LLM graders, repeated runs, and a no-plugin ablation arm, and resolves a `~/.claude/skills/<name>` directory as a target.
 - `find-skills` — `/plugin` and `claude plugin install` discover and install skills without the separate `npx skills` ecosystem it assumed.
+- `autopilot`, then `asuforce-mode` — a hand-rolled copy of pstack's autonomous run (grill, then work through to merge on personal repos only), replaced by the pstack plugin's `poteto-mode` itself.
 
 Current roster, each with no built-in or plugin equivalent:
 
