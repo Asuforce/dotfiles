@@ -180,10 +180,10 @@
     "semantic_hash": "71c3817a9574d394f0037d2bbf2b979f"
   },
   "scripts/runtime.sh": {
-    "mtime": 1792977567.1574228,
-    "seen": 1792978434.821145,
-    "ast_hash": "f053d7f71d4ac343ee4343383bcdb129",
-    "semantic_hash": "f053d7f71d4ac343ee4343383bcdb129"
+    "mtime": 1793000251.206959,
+    "seen": 1793000783.198379,
+    "ast_hash": "a683e83fca899f71712cd4be190deeb8",
+    "semantic_hash": "a683e83fca899f71712cd4be190deeb8"
   },
   "scripts/tests/test_codex_title.py": {
     "mtime": 1792974986.0524147,
@@ -198,40 +198,22 @@
     "semantic_hash": "b19b5d6dc207cd9ee05cda08f8c938cc"
   },
   "CLAUDE.md": {
-    "mtime": 1792367645.1454153,
-    "seen": 1792978434.821147,
-    "ast_hash": "802b8e7f8b5e49db3a71a2a119638f90",
-    "semantic_hash": "802b8e7f8b5e49db3a71a2a119638f90"
+    "mtime": 1793000115.414774,
+    "seen": 1793000783.19838,
+    "ast_hash": "098b55c408c3c5cb3b839a159a753de9",
+    "semantic_hash": "098b55c408c3c5cb3b839a159a753de9"
   },
   "README.md": {
-    "mtime": 1792658060.464562,
-    "seen": 1792978434.821147,
-    "ast_hash": "1779f39f9846c5a8cee2a597d1138770",
-    "semantic_hash": "1779f39f9846c5a8cee2a597d1138770"
+    "mtime": 1792979470.6074445,
+    "seen": 1793000783.198381,
+    "ast_hash": "f32bfa6634a1ef8a84877785606149f3",
+    "semantic_hash": "f32bfa6634a1ef8a84877785606149f3"
   },
   "config/packages/linux.txt": {
     "mtime": 1792367645.1467254,
     "seen": 1792978434.821148,
     "ast_hash": "96e2b88e7a6ed6fa3844d4e55c1aa38a",
     "semantic_hash": "96e2b88e7a6ed6fa3844d4e55c1aa38a"
-  },
-  "docs/poc/autopilot/2026-10-04-autopilot-scope-and-gates.md": {
-    "mtime": 1791158238.4939127,
-    "seen": 1792978434.821148,
-    "ast_hash": "8cb096cf906c3f77eb88310fb89882da",
-    "semantic_hash": "8cb096cf906c3f77eb88310fb89882da"
-  },
-  "docs/poc/jev-integration/2026-09-28-migration-prefilter.md": {
-    "mtime": 1790559822.9724462,
-    "seen": 1792978434.821148,
-    "ast_hash": "06ca79e929884f91495800840376b0a3",
-    "semantic_hash": "06ca79e929884f91495800840376b0a3"
-  },
-  "docs/poc/omarchy4-migration/2026-10-01-status-for-omarchy-agent.md": {
-    "mtime": 1792367645.1475177,
-    "seen": 1792978434.8211489,
-    "ast_hash": "92dd09b41a08fc0920fd7e5701e3bbcc",
-    "semantic_hash": "92dd09b41a08fc0920fd7e5701e3bbcc"
   },
   "llm/AGENTS.md": {
     "mtime": 1792974986.0482047,
@@ -240,10 +222,10 @@
     "semantic_hash": "7dcee32b7720b6571e2d901d2c4a4588"
   },
   "llm/README.md": {
-    "mtime": 1792977567.5104723,
-    "seen": 1792978434.82115,
-    "ast_hash": "083a00d366ecb810eba42004b17cd9ea",
-    "semantic_hash": "083a00d366ecb810eba42004b17cd9ea"
+    "mtime": 1793000271.3066428,
+    "seen": 1793000783.198381,
+    "ast_hash": "d87080f329a5576120264e7d283b8d8f",
+    "semantic_hash": "d87080f329a5576120264e7d283b8d8f"
   },
   "llm/pstack-codex.md": {
     "mtime": 1792974986.0497503,
