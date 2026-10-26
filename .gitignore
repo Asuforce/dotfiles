@@ -10,15 +10,3 @@
 # scripts/llm.sh symlinks ~/.claude/skills to llm/skills, so Claude Code's own
 # runtime sync of bundled anthropic-skills lands here instead of ~/.claude/skills/synced/.
 /llm/skills/synced/
-
-# graphify-out/ is shared so other machines start from the built graph and reuse
-# the semantic cache instead of re-running the LLM pass. These parts are local:
-# interpreter and root paths are absolute, cost is per-run, the AST cache and
-# stat index are cheap to rebuild and churn on mtimes.
-/graphify-out/.graphify_python
-/graphify-out/.graphify_root
-/graphify-out/.graphify_labels.pending.json
-/graphify-out/cost.json
-/graphify-out/cache/ast/
-/graphify-out/cache/stat-index.json
-/graphify-out/cache/hook_sessions/

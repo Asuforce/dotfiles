@@ -1,4 +1,7 @@
-/cache/
+# The semantic cache is shared so other machines replay the LLM extraction
+# instead of paying for it again; the rest of the cache is local.
+/cache/*
+!/cache/semantic/
 /.graphify_*
 /.vocab.txt
 /.needs_update

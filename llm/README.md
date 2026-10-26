@@ -141,7 +141,9 @@ scripts/runtime.sh
 
 Codex は並列抽出に `[features] multi_agent = true` を要するため、`llm/codex.toml` に入れている。
 
-検索や読み取りの前にグラフ参照を促す PreToolUse フックは、`graphify claude install` ならプロジェクトの `.claude/settings.json` に入るが、ここではユーザー設定に入れる。ガードはカレントディレクトリに `graphify-out/graph.json` があるときだけ指示を出すので、グラフのないリポジトリでは何も起きない。コマンドは絶対パスではなく `graphify` と書き、mise の shim を通してバージョン更新後も動くようにしている。プロジェクトの `CLAUDE.md` / `AGENTS.md` への常時指示と git フックは dotfiles では扱わない。
+検索や読み取りの前にグラフ参照を促す PreToolUse フックは、`graphify claude install` ならプロジェクトの `.claude/settings.json` に入るが、ここではユーザー設定に入れる。ガードはカレントディレクトリに `graphify-out/graph.json` があるときだけ指示を出すので、グラフのないリポジトリでは何も起きない。コマンドは絶対パスではなく `graphify` と書き、mise の shim を通してバージョン更新後も動くようにしている。グラフ参照の常時指示は `llm/AGENTS.md` の `# graphify` 節に書いてある。git フックは入れない。
+
+このリポジトリのグラフは `graphify-out/` にコミットし、別のマシンでもビルドせずに使えるようにしている。コミットするのはグラフ本体、レポート、HTML、manifest、cost.json と意味抽出のキャッシュ（`cache/semantic/`）で、ほかのキャッシュと一時ファイルは `graphify-out/.gitignore` で除外している。意味キャッシュを共有するので、別のマシンの `--update` は変わったドキュメントだけを LLM で抽出し直す。`.gitattributes` は `graph.json` に graphify の merge driver を指定しているが、driver は `graphify hook install` でしか登録されないので、未登録のマシンでは通常の 3-way マージになる。
 
 ## herdr integration
 
