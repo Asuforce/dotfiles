@@ -123,6 +123,27 @@ class HookTest(unittest.TestCase):
         self.stop()
         self.assertEqual(self.renames, [])
 
+    def test_clear_resets_claude_title_from_same_pane(self):
+        directory = Path(self.temp.name) / "herdr-tab-title"
+        directory.mkdir()
+        record = directory / "w1:p1"
+        record.write_text("Claudeの自動タイトル")
+        self.label = "Claudeの自動タイトル"
+        self.event("SessionStart", source="clear")
+        self.assertEqual(self.label, "1")
+        self.assertFalse(record.exists())
+
+    def test_clear_keeps_manual_and_other_pane_claude_titles(self):
+        directory = Path(self.temp.name) / "herdr-tab-title"
+        directory.mkdir()
+        (directory / "w1:p1").write_text("以前の自動タイトル")
+        (directory / "w1:p2").write_text("別ペインのタイトル")
+        for label in ("手動タイトル", "別ペインのタイトル"):
+            self.label = label
+            self.event("SessionStart", source="clear")
+            self.assertEqual(self.label, label)
+        self.assertTrue((directory / "w1:p1").exists())
+
     def test_recursive_call_is_ignored(self):
         with patch.dict(os.environ, {"HERDR_TITLE_GENERATING": "1"}):
             self.prompt()

@@ -96,8 +96,19 @@ def main():
         state = read_state(path)
         if kind == "SessionStart" and event.get("source") in ("startup", "clear", "fork"):
             tab = herdr("get", tab_id)["result"]["tab"]
-            if state.get("applied") == tab["label"] and tab.get("number") is not None:
+            # /clear may follow switching from Claude Code in the same pane.
+            # Its ownership record distinguishes an automatic title from a
+            # manual label; never borrow another pane's record.
+            claude_path = directory.parent / "herdr-tab-title" / pane_id.replace("/", "_")
+            claude_title = (
+                claude_path.read_text()
+                if event.get("source") == "clear" and claude_path.exists()
+                else None
+            )
+            if tab["label"] in (state.get("applied"), claude_title) and tab.get("number") is not None:
                 herdr("rename", tab_id, str(tab["number"]))
+                if claude_title == tab["label"]:
+                    claude_path.unlink(missing_ok=True)
             write_state(path, {"session": session})
             return
         if kind == "UserPromptSubmit":

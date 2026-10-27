@@ -292,6 +292,24 @@ alias cat='bat'
 # @system
 alias vi='nvim'
 
+# Herdr hooks need this pane's environment, not the shared daemon's old IDs.
+codex() {
+  if [[ "${HERDR_ENV:-}" = 1 ]]; then
+    case "${1:-}" in
+      agents|app-server|remote-control) command codex "$@"; return ;;
+    esac
+    local arg
+    for arg in "$@"; do
+      case "$arg" in
+        --remote|--remote=*) command codex "$@"; return ;;
+      esac
+    done
+    command codex --no-daemon "$@"
+  else
+    command codex "$@"
+  fi
+}
+
 # GNU sed on macOS
 if [[ "$(uname)" == "Darwin" ]]; then
   # @system

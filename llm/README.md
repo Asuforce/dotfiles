@@ -156,12 +156,20 @@ Codex は並列抽出に `[features] multi_agent = true` を要するため、`l
 
 Codex では `scripts/codex.sh` が `codex-herdr-tab-title.py` をリンクし、既存の `hooks.json` に次の処理を追加する。再実行しても重複登録しない。設定後は Codex を起動し直し、対話操作の `/hooks` で追加した3つのフックを確認・信頼する必要がある。
 
+herdr 内では zsh の `codex` 関数が `--no-daemon` を付ける。共有常駐サーバーの起動時の `HERDR_TAB_ID`・`HERDR_PANE_ID` が別ペインのフックにも渡るのを避けるため。`resume`・`fork` にも適用するが、`agents`・`app-server`・`remote-control` と明示的な `--remote` 接続は元の引数で実行する。`command codex` やシェル関数を通さない起動では、必要に応じて `--no-daemon` を指定する。
+
+```text
+herdr の各ペイン → zsh の codex --no-daemon
+                 → 同じペインの ID でフックを実行
+```
+
 ```text
 UserPromptSubmit → ユーザー発言を保存
 Stop（バックグラウンド）
   → 直近6発言と前回のタイトルを codex exec で要約
   → 24文字以内の日本語タイトルで herdr のタブ名を更新
-SessionStart（startup / clear / fork）→ 自分が付けた名前だけ番号に戻す
+SessionStart（startup / clear / fork）→ 自分が付けた名前を番号に戻す
+  clear では同じペインで Claude Code が付けた名前も対象
 ```
 
 各発言は先頭4,000文字まで、状態は `~/.local/state/codex-herdr-tab-title/`（`XDG_STATE_HOME` 対応）に保存する。会話全体の transcript は解析しない。要約には既存の Codex 認証を使い、応答ごとに追加のモデル利用が発生する。モデルの既定値は `gpt-6-luna` で、Codex 起動前の環境変数 `HERDR_TITLE_MODEL` で変更できる。要約用プロセスはユーザー設定を読み込まないため、独自のモデルプロバイダー設定は引き継がない。
