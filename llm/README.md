@@ -101,7 +101,7 @@ Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor 
 llm/plugins.tsv
 ├─ tigerless-labs/autoharness   autoharness@autoharness
 ├─ hamzafer/claude-code-mods    token-weather, mission-control, usage-meter
-├─ davekiss/mods                env@davekiss
+├─ davekiss/env                 env@davekiss
 ├─ -                            cc-plugin-you-should-know@builtin
 ├─ cursor/plugins               pstack@cursor-plugins
 ├─ pbakaus/impeccable           impeccable@impeccable
