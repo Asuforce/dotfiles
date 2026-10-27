@@ -95,23 +95,24 @@ Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor 
 
 ## Plugins
 
-`llm/plugins.tsv` lists the plugins `scripts/llm.sh` installs, one `<marketplace source>\t<plugin id>[\t<OS>]` per line, so a new machine gets the same set from `make llm`. The script adds each marketplace and installs each plugin at scope `user`, skipping what is already there (`claude plugin marketplace list --json` / `claude plugin list --json`). A source of `-` marks a plugin Claude Code ships itself, which is enabled through `enabledPlugins` instead and checked there, since `claude plugin list` does not show it. A third column holding a `uname -s` name (`Linux`) limits the row to that OS; other systems print a skip line.
+`llm/plugins.tsv` lists the plugins `scripts/llm.sh` installs, one `<marketplace source>\t<plugin id>[\t<OS>]` per line, so a new machine gets the same set from `make llm`. The script refreshes every marketplace, adds each missing one and installs each missing plugin at scope `user` (`claude plugin marketplace list --json` / `claude plugin list --json`), and runs `claude plugin update` on the plugins already there. A failed refresh or update prints a line and the run continues. A source of `-` marks a plugin Claude Code ships itself, which is enabled through `enabledPlugins` instead and checked there, since `claude plugin list` does not show it. A third column holding a `uname -s` name (`Linux`) limits the row to that OS; other systems print a skip line.
 
 ```
 llm/plugins.tsv
 ├─ tigerless-labs/autoharness   autoharness@autoharness
 ├─ hamzafer/claude-code-mods    token-weather, mission-control, usage-meter
-├─ davekiss/env                 env@davekiss
+├─ davekiss/mods                env@davekiss
 ├─ -                            cc-plugin-you-should-know@builtin
 ├─ cursor/plugins               pstack@cursor-plugins
 ├─ pbakaus/impeccable           impeccable@impeccable
+├─ openai/codex-plugin-cc       codex@openai-codex
 └─ backnotprop/plannotator      plannotator@plannotator
 
 llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
 llm/pstack-codex.md ────link──▶ ~/.claude/rules/pstack-codex.md
 ```
 
-They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump needs `claude plugin marketplace update <name> && claude plugin update <id>`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
+They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump takes `make llm`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
 
 - `autoharness` self-learns skills from session work into `.claude/skills/` and prunes them by usage rate. It ships a Python backend, an MCP server (`stage_skill`) and `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks.
 - `token-weather` draws the context fill and a prompt-cache countdown above the prompt. Session transcripts here reach 500k to 880k tokens and often sit idle for over five minutes, which is where both readouts pay off.

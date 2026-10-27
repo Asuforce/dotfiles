@@ -235,6 +235,9 @@ if ! command -v jq >/dev/null 2>&1; then
 elif ! command -v claude >/dev/null 2>&1; then
   printf "claude not found; skipping plugin install.\n"
 else
+  # Refresh catalogs first so plugin update sees upstream's latest versions.
+  claude plugin marketplace update </dev/null \
+    || printf "Some marketplaces could not be refreshed; continuing.\n"
   while IFS=$'\t' read -r source plugin only_os || [ -n "${plugin:-}" ]; do
     case "$source" in '' | '#'*) continue ;; esac
     if [ -n "${only_os:-}" ] && [ "$only_os" != "$(uname -s)" ]; then
@@ -260,7 +263,9 @@ else
 
     if claude plugin list --json 2>/dev/null \
         | jq -e --arg id "$plugin" '.[] | select(.id == $id)' >/dev/null 2>&1; then
-      printf "%s already installed.\n" "$plugin"
+      printf "Updating %s...\n" "$plugin"
+      claude plugin update "$plugin" --scope user -y </dev/null \
+        || printf "Could not update %s; continuing.\n" "$plugin"
     else
       printf "Installing %s...\n" "$plugin"
       claude plugin install "$plugin" --scope user -y </dev/null
