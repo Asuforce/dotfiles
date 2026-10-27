@@ -51,7 +51,7 @@ llm/mcps/{coding,browser,infra}.json
 | モデル、作業先、ブランチ、コンテキスト、利用枠 | Codex 標準ステータス行と通知 |
 | MCP 定義 | stdio/URL、引数、環境変数、無効化状態を TOML に変換 |
 
-用途別 MCP は `codex --profile coding`、`codex --profile browser`、`codex --profile infra` で選ぶ。通常起動でも Context7 を読み込み、各プロファイルはベース設定へ MCP を追加する。サーバー実行時には `npx` または `uvx` とネットワークが必要。
+用途別 MCP は `codex --profile coding`、`codex --profile browser`、`codex --profile infra` で選ぶ。通常起動でも Context7 と Plannotator Inbox（`plannotator inbox mcp`、CLI が PATH にあること）を読み込み、各プロファイルはベース設定へ MCP を追加する。サーバー実行時には `npx` または `uvx` とネットワークが必要。
 
 設定追加時は既存の値、コメント、フックの信頼情報、プロジェクト設定を維持する。既存の同名 MCP サーバーは丸ごと優先する。変更前のファイルは初回だけ `<ファイル名>.pre-dotfiles.bak` に保存する。再実行は未設定項目の補充なので、以後の設定変更はローカルファイルで行う。カスタム権限プロファイルが設定済みなら、従来の sandbox 設定は追加しない。
 
@@ -104,7 +104,8 @@ llm/plugins.tsv
 ├─ davekiss/env                 env@davekiss
 ├─ -                            cc-plugin-you-should-know@builtin
 ├─ cursor/plugins               pstack@cursor-plugins
-└─ pbakaus/impeccable           impeccable@impeccable
+├─ pbakaus/impeccable           impeccable@impeccable
+└─ backnotprop/plannotator      plannotator@plannotator
 
 llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
 llm/pstack-codex.md ────link──▶ ~/.claude/rules/pstack-codex.md
@@ -120,6 +121,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
 - `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports. That file can only name Claude models, so `llm/pstack-codex.md` is linked next to the priority rules to route the coding roles to `codex:codex-rescue` (from `openai/codex-plugin-cc`) and to pin Codex's model and effort per task class for cost: `gpt-6.1-sol` at `low` by default (perf work included), `gpt-6-luna` for mechanical edits, `high` only after a run fails verification.
 - `impeccable` is a single skill, `/impeccable <command>`, with 24 design commands (`critique`, `audit`, `polish`, `distill`, and so on) for improving a web UI, plus a detector of 61 AI-design tells. It ships `SessionStart`/`PostToolUse`/`Stop` hooks that check UI files after edits; they act per project, switched by `/impeccable hooks on|off`. Run `/impeccable init` once in a project to write `PRODUCT.md`.
+- `plannotator` adds the `plannotator_inbox` tool, through which Claude leaves messages and questions in the Plannotator Inbox (`plannotator inbox` opens it) for the user to answer later without blocking the session, plus plan review and annotate hooks. It calls the `plannotator` CLI, which the upstream installer puts in `~/.local/bin` and this repo does not install.
 
 ## graphify
 
