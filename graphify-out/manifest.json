@@ -54,10 +54,10 @@
     "semantic_hash": "3e1ca5a88a602b4ca9960dd3895ebee0"
   },
   "llm/hooks/codex-herdr-tab-title.py": {
-    "mtime": 1792892052.8331907,
-    "seen": 1793087178.645774,
-    "ast_hash": "9d72a3aa77fb4b3ec0d51269819f70e8",
-    "semantic_hash": "9d72a3aa77fb4b3ec0d51269819f70e8"
+    "mtime": 1793096264.8800673,
+    "seen": 1793096356.7262502,
+    "ast_hash": "5164b306ff15a717e34325459be19fa0",
+    "semantic_hash": ""
   },
   "llm/hooks/herdr-repo-workspace.sh": {
     "mtime": 1790767531.6375742,
@@ -186,10 +186,10 @@
     "semantic_hash": "362adef2dd1e031a55f6d0c8955d9746"
   },
   "scripts/tests/test_codex_title.py": {
-    "mtime": 1792892073.5655398,
-    "seen": 1793087178.6458373,
-    "ast_hash": "c4e8d550e1933051861066af0fc75ea8",
-    "semantic_hash": "c4e8d550e1933051861066af0fc75ea8"
+    "mtime": 1793096264.9420688,
+    "seen": 1793096356.7263236,
+    "ast_hash": "fdc6e8477cd47cf6bc2ecf59fa1b6b9f",
+    "semantic_hash": ""
   },
   "scripts/xcode.sh": {
     "mtime": 1790767531.6390142,
@@ -222,16 +222,16 @@
     "semantic_hash": "a568e4fab76d533b07fa5c5c15e8d2a0"
   },
   "llm/README.md": {
-    "mtime": 1793088398.6298287,
-    "seen": 1793089441.369286,
-    "ast_hash": "5b57774c8aa6ba8e7d8ac81dfbd28fbb",
-    "semantic_hash": "5b57774c8aa6ba8e7d8ac81dfbd28fbb"
+    "mtime": 1793096798.3940566,
+    "seen": 1793096816.7700422,
+    "ast_hash": "c20fad47d2aa4bb28f144956d9bcc236",
+    "semantic_hash": ""
   },
   "llm/pstack-codex.md": {
-    "mtime": 1792919485.4004028,
-    "seen": 1793089441.3692892,
-    "ast_hash": "787e698b21ba9a693461480e1e23c890",
-    "semantic_hash": "787e698b21ba9a693461480e1e23c890"
+    "mtime": 1793090977.5563462,
+    "seen": 1793096356.7263458,
+    "ast_hash": "be2311bbef0f5a7afc3f66328160e10b",
+    "semantic_hash": ""
   },
   "llm/pstack-priority.md": {
     "mtime": 1792274671.5026817,
