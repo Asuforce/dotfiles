@@ -28,7 +28,9 @@ fi
 # added with `mise use -g` only when the file does not name it yet, which keeps
 # whatever version omarchy (or the user) already chose.
 readonly MISE_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/mise/config.toml"
-RUNTIMES=(python@3.12.10 node@lts ruby@3.4.8 uv@latest pypi:graphifyy@latest)
+# Languages follow lts where mise has that alias (node) and latest otherwise,
+# since python and ruby publish no lts.
+RUNTIMES=(python@latest node@lts ruby@latest uv@latest pypi:graphifyy@latest)
 # gcloud and go-jsonnet are mise-managed on Linux only; macOS gets them outside
 # mise (the former outside this repo, the latter from the Brewfile).
 if [[ "$(uname -s)" != "Darwin" ]]; then
