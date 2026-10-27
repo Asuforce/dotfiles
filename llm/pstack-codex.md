@@ -20,7 +20,7 @@ Pass these to `codex:codex-rescue` explicitly, since it leaves both unset otherw
 
 | Task | `--model` | `--effort` |
 |---|---|---|
-| Default implementation, bug-fix, refactoring, perf work | `gpt-6.1-sol` | `low` |
+| Default implementation, bug-fix, refactoring, perf work | `gpt-6.1-terra` | `low` |
 | Mechanical edits: renames, boilerplate, test scaffolding, config | `gpt-6-luna` | `medium` |
 | A task a `low` run failed to verify | `gpt-6.1-sol` | `high` |
 
