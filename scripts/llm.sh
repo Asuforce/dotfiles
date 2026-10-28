@@ -255,10 +255,17 @@ else
       continue
     fi
 
-    if ! claude plugin marketplace list --json 2>/dev/null \
-        | jq -e --arg repo "$source" '.[] | select(.repo == $repo)' >/dev/null 2>&1; then
+    # Match by catalog name, not repo: a machine may have registered the same
+    # catalog from an older source, and re-adding it would fail.
+    marketplace="${plugin#*@}"
+    registered_repo="$(claude plugin marketplace list --json 2>/dev/null \
+      | jq -r --arg name "$marketplace" '.[] | select(.name == $name) | .repo' 2>/dev/null)"
+    if [ -z "$registered_repo" ]; then
       printf "Adding marketplace %s...\n" "$source"
       claude plugin marketplace add "$source" </dev/null
+    elif [ "$registered_repo" != "$source" ]; then
+      printf "Marketplace %s is registered from %s, not %s; keeping it.\n" \
+        "$marketplace" "$registered_repo" "$source"
     fi
 
     if claude plugin list --json 2>/dev/null \
