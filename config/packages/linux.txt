@@ -41,5 +41,5 @@ official wget
 official yq
 official zsh
 
-# No Linux source known: envchain, hunk, orca-ide-bin
+# No Linux source known: envchain, hunk
 # go-jsonnet is installed by scripts/runtime.sh (mise), HackGen by scripts/pkg.sh.
