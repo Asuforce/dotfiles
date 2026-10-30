@@ -5,7 +5,7 @@ The `pstack` plugin is installed. While a pstack skill or playbook drives the ta
 | Point | pstack rule that applies | `~/.claude/CLAUDE.md` rule it replaces |
 |---|---|---|
 | Final reply | `poteto-mode`, "Writing the reply" | The three closing headings `Blocked on me`, `Changed`, `Found` |
-| PR and commit text | `opening-a-pr` with `technical-writing` and `unslop` | `show-me` visuals, short commit messages |
+| PR and commit text | `opening-a-pr` with `technical-writing` and `unslop` | The `pr` template, short commit messages |
 | Whether to ask | `poteto-mode` and `principle-never-block-on-the-human` | The default of asking at every fork |
 
 A question pstack keeps still goes through `AskUserQuestion`, options first. Replies stay in Japanese, and pstack's prose rules apply to the Japanese text.

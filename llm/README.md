@@ -20,7 +20,7 @@ Current roster, each with no built-in or plugin equivalent:
 - `claude-restart` restarts herdr panes still running an outdated Claude Code and resumes each session.
 - `design-renewal` and `design-score-loop` redesign a site from references and refine it until it passes an Awwwards-style score.
 - `grill-me` and `grill-with-docs` interview the user about a plan; the latter also updates `CONTEXT.md`, ADRs and PoC decision logs.
-- `show-me`, `yomiyasu` and `i-have-adhd` are vendored; see [Vendored skills](#vendored-skills).
+- `show-me`, `pr`, `yomiyasu` and `i-have-adhd` are vendored; see [Vendored skills](#vendored-skills).
 
 Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones instead of reintroducing a command.
 
@@ -72,9 +72,15 @@ Impeccable は上流の CLI で Codex 用スキルを `~/.agents/skills/impeccab
 
 ### `show-me` (from `humanlayer/skills`)
 
-Turns the current topic into the smallest visual that makes the point: pseudocode, a call or file tree, Mermaid, a `diff`, or a focused HTML file. `llm/AGENTS.md` sends PR descriptions and design documents through it unprompted, so the model has to be able to reach for it on its own.
+Turns the current topic into the smallest visual that makes the point: pseudocode, a call or file tree, Mermaid, a `diff`, or a focused HTML file. `llm/AGENTS.md` sends design documents through it unprompted, so the model has to be able to reach for it on its own.
 
 Upstream's `Make show-me user-invocable` commit adds `disable-model-invocation: true`, which would stop exactly that. The local copy leaves the flag off, and the manifest is pinned past that commit so the next upstream review starts after it.
+
+### `pr` (from `mattpocock/skills`)
+
+A PR body template: `Summary`, `Evidence` (before and after), and `Merge Danger` (one-way or two-way door, blast radius). Its `Summary` menu is `show-me`'s text visuals copied almost word for word, without the HTML option, so `llm/AGENTS.md` sends PR descriptions here instead of through `show-me`.
+
+pstack's `opening-a-pr` still wins while pstack drives the task (`llm/pstack-priority.md`), so `pr` shapes only PRs opened outside pstack. Its `GLOSSARY.md` line does nothing in a repo without one. Upstream's `agents/openai.yaml` was dropped as an other-vendor export.
 
 ### `yomiyasu` (from `nanaism/yomiyasu`)
 
