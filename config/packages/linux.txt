@@ -33,6 +33,7 @@ official php
 official procps-ng
 official sheldon
 official slack-desktop
+official t3code-bin
 official tig
 official tiny-dfr
 official tree
