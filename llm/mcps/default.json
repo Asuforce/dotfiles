@@ -5,12 +5,6 @@
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
       "env": {}
-    },
-    "plannotator-inbox": {
-      "type": "stdio",
-      "command": "plannotator",
-      "args": ["inbox", "mcp"],
-      "env": {}
     }
   }
 }
