@@ -13,6 +13,10 @@ Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since H
 - Run commands yourself. Hand over only interactive ones (login, password) or ones the classifier denied, and report a denial once.
 - The shell already starts in the working directory. Do not prefix commands with `cd`; use absolute paths or a tool's own directory flag (`git -C`, `pnpm -C`).
 
+## UI
+- Avoid secondary labels or descriptions that restate the primary label. Use grouping, spacing, and hierarchy to convey structure instead of explanatory text.
+- Keep text that carries information the layout cannot: form labels, units, constraints, consequences of destructive actions, and empty/error guidance. Icon-only controls still need accessible names.
+
 @~/.claude/pstack-models.md
 
 # graphify
