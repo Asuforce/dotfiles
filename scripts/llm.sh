@@ -213,6 +213,22 @@ else
     || rm -f "$settings_tmp"
 fi
 
+# mattpocock-skills ships its own code-review; hide the bundled one so the two
+# do not compete. skillOverrides leaves plugin skills alone. A machine that
+# already set the key keeps its value.
+printf "Hiding bundled code-review skill...\n"
+if ! command -v jq >/dev/null 2>&1; then
+  printf "jq not found; skipping skill overrides.\n"
+elif jq -e '.skillOverrides["code-review"]' "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+  printf "code-review override already set.\n"
+else
+  settings_tmp="$(mktemp)"
+  jq '.skillOverrides["code-review"] = "off"' \
+    "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+    && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+    || rm -f "$settings_tmp"
+fi
+
 # pstack's own session hook defers to CLAUDE.md, so the precedence has to be
 # written on the user's side.
 printf "Linking pstack priority rules...\n"

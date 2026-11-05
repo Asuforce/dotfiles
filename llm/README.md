@@ -8,7 +8,7 @@ Reusable agent instructions live in `llm/skills/<name>/SKILL.md` only — there 
 
 `apply-review`, `create-pr`, and `create-repo` moved over from commands and have since been dropped. `create-pr` gave way to pstack's `opening-a-pr`; `apply-review` and `create-repo` went unused in four weeks of session logs, since `code-review` and a plain request to `gh repo create` cover the same ground. Everything else was dropped once Claude Code shipped a built-in that already covered it — the standing test for whether a skill still belongs here:
 
-- `review-pr` — the built-in `code-review` skill takes a PR number and can post or apply its findings.
+- `review-pr` — `mattpocock-skills`' `code-review` reviews a branch or PR (the bundled `code-review` it first gave way to is now hidden).
 - `guide` — plan mode explores read-only and presents options for approval, with the `Plan` and `feature-dev:code-architect` agents for the same job in a subagent.
 - `empirical-prompt-tuning` — `claude plugin eval` runs eval cases with LLM graders, repeated runs, and a no-plugin ablation arm, and resolves a `~/.claude/skills/<name>` directory as a target.
 - `find-skills` — `/plugin` and `claude plugin install` discover and install skills without the separate `npx skills` ecosystem it assumed.
@@ -19,8 +19,7 @@ Current roster, each with no built-in or plugin equivalent:
 - `before-compact` saves durable memory before `/compact`.
 - `claude-restart` restarts herdr panes still running an outdated Claude Code and resumes each session.
 - `design-renewal` and `design-score-loop` redesign a site from references and refine it until it passes an Awwwards-style score.
-- `grill-me` and `grill-with-docs` interview the user about a plan; the latter also updates `CONTEXT.md`, ADRs and PoC decision logs.
-- `show-me`, `pr`, `yomiyasu` and `i-have-adhd` are vendored; see [Vendored skills](#vendored-skills).
+- `show-me`, `yomiyasu` and `i-have-adhd` are vendored; see [Vendored skills](#vendored-skills).
 
 Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones instead of reintroducing a command.
 
@@ -76,12 +75,6 @@ Turns the current topic into the smallest visual that makes the point: pseudocod
 
 Upstream's `Make show-me user-invocable` commit adds `disable-model-invocation: true`, which would stop exactly that. The local copy leaves the flag off, and the manifest is pinned past that commit so the next upstream review starts after it.
 
-### `pr` (from `mattpocock/skills`)
-
-A PR body template: `Summary`, `Evidence` (before and after), and `Merge Danger` (one-way or two-way door, blast radius). Its `Summary` menu is `show-me`'s text visuals copied almost word for word, without the HTML option, so `llm/AGENTS.md` sends PR descriptions here instead of through `show-me`.
-
-pstack's `opening-a-pr` still wins while pstack drives the task (`llm/pstack-priority.md`), so `pr` shapes only PRs opened outside pstack. Its `GLOSSARY.md` line does nothing in a repo without one. Upstream's `agents/openai.yaml` was dropped as an other-vendor export.
-
 ### `yomiyasu` (from `nanaism/yomiyasu`)
 
 Rewrites AI-generated Japanese prose into natural Japanese: it restores the subject-verb-object structure AI output tends to drop, replaces figurative verbs (`壊れる`, `効く`, `溶かす`) with literal ones, and strips emoji, trailing colons, and excess bold/bullets. No built-in covers this — `code-review` and `writing-for-agents` govern structure and correctness, not Japanese prose register.
@@ -111,13 +104,14 @@ llm/plugins.tsv
 ├─ -                            cc-plugin-you-should-know@builtin
 ├─ cursor/plugins               pstack@cursor-plugins
 ├─ pbakaus/impeccable           impeccable@impeccable
-└─ openai/codex-plugin-cc       codex@openai-codex
+├─ openai/codex-plugin-cc       codex@openai-codex
+└─ mattpocock/skills            mattpocock-skills@mattpocock
 
 llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
 llm/pstack-codex.md ────link──▶ ~/.claude/rules/pstack-codex.md
 ```
 
-They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump takes `make llm`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
+They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run; `mattpocock-skills` is skills only, but its 27 skills call each other and are taken as a set. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump takes `make llm`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
 
 - `autoharness` self-learns skills from session work into `.claude/skills/` and prunes them by usage rate. It ships a Python backend, an MCP server (`stage_skill`) and `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks.
 - `token-weather` draws the context fill and a prompt-cache countdown above the prompt. Session transcripts here reach 500k to 880k tokens and often sit idle for over five minutes, which is where both readouts pay off.
@@ -127,6 +121,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
 - `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports. That file can only name Claude models, so `llm/pstack-codex.md` is linked next to the priority rules to route the coding roles to `codex:codex-rescue` (from `openai/codex-plugin-cc`) and to pin Codex's model and effort per task class for cost: `gpt-6.1-terra` at `low` by default (perf work included), `gpt-6-luna` for mechanical edits, `gpt-6.1-sol` at `high` only after a run fails verification.
 - `impeccable` is a single skill, `/impeccable <command>`, with 24 design commands (`critique`, `audit`, `polish`, `distill`, and so on) for improving a web UI, plus a detector of 61 AI-design tells. It ships `SessionStart`/`PostToolUse`/`Stop` hooks that check UI files after edits; they act per project, switched by `/impeccable hooks on|off`. Run `/impeccable init` once in a project to write `PRODUCT.md`.
+- `mattpocock-skills` is the 27 skills under `engineering/` and `productivity/` of `mattpocock/skills` (spec and ticket flows, TDD, `retro`, `pr`, `grill-me`, `grill-with-docs` and others); `in-progress/` such as `chief-of-staff` is not in it. Run `/setup-matt-pocock-skills` once per repo. Its `pr` is the PR body template `llm/AGENTS.md` points at (`Summary`, `Evidence`, `Merge Danger`); pstack's `opening-a-pr` still wins while pstack drives the task. `pr`, `grill-me` and `grill-with-docs` lived under `llm/skills/` until the plugin replaced them; the local `grill-with-docs` PoC decision log support went with it. The plugin is Claude Code only here, so Codex no longer has these three. Its `code-review` (standards and spec, side by side) replaces the bundled one: `scripts/llm.sh` sets `skillOverrides["code-review"] = "off"`, which hides bundled and user skills but not plugin skills.
 
 ## graphify
 
