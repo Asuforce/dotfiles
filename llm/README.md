@@ -19,7 +19,7 @@ Current roster, each with no built-in or plugin equivalent:
 - `before-compact` saves durable memory before `/compact`.
 - `claude-restart` restarts herdr panes still running an outdated Claude Code and resumes each session.
 - `design-renewal` and `design-score-loop` redesign a site from references and refine it until it passes an Awwwards-style score.
-- `show-me`, `yomiyasu` and `i-have-adhd` are vendored; see [Vendored skills](#vendored-skills).
+- `show-me`, `yomiyasu`, `i-have-adhd` and `chief-of-staff` are vendored; see [Vendored skills](#vendored-skills).
 
 Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones instead of reintroducing a command.
 
@@ -92,6 +92,12 @@ It ships `disable-model-invocation: true` upstream and keeps it here, so it is o
 
 Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor exports.
 
+### `chief-of-staff` (from `mattpocock/skills`)
+
+Pursues a long-running goal in one session by running subagents and keeping a dated wiki. Upstream keeps it under `skills/in-progress/`, which the `mattpocock-skills` plugin leaves out, so it is vendored here; it ships `disable-model-invocation: true` and keeps it.
+
+Upstream reads `retro`, `to-spec`, `to-tickets` and `implement-spec` at `../<skill>/SKILL.md`, which assumes they sit beside it. The local copy points those at the plugin's marketplace clone (`~/.claude/plugins/marketplaces/mattpocock/skills/engineering/`), which `make llm` keeps current, so the plugin must be installed. Codex gets the link too but has no such clone, so those procedures work in Claude Code only. Upstream's `agents/openai.yaml` was dropped.
+
 ## Plugins
 
 `llm/plugins.tsv` lists the plugins `scripts/llm.sh` installs, one `<marketplace source>\t<plugin id>[\t<OS>]` per line, so a new machine gets the same set from `make llm`. The script refreshes every marketplace, adds each missing one and installs each missing plugin at scope `user` (`claude plugin marketplace list --json` / `claude plugin list --json`), and runs `claude plugin update` on the plugins already there. A failed refresh or update prints a line and the run continues. A source of `-` marks a plugin Claude Code ships itself, which is enabled through `enabledPlugins` instead and checked there, since `claude plugin list` does not show it. A third column holding a `uname -s` name (`Linux`) limits the row to that OS; other systems print a skip line.
@@ -121,7 +127,7 @@ They are plugin-installed rather than vendored like the skills above, because ea
 - `cc-plugin-you-should-know` runs a side agent that flags what the user or Claude may have missed.
 - `pstack` is Cursor's own plugin, from `cursor/plugins`: `poteto-mode` routes work to playbooks and skills. The package ships no hooks, so nothing starts it by itself; it runs when invoked or when the autoharness skill `pstack-poteto-mode-routing` matches the task. pstack's skills defer to `CLAUDE.md` on conflicts. This setup wants the reverse, so `llm/pstack-priority.md` is linked into `~/.claude/rules/` and names the three points where pstack's rule replaces `CLAUDE.md`'s: the closing headings, PR and commit text, and whether to ask. It is not under `llm/skills/`, so it is not linked as a skill. Model choices per role live in the untracked `~/.claude/pstack-models.md`, which `llm/AGENTS.md` imports. That file can only name Claude models, so `llm/pstack-codex.md` is linked next to the priority rules to route the coding roles to `codex:codex-rescue` (from `openai/codex-plugin-cc`) and to pin Codex's model and effort per task class for cost: `gpt-6.1-terra` at `low` by default (perf work included), `gpt-6-luna` for mechanical edits, `gpt-6.1-sol` at `high` only after a run fails verification.
 - `impeccable` is a single skill, `/impeccable <command>`, with 24 design commands (`critique`, `audit`, `polish`, `distill`, and so on) for improving a web UI, plus a detector of 61 AI-design tells. It ships `SessionStart`/`PostToolUse`/`Stop` hooks that check UI files after edits; they act per project, switched by `/impeccable hooks on|off`. Run `/impeccable init` once in a project to write `PRODUCT.md`.
-- `mattpocock-skills` is the 27 skills under `engineering/` and `productivity/` of `mattpocock/skills` (spec and ticket flows, TDD, `retro`, `pr`, `grill-me`, `grill-with-docs` and others); `in-progress/` such as `chief-of-staff` is not in it. Run `/setup-matt-pocock-skills` once per repo. Its `pr` is the PR body template `llm/AGENTS.md` points at (`Summary`, `Evidence`, `Merge Danger`); pstack's `opening-a-pr` still wins while pstack drives the task. `pr`, `grill-me` and `grill-with-docs` lived under `llm/skills/` until the plugin replaced them; the local `grill-with-docs` PoC decision log support went with it. The plugin is Claude Code only here, so Codex no longer has these three. Its `code-review` (standards and spec, side by side) replaces the bundled one: `scripts/llm.sh` sets `skillOverrides["code-review"] = "off"`, which hides bundled and user skills but not plugin skills.
+- `mattpocock-skills` is the 27 skills under `engineering/` and `productivity/` of `mattpocock/skills` (spec and ticket flows, TDD, `retro`, `pr`, `grill-me`, `grill-with-docs` and others); `in-progress/` is not in it, so `chief-of-staff` is vendored instead. Run `/setup-matt-pocock-skills` once per repo. Its `pr` is the PR body template `llm/AGENTS.md` points at (`Summary`, `Evidence`, `Merge Danger`); pstack's `opening-a-pr` still wins while pstack drives the task. `pr`, `grill-me` and `grill-with-docs` lived under `llm/skills/` until the plugin replaced them; the local `grill-with-docs` PoC decision log support went with it. The plugin is Claude Code only here, so Codex no longer has these three. Its `code-review` (standards and spec, side by side) replaces the bundled one: `scripts/llm.sh` sets `skillOverrides["code-review"] = "off"`, which hides bundled and user skills but not plugin skills.
 
 ## graphify
 
