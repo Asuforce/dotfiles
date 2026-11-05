@@ -204,16 +204,16 @@
     "semantic_hash": "098b55c408c3c5cb3b839a159a753de9"
   },
   "README.md": {
-    "mtime": 1793066366.7243814,
-    "seen": 1793087178.6458461,
+    "mtime": 1793236873.6516829,
+    "seen": 1793448388.2098875,
     "ast_hash": "f32bfa6634a1ef8a84877785606149f3",
     "semantic_hash": "f32bfa6634a1ef8a84877785606149f3"
   },
   "config/packages/linux.txt": {
-    "mtime": 1792293440.6915035,
-    "seen": 1793087178.6458488,
-    "ast_hash": "96e2b88e7a6ed6fa3844d4e55c1aa38a",
-    "semantic_hash": "96e2b88e7a6ed6fa3844d4e55c1aa38a"
+    "mtime": 1793239036.7993515,
+    "seen": 1793448388.2098906,
+    "ast_hash": "7f6b32d9cf9be9aa4ace060351045b24",
+    "semantic_hash": ""
   },
   "llm/AGENTS.md": {
     "mtime": 1792974085.5557911,
@@ -222,9 +222,9 @@
     "semantic_hash": "a568e4fab76d533b07fa5c5c15e8d2a0"
   },
   "llm/README.md": {
-    "mtime": 1793096798.3940566,
-    "seen": 1793096816.7700422,
-    "ast_hash": "c20fad47d2aa4bb28f144956d9bcc236",
+    "mtime": 1793448384.4388707,
+    "seen": 1793448388.2098968,
+    "ast_hash": "ecfe368e074d25356ca253649c2e6402",
     "semantic_hash": ""
   },
   "llm/pstack-codex.md": {
@@ -352,5 +352,11 @@
     "seen": 1793087178.6459198,
     "ast_hash": "a233e26e56eaf8e409822c632519894c",
     "semantic_hash": "a233e26e56eaf8e409822c632519894c"
+  },
+  "llm/skills/emil-design-eng/SKILL.md": {
+    "mtime": 1793448384.2102232,
+    "seen": 1793448388.2099192,
+    "ast_hash": "e79e182b799cd2a0fb5e884f07c9fe33",
+    "semantic_hash": ""
   }
 }
