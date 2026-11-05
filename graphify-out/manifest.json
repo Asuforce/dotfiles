@@ -90,10 +90,10 @@
     "semantic_hash": "133e10bc6203262e20b6c77a69c38e69"
   },
   "llm/mcps/default.json": {
-    "mtime": 1793087177.5796287,
-    "seen": 1793089441.3692222,
-    "ast_hash": "210f49cf625f4bc1096ff11e6ffb306e",
-    "semantic_hash": "210f49cf625f4bc1096ff11e6ffb306e"
+    "mtime": 1793883912.5307024,
+    "seen": 1793883947.845842,
+    "ast_hash": "64fef2dde5c3f945ca5d65451494eacb",
+    "semantic_hash": ""
   },
   "llm/mcps/infra.json": {
     "mtime": 1790767531.637803,
@@ -120,10 +120,10 @@
     "semantic_hash": "202db63abfcf7f415e39ad9ccb8c6b42"
   },
   "llm/statusline.sh": {
-    "mtime": 1791092657.2712796,
-    "seen": 1793087178.6458056,
-    "ast_hash": "4671b99a8ea0b3943c70b4f07fa4287c",
-    "semantic_hash": "4671b99a8ea0b3943c70b4f07fa4287c"
+    "mtime": 1793883912.5307024,
+    "seen": 1793883947.8458588,
+    "ast_hash": "df003ea939ae1d4064388f210e467d87",
+    "semantic_hash": ""
   },
   "macos/defaults.sh": {
     "mtime": 1791204780.0202198,
@@ -144,8 +144,8 @@
     "semantic_hash": "34e01af496f0a2009129ee90191ca271"
   },
   "scripts/codex-config.py": {
-    "mtime": 1793497577.0919206,
-    "seen": 1793883833.9752574,
+    "mtime": 1793883946.500549,
+    "seen": 1793883947.8458722,
     "ast_hash": "b81e959c4d1a97006895acd8c6c975b9",
     "semantic_hash": ""
   },
@@ -162,15 +162,15 @@
     "semantic_hash": "2c7b211a66ee8a4ec49e3b3389927294"
   },
   "scripts/link.sh": {
-    "mtime": 1793858228.5702286,
-    "seen": 1793883833.9752672,
+    "mtime": 1793883946.501549,
+    "seen": 1793883947.845882,
     "ast_hash": "932894f32fd468322bcc4ccd01aa01b5",
     "semantic_hash": ""
   },
   "scripts/llm.sh": {
-    "mtime": 1793497577.092262,
-    "seen": 1793883833.9752698,
-    "ast_hash": "37005b786baaef95c06c953b2df99fd4",
+    "mtime": 1793883946.501549,
+    "seen": 1793883947.8458843,
+    "ast_hash": "1e80ce0fc22d40597301bb6de1b89ffb",
     "semantic_hash": ""
   },
   "scripts/pkg.sh": {
@@ -197,12 +197,6 @@
     "ast_hash": "b19b5d6dc207cd9ee05cda08f8c938cc",
     "semantic_hash": "b19b5d6dc207cd9ee05cda08f8c938cc"
   },
-  "CLAUDE.md": {
-    "mtime": 1793066366.7243814,
-    "seen": 1793087178.6458433,
-    "ast_hash": "098b55c408c3c5cb3b839a159a753de9",
-    "semantic_hash": "098b55c408c3c5cb3b839a159a753de9"
-  },
   "README.md": {
     "mtime": 1793236873.6516829,
     "seen": 1793448388.2098875,
@@ -210,21 +204,21 @@
     "semantic_hash": "f32bfa6634a1ef8a84877785606149f3"
   },
   "config/packages/linux.txt": {
-    "mtime": 1793239036.7993515,
-    "seen": 1793448388.2098906,
-    "ast_hash": "7f6b32d9cf9be9aa4ace060351045b24",
+    "mtime": 1793883912.5279636,
+    "seen": 1793883947.8459132,
+    "ast_hash": "80ad6bdcfde429037b4f9fbaa332a5e7",
     "semantic_hash": ""
   },
   "llm/AGENTS.md": {
-    "mtime": 1792974085.5557911,
-    "seen": 1793089441.3692834,
-    "ast_hash": "a568e4fab76d533b07fa5c5c15e8d2a0",
-    "semantic_hash": "a568e4fab76d533b07fa5c5c15e8d2a0"
+    "mtime": 1793883912.5307024,
+    "seen": 1793883947.8459158,
+    "ast_hash": "2c1ac8ec90378e7ef31ff2f4b225ce61",
+    "semantic_hash": ""
   },
   "llm/README.md": {
-    "mtime": 1793448384.4388707,
-    "seen": 1793448388.2098968,
-    "ast_hash": "ecfe368e074d25356ca253649c2e6402",
+    "mtime": 1793883946.4624512,
+    "seen": 1793883947.8459184,
+    "ast_hash": "5e8ff659da21dbf270a64635b5478a7c",
     "semantic_hash": ""
   },
   "llm/pstack-codex.md": {
@@ -234,10 +228,10 @@
     "semantic_hash": ""
   },
   "llm/pstack-priority.md": {
-    "mtime": 1792274671.5026817,
-    "seen": 1793087178.6458642,
-    "ast_hash": "68e4c87dc7e61391ea95293ea48cf0fb",
-    "semantic_hash": "68e4c87dc7e61391ea95293ea48cf0fb"
+    "mtime": 1793883912.5307024,
+    "seen": 1793883947.8459246,
+    "ast_hash": "71f1fe117e5e196641734017b7ade365",
+    "semantic_hash": ""
   },
   "llm/skills/before-compact/SKILL.md": {
     "mtime": 1791624326.4380019,
@@ -262,36 +256,6 @@
     "seen": 1793087178.645876,
     "ast_hash": "6f7c08ab68dc82faf0ae42e941390106",
     "semantic_hash": "6f7c08ab68dc82faf0ae42e941390106"
-  },
-  "llm/skills/grill-me/SKILL.md": {
-    "mtime": 1790767531.6379695,
-    "seen": 1793087178.6458788,
-    "ast_hash": "8cb45c74133150e6a00f18b2059aae8c",
-    "semantic_hash": "8cb45c74133150e6a00f18b2059aae8c"
-  },
-  "llm/skills/grill-with-docs/ADR-FORMAT.md": {
-    "mtime": 1790767531.6379695,
-    "seen": 1793087178.645882,
-    "ast_hash": "9b3c6e84f39eaef6675cd5ba58045710",
-    "semantic_hash": "9b3c6e84f39eaef6675cd5ba58045710"
-  },
-  "llm/skills/grill-with-docs/CONTEXT-FORMAT.md": {
-    "mtime": 1790767531.638212,
-    "seen": 1793087178.6458848,
-    "ast_hash": "c2f41ffc931955b2b8d01322273d75fa",
-    "semantic_hash": "c2f41ffc931955b2b8d01322273d75fa"
-  },
-  "llm/skills/grill-with-docs/POC-FORMAT.md": {
-    "mtime": 1790767531.638212,
-    "seen": 1793087178.6458871,
-    "ast_hash": "2614320d6d8abf81d42bf826ece92e63",
-    "semantic_hash": "2614320d6d8abf81d42bf826ece92e63"
-  },
-  "llm/skills/grill-with-docs/SKILL.md": {
-    "mtime": 1790767531.638212,
-    "seen": 1793087178.6458905,
-    "ast_hash": "0d881c39b15b2bc1624012258b0ee49c",
-    "semantic_hash": "0d881c39b15b2bc1624012258b0ee49c"
   },
   "llm/skills/i-have-adhd/SKILL.md": {
     "mtime": 1791204780.0202198,
@@ -354,21 +318,33 @@
     "semantic_hash": "a233e26e56eaf8e409822c632519894c"
   },
   "llm/skills/emil-design-eng/SKILL.md": {
-    "mtime": 1793448384.2102232,
-    "seen": 1793448388.2099192,
+    "mtime": 1793883912.5460951,
+    "seen": 1793883947.845943,
     "ast_hash": "e79e182b799cd2a0fb5e884f07c9fe33",
     "semantic_hash": ""
   },
   "scripts/mcp-gdrive-auth.mjs": {
-    "mtime": 1793499620.4207475,
-    "seen": 1793883833.975273,
+    "mtime": 1793883946.501549,
+    "seen": 1793883947.8458874,
     "ast_hash": "15ad9bc3a0f1d6dfd1fb58cc4e8244b2",
     "semantic_hash": ""
   },
   "scripts/mcp-gdrive.sh": {
-    "mtime": 1793499620.4205787,
-    "seen": 1793883833.9752758,
+    "mtime": 1793883946.501549,
+    "seen": 1793883947.8458903,
     "ast_hash": "91b707a988b8060ed18859c4cf12fbb3",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1793883912.5279636,
+    "seen": 1793883947.8459067,
+    "ast_hash": "714ddeb8a516f1aba75c233981f0f38b",
+    "semantic_hash": ""
+  },
+  "llm/skills/chief-of-staff/SKILL.md": {
+    "mtime": 1793883912.5307024,
+    "seen": 1793883947.8459306,
+    "ast_hash": "d4449a98a780fcc559082120189b087f",
     "semantic_hash": ""
   }
 }
