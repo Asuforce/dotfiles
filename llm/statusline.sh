@@ -4,7 +4,7 @@ model=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
 workspace=$(echo "$input" | jq -r '.workspace.current_dir // ""')
 
 ws_name="--"
-[[ -n "$workspace" ]] && ws_name=$(basename "$workspace")
+[[ -n "$workspace" ]] && ws_name=$(basename "$workspace" | LC_ALL=C tr -d '\000-\037\177')
 branch=$(git -C "$workspace" branch --show-current 2>/dev/null || echo "--")
 branch="${branch:-"--"}"
 
