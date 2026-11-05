@@ -2,6 +2,7 @@
 
 import copy
 import json
+import platform
 import re
 import shlex
 import shutil
@@ -122,6 +123,11 @@ def main():
     source, destination = map(Path, sys.argv[1:])
     defaults = tomllib.loads((source / "codex.toml").read_text())
     defaults.update(mcp_defaults(source / "mcps/default.json"))
+    if platform.system() == "Linux":
+        defaults["mcp_servers"]["gdrive"] = {
+            "command": "bash",
+            "args": [str((source.parent / "scripts/mcp-gdrive.sh").resolve())],
+        }
     add_defaults(destination / "config.toml", defaults)
     for name in ("coding", "browser", "infra"):
         add_defaults(destination / f"{name}.config.toml", mcp_defaults(source / f"mcps/{name}.json"))

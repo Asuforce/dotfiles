@@ -296,4 +296,11 @@ else
   done <"$PLUGINS_MANIFEST"
 fi
 
+# OAuth keys and tokens stay outside the repository.
+if [[ "$(uname -s)" == "Linux" ]] && command -v claude >/dev/null 2>&1; then
+  if ! claude mcp get gdrive >/dev/null 2>&1; then
+    claude mcp add --scope user gdrive -- bash "$SCRIPT_DIR/mcp-gdrive.sh"
+  fi
+fi
+
 printf "Claude Code setup complete.\n"

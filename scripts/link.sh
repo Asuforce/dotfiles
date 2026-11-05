@@ -231,19 +231,6 @@ EOF
     command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
   fi
 
-  printf "Applying Hyprland clipboard manager binding...\n"
-  readonly HYPR_BINDINGS="$CONFIG_HOME/hypr/bindings.lua"
-  readonly HYPR_CLIPBOARD_MARKER="-- dotfiles: clipboard manager on Super+Shift+V"
-  if [ ! -f "$HYPR_BINDINGS" ] || ! grep -qF -- "$HYPR_CLIPBOARD_MARKER" "$HYPR_BINDINGS"; then
-    mkdir -p "$(dirname "$HYPR_BINDINGS")"
-    cat >>"$HYPR_BINDINGS" <<EOF
-
-$HYPR_CLIPBOARD_MARKER
-o.bind("SUPER + SHIFT + V", "Clipboard manager", "omarchy menu clipboard")
-EOF
-    command -v hyprctl >/dev/null 2>&1 && hyprctl reload >/dev/null 2>&1 || true
-  fi
-
   # The installer seeds 1.25 here; 1 is the scale chosen on this machine.
   printf "Applying Hyprland monitor scale...\n"
   readonly HYPR_MONITORS="$CONFIG_HOME/hypr/monitors.lua"
