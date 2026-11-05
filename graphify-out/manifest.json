@@ -144,10 +144,10 @@
     "semantic_hash": "34e01af496f0a2009129ee90191ca271"
   },
   "scripts/codex-config.py": {
-    "mtime": 1792892120.0153236,
-    "seen": 1793087178.6458173,
-    "ast_hash": "82cd8bb980da5bd37d2daf56eb611525",
-    "semantic_hash": "82cd8bb980da5bd37d2daf56eb611525"
+    "mtime": 1793497577.0919206,
+    "seen": 1793883833.9752574,
+    "ast_hash": "b81e959c4d1a97006895acd8c6c975b9",
+    "semantic_hash": ""
   },
   "scripts/codex.sh": {
     "mtime": 1792897828.998076,
@@ -162,16 +162,16 @@
     "semantic_hash": "2c7b211a66ee8a4ec49e3b3389927294"
   },
   "scripts/link.sh": {
-    "mtime": 1792398993.501294,
-    "seen": 1793087178.645826,
-    "ast_hash": "ce2bcab3209d6de100e0842e6613927b",
-    "semantic_hash": "ce2bcab3209d6de100e0842e6613927b"
+    "mtime": 1793858228.5702286,
+    "seen": 1793883833.9752672,
+    "ast_hash": "932894f32fd468322bcc4ccd01aa01b5",
+    "semantic_hash": ""
   },
   "scripts/llm.sh": {
-    "mtime": 1793087177.5806286,
-    "seen": 1793089441.3692672,
-    "ast_hash": "f140605bb2f0152aeb9c35e8c67d8150",
-    "semantic_hash": "f140605bb2f0152aeb9c35e8c67d8150"
+    "mtime": 1793497577.092262,
+    "seen": 1793883833.9752698,
+    "ast_hash": "37005b786baaef95c06c953b2df99fd4",
+    "semantic_hash": ""
   },
   "scripts/pkg.sh": {
     "mtime": 1792293440.6922355,
@@ -357,6 +357,18 @@
     "mtime": 1793448384.2102232,
     "seen": 1793448388.2099192,
     "ast_hash": "e79e182b799cd2a0fb5e884f07c9fe33",
+    "semantic_hash": ""
+  },
+  "scripts/mcp-gdrive-auth.mjs": {
+    "mtime": 1793499620.4207475,
+    "seen": 1793883833.975273,
+    "ast_hash": "15ad9bc3a0f1d6dfd1fb58cc4e8244b2",
+    "semantic_hash": ""
+  },
+  "scripts/mcp-gdrive.sh": {
+    "mtime": 1793499620.4205787,
+    "seen": 1793883833.9752758,
+    "ast_hash": "91b707a988b8060ed18859c4cf12fbb3",
     "semantic_hash": ""
   }
 }
