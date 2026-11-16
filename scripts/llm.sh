@@ -6,6 +6,15 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 
+# A brew-style "==>" section heading, bold blue on a terminal.
+heading() {
+  if [ -t 1 ]; then
+    printf "\033[1;34m==>\033[0m \033[1m%s\033[0m\n" "$1"
+  else
+    printf "==> %s\n" "$1"
+  fi
+}
+
 # Install Claude Code via the official native installer instead of Homebrew:
 # the cask lags behind native/npm releases, and the native installer
 # self-updates. `brew bundle` runs without --cleanup, so dropping the cask
@@ -281,8 +290,16 @@ elif ! command -v claude >/dev/null 2>&1; then
   printf "claude not found; skipping plugin install.\n"
 else
   # Refresh catalogs first so plugin update sees upstream's latest versions.
+  heading "Updating plugin marketplaces"
   claude plugin marketplace update </dev/null \
     || printf "Some marketplaces could not be refreshed; continuing.\n"
+  plugin_version() {
+    jq -er --arg id "$2" '.[] | select(.id == $id) | .version' <<<"$1" 2>/dev/null
+  }
+  plugins_before="$(claude plugin list --json 2>/dev/null || echo '[]')"
+  managed_plugins=()
+  new_plugins=()
+  failed_plugins=()
   while IFS=$'\t' read -r source plugin only_os || [ -n "${plugin:-}" ]; do
     case "$source" in '' | '#'*) continue ;; esac
     if [ -n "${only_os:-}" ] && [ "$only_os" != "$(uname -s)" ]; then
@@ -313,16 +330,51 @@ else
         "$marketplace" "$registered_repo" "$source"
     fi
 
-    if claude plugin list --json 2>/dev/null \
-        | jq -e --arg id "$plugin" '.[] | select(.id == $id)' >/dev/null 2>&1; then
-      printf "Updating %s...\n" "$plugin"
-      claude plugin update "$plugin" --scope user -y </dev/null \
-        || printf "Could not update %s; continuing.\n" "$plugin"
+    if plugin_version "$plugins_before" "$plugin" >/dev/null; then
+      # Update output is the same "already latest" line on most runs, so it is
+      # shown only on failure; the summary below reports what changed.
+      if ! update_log="$(claude plugin update "$plugin" --scope user -y </dev/null 2>&1)"; then
+        printf "%s\n" "$update_log"
+        failed_plugins+=("$plugin")
+      fi
     else
       printf "Installing %s...\n" "$plugin"
       claude plugin install "$plugin" --scope user -y </dev/null
+      new_plugins+=("$plugin")
     fi
+    managed_plugins+=("$plugin")
   done <"$PLUGINS_MANIFEST"
+
+  # Summarize like `brew upgrade`: what was installed, what moved, what failed.
+  plugins_after="$(claude plugin list --json 2>/dev/null || echo '[]')"
+  upgraded_lines=()
+  for plugin in "${managed_plugins[@]+"${managed_plugins[@]}"}"; do
+    before="$(plugin_version "$plugins_before" "$plugin" || true)"
+    after="$(plugin_version "$plugins_after" "$plugin" || true)"
+    if [ -n "$before" ] && [ -n "$after" ] && [ "$before" != "$after" ]; then
+      upgraded_lines+=("$plugin $before -> $after")
+    fi
+  done
+  if [ "${#new_plugins[@]}" -gt 0 ]; then
+    heading "Installed ${#new_plugins[@]} plugin(s)"
+    for plugin in "${new_plugins[@]}"; do
+      printf "%s %s\n" "$plugin" "$(plugin_version "$plugins_after" "$plugin" || echo '?')"
+    done
+  fi
+  if [ "${#upgraded_lines[@]}" -gt 0 ]; then
+    heading "Upgraded ${#upgraded_lines[@]} plugin(s)"
+    printf "%s\n" "${upgraded_lines[@]}"
+  fi
+  if [ "${#failed_plugins[@]}" -gt 0 ]; then
+    heading "Failed to update ${#failed_plugins[@]} plugin(s)"
+    printf "%s\n" "${failed_plugins[@]}"
+  fi
+  if [ "${#new_plugins[@]}" -eq 0 ] && [ "${#upgraded_lines[@]}" -eq 0 ] \
+      && [ "${#failed_plugins[@]}" -eq 0 ]; then
+    heading "All ${#managed_plugins[@]} plugin(s) up to date"
+  else
+    printf "Restart Claude Code to load the changes.\n"
+  fi
 fi
 
 # OAuth keys and tokens stay outside the repository.
