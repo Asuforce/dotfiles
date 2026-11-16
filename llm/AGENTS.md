@@ -1,14 +1,16 @@
 ## Style
 - Speak in Japanese.
 - Keep emphasis sparing in documents.
-- Keep commit messages short and simple.
+- Keep commit subjects short and simple; the body may explain why.
 
 ## Documents
 PR descriptions follow `pr`, and design or technical documents (ADR, PoC decision log, `CONTEXT.md`, README, design notes) go through `show-me`, both unprompted, with at least one visual carrying the main point.
+When the repo's PR template, a prompt, or a skill sets the PR shape, follow it instead of `pr`.
+When the repo sets a document's shape, follow that shape; still run it through `show-me`.
 Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since HTML cannot live in a PR body or Markdown file. Commit messages, review comments, and short replies are exempt.
 
 ## Replies
-- End the final message with `Blocked on me`, `Changed`, `Found`.
+- End the final message with `Blocked on me`, `Changed`, `Found`, unless a skill sets the reply format.
 - A settled answer stays settled unless asked or shown a problem.
 - Run commands yourself. Hand over only interactive ones (login, password) or ones the classifier denied, and report a denial once.
 - The shell already starts in the working directory. Do not prefix commands with `cd`; use absolute paths or a tool's own directory flag (`git -C`, `pnpm -C`).
@@ -16,8 +18,6 @@ Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since H
 ## UI
 - Avoid secondary labels or descriptions that restate the primary label. Use grouping, spacing, and hierarchy to convey structure instead of explanatory text.
 - Keep text that carries information the layout cannot: form labels, units, constraints, consequences of destructive actions, and empty/error guidance. Icon-only controls still need accessible names.
-
-@~/.claude/pstack-models.md
 
 # graphify
 - **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
