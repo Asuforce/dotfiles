@@ -119,6 +119,37 @@ def install_title_hook(source, destination):
         print(f"Updated {path}")
 
 
+def install_ctxdb_hook(source, destination):
+    hook_dir = destination / "hooks"
+    hook_dir.mkdir(exist_ok=True)
+    target = hook_dir / "ctxdb.py"
+    if not target.exists() and not target.is_symlink():
+        target.symlink_to((source / "hooks" / target.name).resolve())
+    command = "python3 " + shlex.quote(str(target)) + " hook codex"
+    path = destination / "hooks.json"
+    original = path.read_text() if path.exists() else "{}"
+    data = json.loads(original)
+    hooks = data.setdefault("hooks", {})
+    changed = False
+    # SessionEnd is capped at 3 seconds; the hook only detaches the distill.
+    timeouts = {"SessionStart": 10, "UserPromptSubmit": 10, "Stop": 10, "SessionEnd": 3}
+    for event, timeout in timeouts.items():
+        groups = hooks.setdefault(event, [])
+        if any(h.get("command") == command for group in groups for h in group.get("hooks", [])):
+            continue
+        handler = {"type": "command", "command": command, "timeout": timeout}
+        if event == "Stop":
+            handler["async"] = True
+        groups.append({"hooks": [handler]})
+        changed = True
+    if changed:
+        backup = path.with_name(path.name + ".pre-dotfiles.bak")
+        if path.exists() and not backup.exists():
+            shutil.copy2(path, backup)
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+        print(f"Updated {path}")
+
+
 def main():
     source, destination = map(Path, sys.argv[1:])
     defaults = tomllib.loads((source / "codex.toml").read_text())
@@ -132,6 +163,7 @@ def main():
     for name in ("coding", "browser", "infra"):
         add_defaults(destination / f"{name}.config.toml", mcp_defaults(source / f"mcps/{name}.json"))
     install_title_hook(source, destination)
+    install_ctxdb_hook(source, destination)
 
 
 if __name__ == "__main__":

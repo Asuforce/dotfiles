@@ -191,6 +191,49 @@ SessionStart（startup / clear / fork）→ 自分が付けた名前を番号に
 
 要約用の Codex は一時ディレクトリで起動し、hook・プラグイン・MCP・シェルツールを引き継がない。生成が35秒以内に完了しなければタブ名を維持する。手動で付けた名前や別ペインが付けた名前も維持し、生成中に次のターンや新規セッションが始まった場合は古い結果を破棄する。バックグラウンド実行なので通常の応答完了を待たせないが、Codex 終了時に生成中の処理はキャンセルされる。
 
+## ctxdb
+
+`llm/hooks/ctxdb.py` は、終わったセッションの transcript を短いメモに蒸留して SQLite に保存し、後のセッションにはプロンプトに合うメモだけを注入する。auto-memory のように索引を毎回まるごと読み込むことはしないので、メモが増えても注入量は増えない。
+
+```
+SessionEnd        ─▶ 子プロセスを切り離して即終了
+                       transcript から user/assistant の本文だけ抜く（tool 出力・thinking・system-reminder は捨てる）
+                       └▶ claude -p --model haiku ─▶ 最大12件 {kind, topic, body}
+                            └▶ ~/.local/state/ctxdb/ctxdb.sqlite（FTS5 trigram）
+UserPromptSubmit  ─▶ プロンプトの語で検索し、上位5件・1200字まで注入
+                       同じセッションに同じメモは二度入れない
+SessionStart      ─▶ そのリポジトリの最新 decision/pitfall/todo を3件だけ
+```
+
+- 子の `claude -p` は `--setting-sources ""` と `--no-session-persistence` で起動する。ユーザー設定を読まないので、そこに登録した hook は動かない。transcript も残らない。`CTXDB_CHILD=1` のときフックは何もしない。
+- Codex では `scripts/codex-config.py` が `~/.codex/hooks/ctxdb.py` をリンクし、`hooks.json` に `ctxdb.py hook codex` を登録する。Claude Code と同じ DB を使う。登録後は Codex の `/hooks` で信頼する必要がある。
+
+```
+Codex
+  UserPromptSubmit ─▶ 発言を turns テーブルに記録し、Claude Code と同じ検索で注入
+  Stop（async）    ─▶ last_assistant_message を turns に記録
+  SessionEnd（3秒） ─▶ 切り離して turns を蒸留（codex exec、既定 gpt-6-luna）
+  SessionStart     ─▶ Claude Code と同じ
+```
+
+- Codex の transcript は形式が安定していないと公式に書かれているので、読まずに hook の入力から会話を組み立てる。
+- 蒸留はセッションを動かしたほうの CLI で行い、見つからなければもう一方を使う。Codex のモデルは `CTXDB_CODEX_MODEL` で変えられる。`codex exec` は tab-title フックと同じく、一時ディレクトリでユーザー設定・hook・プラグイン・シェルツールを切って起動する。
+- Codex の `SessionEnd` は、閉じたときに加えて30分放置したときにも走る。再開したセッションは記録済みの turns 全体を蒸留し直して置き換える。turns は30日で消す。
+- メモはリポジトリ単位で持つ（`git rev-parse --git-common-dir`）。同じリポジトリの worktree 同士は同じメモを共有する。
+- ユーザーの発言が3回未満のセッションと、`claude -p` や SDK で起動したセッション（transcript の `entrypoint` が `sdk-*`）は蒸留しない。後者は autoharness などのプラグインが裏で起動するもので、対話の記録ではないため。同じ理由で、後者にはメモを注入しない（`CLAUDE_CODE_ENTRYPOINT` か transcript の `entrypoint` で見分ける）。
+- Claude Code のセッションは、蒸留済みの行数を `distilled` テーブルに持ち、再開後の `SessionEnd` では続きの行だけを8万字ずつ区切って蒸留し、メモを足していく。末尾8万字だけを蒸留し直して置き換えると、長いセッションの前半のメモが消えるため。続きのユーザー発言が3回未満なら次の機会に回す。モデルが失敗した区切りは記録を進めない。
+- `<task-notification>` などを除いて空になるプロンプトと、別エージェントからのメッセージ（`Another Claude session sent a message`）には注入しない。ユーザーの依頼ではないため。
+- 採点は、一致した語の長さ（上限8）に IDF を掛けた値の合計で行う。全メモの8%を超えるメモに出てくる語（commit、make llm など）は、どのメモを指すかの手がかりにならないので点を入れない。合計が `PROMPT_MIN_SCORE` 以上のメモだけを注入する。trigram は2文字の語に一致しないので、2文字の語は `LIKE` で探す。
+- 語の一致だけでは当たりが5割前後で頭打ちになるので、注入の前に安いモデルでふるい分ける。点が `RERANK_MIN_SCORE`（12）以上の候補を最大8件、プロンプトと一緒に `claude -p --model haiku`（Codex では `codex exec`）へ渡し、そのプロンプトの扱いを変えるメモだけを残させる。6秒以内に答えが返らないか、出力を読めなければ、`PROMPT_MIN_SCORE`（18）の点だけで選ぶ。候補があるプロンプトでは数秒待つことになるので、`CTXDB_RERANK=0` で切れる。
+
+```
+プロンプト ─▶ 語の一致（点 ≥ 12、最大8件）─▶ haiku「この依頼に効くのはどれ？」─▶ [2, 5] だけ注入
+                                               └ 6秒超 / 読めない ─▶ 点 ≥ 18 だけ注入
+```
+
+- todo は作成から14日を過ぎると注入しない。蒸留の指示でも、ログの中で片付いた作業や push の状況は todo にしない。
+- 手で引くときは `python3 ~/.claude/hooks/ctxdb.py search <語> [--all]`、`recent [n]` を使う。過去のセッションは `backfill` でまとめて取り込める（未登録のセッションだけ、4並列）。`distilled` に行数がないまま items を持つセッションは、次の蒸留で最初からやり直す。蒸留の失敗は `~/.local/state/ctxdb/distill.log` に出る。
+
 ## Status line
 
 `llm/statusline.sh` is the Claude Code status line (model, repository, branch). The context bar, rate limits and cost it used to carry moved to the `token-weather` and `usage-meter` mods, which draw them above the prompt. `scripts/llm.sh` symlinks it to `~/.claude/statusline.sh` and adds the `statusLine` entry to `settings.json` only when none exists, so a machine that configured its own keeps it.

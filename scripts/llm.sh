@@ -152,6 +152,35 @@ else
   printf "herdr not found; skipping herdr skill and integration.\n"
 fi
 
+# ctxdb distills finished sessions into SQLite and injects only the stored
+# notes a prompt matches. One script serves all three events, keyed on
+# hook_event_name.
+printf "Linking ctxdb hook...\n"
+mkdir -p "$CLAUDE_CONFIG_DIR/hooks"
+readonly CTXDB_HOOK="$CLAUDE_CONFIG_DIR/hooks/ctxdb.py"
+[ ! -e "$CTXDB_HOOK" ] && [ ! -L "$CTXDB_HOOK" ] \
+  && ln -s "$DOTFILES_LLM/hooks/ctxdb.py" "$CTXDB_HOOK"
+readonly CTXDB_HOOK_COMMAND='python3 "$HOME/.claude/hooks/ctxdb.py"'
+if ! command -v jq >/dev/null 2>&1; then
+  printf "jq not found; skipping ctxdb hook registration.\n"
+else
+  for event in SessionEnd UserPromptSubmit SessionStart; do
+    if jq -e --arg ev "$event" --arg cmd "$CTXDB_HOOK_COMMAND" \
+        '[(.hooks[$ev] // [])[].hooks[]?.command] | index($cmd)' \
+        "$CLAUDE_SETTINGS_FILE" >/dev/null 2>&1; then
+      continue
+    fi
+    printf "Registering ctxdb hook on %s...\n" "$event"
+    settings_tmp="$(mktemp)"
+    jq --arg ev "$event" --arg cmd "$CTXDB_HOOK_COMMAND" \
+      '.hooks[$ev] = ((.hooks[$ev] // []) + [{
+         hooks: [{ type: "command", command: $cmd, timeout: 10 }]
+       }])' "$CLAUDE_SETTINGS_FILE" >"$settings_tmp" \
+      && mv -f "$settings_tmp" "$CLAUDE_SETTINGS_FILE" \
+      || rm -f "$settings_tmp"
+  done
+fi
+
 # Link each skill on its own. omarchy creates ~/.claude/skills as a real
 # directory holding its own skills, so a directory-level link would be skipped
 # there; per-skill links also keep skills written into ~/.claude/skills (by
