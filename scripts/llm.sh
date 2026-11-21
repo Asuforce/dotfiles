@@ -211,6 +211,9 @@ done
 # Codex shares the instructions and skills, with its own runtime settings.
 bash "$SCRIPT_DIR/codex.sh"
 
+# Antigravity shares compatible skills from llm/skills/.
+bash "$SCRIPT_DIR/antigravity.sh"
+
 # An existing statusLine entry is left alone so a machine can keep its own.
 printf "Linking status line...\n"
 readonly STATUSLINE_DEST="$CLAUDE_CONFIG_DIR/statusline.sh"
