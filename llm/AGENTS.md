@@ -3,6 +3,10 @@
 - Keep emphasis sparing in documents.
 - Keep commit subjects short and simple; the body may explain why.
 
+## Pull requests
+- When an implementation task changes code in a Git repository, verify the changes, commit the task's changes on a feature branch, push, and open a PR unless the user asks to stop earlier. If the branch already has an open PR for the task, update it and report its link.
+- In T3 Code, link the PR to the thread when the tool is available. Follow any repository-specific rules for review and merging.
+
 ## Documents
 PR descriptions follow `pr`, and design or technical documents (ADR, PoC decision log, `CONTEXT.md`, README, design notes) go through `show-me`, both unprompted, with at least one visual carrying the main point.
 When the repo's PR template, a prompt, or a skill sets the PR shape, follow it instead of `pr`.
