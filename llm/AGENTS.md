@@ -11,6 +11,7 @@ PR descriptions follow `pr`, and design or technical documents (ADR, PoC decisio
 When the repo's PR template, a prompt, or a skill sets the PR shape, follow it instead of `pr`.
 When the repo sets a document's shape, follow that shape; still run it through `show-me`.
 Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since HTML cannot live in a PR body or Markdown file. Commit messages, review comments, and short replies are exempt.
+Track remaining work and progress in each repo's GitHub Issues; do not create TODO or progress documents in the repo. Keep history such as finished plans and investigations in `Asuforce/docs` under `projects/<repo>/`.
 
 ## Replies
 - End the final message with `Blocked on me`, `Changed`, `Found`, unless a skill sets the reply format.
