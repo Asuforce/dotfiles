@@ -27,3 +27,6 @@ Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since H
 - **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
 When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
 When a question is about a codebase's architecture or file relationships and `graphify-out/` exists in the working directory, read `graphify-out/GRAPH_REPORT.md` before searching files.
+
+## Model Delegation (Antigravity)
+- When running on Antigravity as Gemini 4 Hydrogen, proactively delegate self-contained subtasks (codebase research, file exploration, review, test runs, and routine edits) to `claude-sonnet-5-5` via `delegate_task` (`providerInstanceId: "antigravity"`, `model: "claude-sonnet-5-5"`, `options: { thought_level: "low" }` for routine tasks or `"medium"` for complex ones) to reduce token cost.

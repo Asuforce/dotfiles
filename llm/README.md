@@ -64,6 +64,12 @@ Impeccable は上流の CLI で Codex 用スキルを `~/.agents/skills/impeccab
 
 設定形式と自動レビューは [OpenAI の設定リファレンス](https://learn.chatgpt.com/docs/config-file/config-reference)、用途別ファイルは [プロファイルの仕様](https://learn.chatgpt.com/docs/config-file/config-advanced) に従う。Codex CLI 0.164.0 で検証。
 
+## Antigravity
+
+`make llm` は `scripts/antigravity.sh` も実行する。Antigravity だけを設定するときは `bash scripts/antigravity.sh` を使う。`~/.gemini/config`、または `agy` / `antigravity` コマンドが存在しない環境ではスキップする。
+
+`llm/skills/<name>/` を `${GEMINI_CONFIG_DIR:-$HOME/.gemini/config}/skills/` へスキル単位でシンボリックリンクする。`skills.json` ではなくスキル単位のリンクを使うのは、omarchy が同じディレクトリに独自スキルをリンクしている点と、T3 Code などのハーネスが `config/skills` のみをリンクして参照するためである。Claude Code のセッションやプラグイン機構に依存する `before-compact`、`claude-restart`、`chief-of-staff` はリンク対象から除外している。
+
 ## Vendored skills
 
 `llm/upstream-skills.tsv` records the upstream commit each vendored skill has been reviewed through. `scripts/llm.sh` prints a compare URL when upstream has moved past that commit; it applies nothing, because these are prompts that have to be read before they're taken. It fails open on a missing `gh`, an unreachable network, or a missing manifest.
