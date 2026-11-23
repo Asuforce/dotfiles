@@ -1,7 +1,6 @@
 ## Style
 - Speak in Japanese.
 - Keep emphasis sparing in documents.
-- Keep commit subjects short and simple; the body may explain why.
 
 ## Pull requests
 - When an implementation task changes code in a Git repository, verify the changes, commit the task's changes on a feature branch, push, and open a PR unless the user asks to stop earlier. If the branch already has an open PR for the task, update it and report its link.
@@ -17,7 +16,6 @@ Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since H
 - End the final message with `Blocked on me`, `Changed`, `Found`, unless a skill sets the reply format.
 - A settled answer stays settled unless asked or shown a problem.
 - Run commands yourself. Hand over only interactive ones (login, password) or ones the classifier denied, and report a denial once.
-- The shell already starts in the working directory. Do not prefix commands with `cd`; use absolute paths or a tool's own directory flag (`git -C`, `pnpm -C`).
 
 ## UI
 - Avoid secondary labels or descriptions that restate the primary label. Use grouping, spacing, and hierarchy to convey structure instead of explanatory text.
