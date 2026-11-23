@@ -3,6 +3,10 @@
 - Keep emphasis sparing in documents.
 - Keep commit subjects short and simple; the body may explain why.
 
+## Pull requests
+- When an implementation task changes code in a Git repository, verify the changes, commit the task's changes on a feature branch, push, and open a PR unless the user asks to stop earlier. If the branch already has an open PR for the task, update it and report its link.
+- In T3 Code, link the PR to the thread when the tool is available. Follow any repository-specific rules for review and merging.
+
 ## Documents
 PR descriptions follow `pr`, and design or technical documents (ADR, PoC decision log, `CONTEXT.md`, README, design notes) go through `show-me`, both unprompted, with at least one visual carrying the main point.
 When the repo's PR template, a prompt, or a skill sets the PR shape, follow it instead of `pr`.
@@ -23,3 +27,6 @@ Visuals are text only (Mermaid, file or call trees, pseudocode, `diff`), since H
 - **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
 When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
 When a question is about a codebase's architecture or file relationships and `graphify-out/` exists in the working directory, read `graphify-out/GRAPH_REPORT.md` before searching files.
+
+## Model Delegation (Antigravity)
+- When running on Antigravity as Gemini 4 Hydrogen, proactively delegate self-contained subtasks (codebase research, file exploration, review, test runs, and routine edits) to `claude-sonnet-5-5` via `delegate_task` (`providerInstanceId: "antigravity"`, `model: "claude-sonnet-5-5"`, `options: { thought_level: "low" }` for routine tasks or `"medium"` for complex ones) to reduce token cost.
