@@ -48,26 +48,55 @@ readonly CLAUDE_AGENTS_FILE="$CLAUDE_CONFIG_DIR/CLAUDE.md"
 readonly CLAUDE_SETTINGS_FILE="$CLAUDE_CONFIG_DIR/settings.json"
 [ ! -e "$CLAUDE_SETTINGS_FILE" ] && echo '{}' >"$CLAUDE_SETTINGS_FILE"
 
-# Report vendored skills whose upstream has moved past the commit they were
-# reviewed through. Forking these skills is deliberate -- the local copies carry
-# changes upstream does not want -- so this only prints: upstream prompt changes
-# are merged by hand after review, never applied automatically.
+# Upstream skills are pinned to the commit they were reviewed through, so an
+# upstream prompt change never lands before it is read. A skill with local
+# changes is a real directory committed under llm/skills/; any other is cloned
+# into the ghq root, checked out at the pinned commit, and symlinked into
+# llm/skills/ (git-ignored) so the per-skill links below pick it up.
 readonly UPSTREAM_MANIFEST="$DOTFILES_LLM/upstream-skills.tsv"
+if [ -f "$UPSTREAM_MANIFEST" ] && command -v git >/dev/null 2>&1; then
+  printf "Checking out pinned upstream skills...\n"
+  upstream_root="$(ghq root 2>/dev/null || printf '%s/dev/src' "$HOME")"
+  while IFS=$'\t' read -r skill repo subdir sha || [ -n "${skill:-}" ]; do
+    case "$skill" in '' | '#'*) continue ;; esac
+    skill_link="$DOTFILES_LLM/skills/$skill"
+    [ -d "$skill_link" ] && [ ! -L "$skill_link" ] && continue
+    clone="$upstream_root/github.com/$repo"
+    if [ ! -d "$clone/.git" ] && ! git clone --quiet "https://github.com/$repo.git" "$clone" </dev/null; then
+      printf "  %s: clone failed; skipped.\n" "$skill"
+      continue
+    fi
+    if ! git -C "$clone" cat-file -e "$sha^{commit}" 2>/dev/null; then
+      git -C "$clone" fetch --quiet origin </dev/null || true
+    fi
+    if [ "$(git -C "$clone" rev-parse HEAD 2>/dev/null)" = "$sha" ]; then
+      :
+    elif [ -n "$(git -C "$clone" status --porcelain)" ]; then
+      printf "  %s: %s has local changes; left as is.\n" "$skill" "$clone"
+    elif ! git -C "$clone" checkout --quiet --detach "$sha"; then
+      printf "  %s: could not check out %s; skipped.\n" "$skill" "$sha"
+    fi
+    ln -sfn "$clone/$subdir" "$skill_link"
+  done <"$UPSTREAM_MANIFEST"
+fi
+
+# Report upstream skills whose upstream has moved past the pinned commit. This
+# only prints: moving the pin is a manual step taken after reading the diff.
 if [ ! -f "$UPSTREAM_MANIFEST" ]; then
   :
 elif ! command -v gh >/dev/null 2>&1; then
-  printf "gh not found; skipping the vendored skill drift check.\n"
+  printf "gh not found; skipping the upstream skill drift check.\n"
 else
-  printf "Checking vendored skills against upstream...\n"
-  while IFS=$'\t' read -r skill repo path sha || [ -n "${skill:-}" ]; do
+  printf "Checking upstream skills for new commits...\n"
+  while IFS=$'\t' read -r skill repo subdir sha || [ -n "${skill:-}" ]; do
     case "$skill" in '' | '#'*) continue ;; esac
-    latest="$(gh api "repos/$repo/commits?path=$path&per_page=1" --jq '.[0].sha' 2>/dev/null || true)"
+    latest="$(gh api "repos/$repo/commits?path=$subdir&per_page=1" --jq '.[0].sha' 2>/dev/null || true)"
     if [ -z "$latest" ]; then
       printf "  %s: could not reach upstream; skipped.\n" "$skill"
     elif [ "$latest" = "$sha" ]; then
       printf "  %s: up to date.\n" "$skill"
     else
-      printf "  %s: upstream moved (%s).\n" "$skill" "$path"
+      printf "  %s: upstream moved (%s).\n" "$skill" "$subdir"
       printf "    https://github.com/%s/compare/%s...%s\n" "$repo" "$sha" "$latest"
       printf "    Review it, then update llm/upstream-skills.tsv.\n"
     fi
@@ -283,7 +312,7 @@ for rule in pstack-priority pstack-codex; do
     && ln -s "$DOTFILES_LLM/$rule.md" "$rule_dest"
 done
 
-# Plugin-installed rather than vendored like show-me/yomiyasu/etc: each ships
+# Plugin-installed rather than pinned like show-me/yomiyasu/etc: each ships
 # hooks, an MCP server or a backend that a skill-only copy under llm/skills/
 # would not run.
 readonly PLUGINS_MANIFEST="$DOTFILES_LLM/plugins.tsv"

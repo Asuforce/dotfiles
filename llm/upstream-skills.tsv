@@ -1,7 +1,8 @@
-# Skills vendored from an upstream repository, and the upstream commit they
-# have been reviewed through. scripts/llm.sh compares each entry against
-# upstream HEAD and prints a compare URL when it has moved, so that local
-# deviations stay deliberate instead of silently falling behind.
+# Skills taken from an upstream repository, pinned to the upstream commit they
+# have been reviewed through. A skill with local changes is committed under
+# llm/skills/; scripts/llm.sh clones any other into the ghq root, checks out the
+# pinned commit and symlinks it into llm/skills/. It also prints a compare URL
+# when upstream moves past the pin; moving the pin is a manual step.
 #
 # Columns: skill<TAB>repo<TAB>path<TAB>reviewed-through-sha
 show-me	humanlayer/skills	plugins/show-me	bba9d13ab34f0a87f1cc33df4dd196372393ddfc
@@ -9,3 +10,4 @@ yomiyasu	nanaism/yomiyasu	skills/yomiyasu	30ee6041c328ce21d38a7963f667e079a93d7a
 i-have-adhd	ayghri/i-have-adhd	skills/i-have-adhd	839872f9d1cd634fed642b4589ce7226199cc15f
 chief-of-staff	mattpocock/skills	skills/in-progress/chief-of-staff	5ae481693d13b37d4d2c2c92d0b66d299c93e695
 emil-design-eng	emilkowalski/skills	skills/emil-design-eng	a81dbca07f2217b7103e510c0f13f8d5b017afc9
+tsuzuri	MaryCache/tsuzuri	skills/tsuzuri	61e346b5d491b6b25b9b4be28f9496fdfc14789a

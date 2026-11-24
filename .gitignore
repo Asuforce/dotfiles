@@ -10,3 +10,10 @@
 # scripts/llm.sh symlinks ~/.claude/skills to llm/skills, so Claude Code's own
 # runtime sync of bundled anthropic-skills lands here instead of ~/.claude/skills/synced/.
 /llm/skills/synced/
+
+# Upstream skills without local changes are symlinks that scripts/llm.sh points
+# at a clone pinned by llm/upstream-skills.tsv.
+/llm/skills/emil-design-eng
+/llm/skills/i-have-adhd
+/llm/skills/tsuzuri
+/llm/skills/yomiyasu

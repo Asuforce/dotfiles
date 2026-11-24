@@ -19,7 +19,7 @@ Current roster, each with no built-in or plugin equivalent:
 - `before-compact` saves durable memory before `/compact`.
 - `claude-restart` restarts herdr panes still running an outdated Claude Code and resumes each session.
 - `design-renewal` and `design-score-loop` redesign a site from references and refine it until it passes an Awwwards-style score.
-- `show-me`, `yomiyasu`, `i-have-adhd`, `chief-of-staff` and `emil-design-eng` are vendored; see [Vendored skills](#vendored-skills).
+- `show-me`, `yomiyasu`, `i-have-adhd`, `chief-of-staff`, `emil-design-eng` and `tsuzuri` come from upstream repositories, pinned to a reviewed commit; see [Upstream skills](#upstream-skills).
 
 Add new instructions as `llm/skills/<name>/SKILL.md`, and use `disable-model-invocation: true` for the side-effecting ones instead of reintroducing a command.
 
@@ -70,20 +70,28 @@ Impeccable は上流の CLI で Codex 用スキルを `~/.agents/skills/impeccab
 
 `llm/skills/<name>/` を `${GEMINI_CONFIG_DIR:-$HOME/.gemini/config}/skills/` へスキル単位でシンボリックリンクする。`skills.json` ではなくスキル単位のリンクを使うのは、omarchy が同じディレクトリに独自スキルをリンクしている点と、T3 Code などのハーネスが `config/skills` のみをリンクして参照するためである。Claude Code のセッションやプラグイン機構に依存する `before-compact`、`claude-restart`、`chief-of-staff` はリンク対象から除外している。
 
-## Vendored skills
+## Upstream skills
 
-`llm/upstream-skills.tsv` records the upstream commit each vendored skill has been reviewed through. `scripts/llm.sh` prints a compare URL when upstream has moved past that commit; it applies nothing, because these are prompts that have to be read before they're taken. It fails open on a missing `gh`, an unreachable network, or a missing manifest.
+`llm/upstream-skills.tsv` pins each skill taken from an upstream repository to the commit it has been reviewed through, because these are prompts that have to be read before they're taken. Where the files live depends on whether the skill carries local changes:
 
+```text
+llm/upstream-skills.tsv
+├─ local changes  → committed under llm/skills/<name>/               show-me, chief-of-staff
+└─ none           → make llm clones into $(ghq root)/github.com/<repo>,
+                    checks out the pinned commit, and links           yomiyasu, i-have-adhd,
+                    llm/skills/<name> -> <clone>/<path> (git-ignored)  emil-design-eng, tsuzuri
+
+~/.claude/skills/<name>, ~/.codex/skills/<name>, ~/.gemini/config/skills/<name>
+  -> llm/skills/<name>   (the same per-skill links either way)
+```
+
+`make llm` also prints a compare URL when upstream has moved past a pin. To take an update, read the diff, then move the sha in the manifest: for a pinned clone the next `make llm` checks it out, while a skill with local changes needs the diff merged into its files by hand first. A clone with uncommitted changes is left alone. Both steps fail open on a missing `git` or `gh`, an unreachable network, or a missing manifest.
+
+Pinned clones carry upstream's whole skill directory, including files the earlier vendored copies dropped (`.claude-plugin/`, `agents/*.yaml`, images); none of them is read by the skill itself.
 
 ### `emil-design-eng` (from `emilkowalski/skills`)
 
-Vendors Emil Kowalski's UI polish and animation guidance without local changes, with the upstream MIT license. It complements Impeccable when explicitly requested; no automatic integration is configured.
-
-```text
-llm/skills/emil-design-eng/
-  scripts/llm.sh   -> ~/.claude/skills/emil-design-eng
-  scripts/codex.sh -> ~/.codex/skills/emil-design-eng
-```
+Emil Kowalski's UI polish and animation guidance, without local changes; the clone carries the upstream MIT license. It complements Impeccable when explicitly requested; no automatic integration is configured.
 
 ### `show-me` (from `humanlayer/skills`)
 
@@ -95,7 +103,7 @@ Upstream's `Make show-me user-invocable` commit adds `disable-model-invocation: 
 
 Rewrites AI-generated Japanese prose into natural Japanese: it restores the subject-verb-object structure AI output tends to drop, replaces figurative verbs (`壊れる`, `効く`, `溶かす`) with literal ones, and strips emoji, trailing colons, and excess bold/bullets. No built-in covers this — `code-review` and `writing-for-agents` govern structure and correctness, not Japanese prose register.
 
-Upstream ships the skill twice: once at the repo root (for `npx skills add`) and once under `skills/yomiyasu/` (for its Claude Code plugin marketplace). The two are identical; the local copy is vendored from `skills/yomiyasu/` since that is the self-contained directory. Dropped: `.claude-plugin/` (plugin manifests, meaningless outside the marketplace flow) and `assets/algo-artis.png` (a logo image the skill itself never reads).
+Upstream ships the skill twice: once at the repo root (for `npx skills add`) and once under `skills/yomiyasu/` (for its Claude Code plugin marketplace). The two are identical; the pin points at `skills/yomiyasu/` since that is the self-contained directory. Its `description` is upstream's Japanese one; the earlier vendored copy had translated it to English.
 
 Upstream's `SKILL.md` warns against running it alongside other Japanese style/proofreading skills, since the instructions can conflict; disable one of them if that happens.
 
@@ -106,7 +114,13 @@ Shapes responses for a reader with ADHD: next action first, numbered steps, one 
 
 It ships `disable-model-invocation: true` upstream and keeps it here, so it is opt-in per session. It overlaps the Concise output style and conflicts with the global rule that every turn ends with `Blocked on me` / `Changed` / `Found`; the skill's own "a rule fights the harness" clause lets the harness win.
 
-Upstream's `agents/` (`openai.yaml`, `gemini.toml`) was dropped as other-vendor exports.
+### `tsuzuri` (from `MaryCache/tsuzuri`)
+
+Writes Japanese prose one sentence at a time, recording for each the writing intent before it and the sentence's function after it, then hands the wording to `yomiyasu`. It also tags and reviews prose written by people or other models. The viewer app (`app/server.py`) is outside the skill directory; run it from the same clone with `python3 "$(ghq root)/github.com/MaryCache/tsuzuri/app/server.py"`.
+
+It makes no network calls and runs only `git rev-parse`, but it writes outside the document: `init` appends `*.tsuzuri/` to the repository's tracked `.gitignore` (set `TSUZURI_NO_GITIGNORE=1` to skip), and it keeps a registry, templates and a word list under `~/.config/tsuzuri/`. Its `examples` step reads comments and revisions from every recorded document into context, and `SKILL.md` tells the agent not to stop for approval along the way.
+
+It passes `--material`, `--reader` and `--doc-type` to `yomiyasu`, which only upstream versions after the current `yomiyasu` pin understand; until that pin moves, that step runs without them.
 
 ### `chief-of-staff` (from `mattpocock/skills`)
 
@@ -133,7 +147,7 @@ llm/pstack-priority.md ──link──▶ ~/.claude/rules/pstack-priority.md
 llm/pstack-codex.md ────link──▶ ~/.claude/rules/pstack-codex.md
 ```
 
-They are plugin-installed rather than vendored like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run; `mattpocock-skills` is skills only, but its 27 skills call each other and are taken as a set. None carries local changes, so none has an entry in `llm/upstream-skills.tsv`. A version bump takes `make llm`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
+They are plugin-installed rather than pinned like the skills above, because each ships hooks, an MCP server or a backend that a skill-only copy under `llm/skills/` would not run; `mattpocock-skills` is skills only, but its 27 skills call each other and are taken as a set. They update through the plugin system, so none has an entry in `llm/upstream-skills.tsv`. A version bump takes `make llm`, then a restart. `cloudflare@cloudflare` is installed by hand on this machine and is not in the list.
 
 - `autoharness` self-learns skills from session work into `.claude/skills/` and prunes them by usage rate. It ships a Python backend, an MCP server (`stage_skill`) and `SessionStart`/`Stop`/`PreToolUse`/`SessionEnd` hooks.
 - `token-weather` draws the context fill and a prompt-cache countdown above the prompt. Session transcripts here reach 500k to 880k tokens and often sit idle for over five minutes, which is where both readouts pay off.
