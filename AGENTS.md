@@ -2,7 +2,7 @@
 
 ## Workflow
 
-Only the owner uses this repository, so changes go straight to `main`: commit there and push, without a feature branch or a pull request. This replaces the global rule to open a PR.
+Only the owner uses this repository, so changes go straight to `main`: commit there, without a feature branch or a pull request. This replaces the global rule to open a PR.
 
 ## Architecture
 
