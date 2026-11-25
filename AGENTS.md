@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Workflow
+
+Only the owner uses this repository, so changes go straight to `main`: commit there and push, without a feature branch or a pull request. This replaces the global rule to open a PR.
+
 ## Architecture
 
 This repository manages macOS dotfiles via symlinks. The `config/` directory holds the source-of-truth config files; `scripts/link.sh` creates symlinks from there to the appropriate locations. See `Makefile` for available commands.
