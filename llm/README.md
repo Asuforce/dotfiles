@@ -68,7 +68,7 @@ Impeccable は上流の CLI で Codex 用スキルを `~/.agents/skills/impeccab
 
 `make llm` は `scripts/antigravity.sh` も実行する。Antigravity だけを設定するときは `bash scripts/antigravity.sh` を使う。`~/.gemini/config`、または `agy` / `antigravity` コマンドが存在しない環境ではスキップする。
 
-`llm/skills/<name>/` を `${GEMINI_CONFIG_DIR:-$HOME/.gemini/config}/skills/` へスキル単位でシンボリックリンクする。`skills.json` ではなくスキル単位のリンクを使うのは、omarchy が同じディレクトリに独自スキルをリンクしている点と、T3 Code などのハーネスが `config/skills` のみをリンクして参照するためである。Claude Code のセッションやプラグイン機構に依存する `before-compact`、`claude-restart`、`chief-of-staff` はリンク対象から除外している。
+`llm/skills/<name>/` を `${GEMINI_CONFIG_DIR:-$HOME/.gemini/config}/skills/` へスキル単位でシンボリックリンクする。`skills.json` ではなくスキル単位のリンクを使うのは、omarchy が同じディレクトリに独自スキルをリンクしている点と、T3 Code などのハーネスが `config/skills` のみをリンクして参照するためである。Claude Code のセッションやプラグイン機構に依存する `before-compact`、`claude-restart`、`chief-of-staff` はリンク対象から除外している。Linux 環境では `mcp_config.json`（および T3 Code 配下の Antigravity 設定ディレクトリ）に `gdrive` MCP サーバーも登録する。
 
 ## Upstream skills
 

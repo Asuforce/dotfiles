@@ -31,4 +31,36 @@ for skill_dir in "$REPO_DIR"/llm/skills/*/; do
   fi
 done
 
+ensure_gdrive_mcp() {
+  local config_path="$1"
+  local tmp_file
+  mkdir -p "$(dirname "$config_path")"
+  tmp_file="$(mktemp "${config_path}.XXXXXX")"
+  if [ -s "$config_path" ]; then
+    if ! jq --arg script "$SCRIPT_DIR/mcp-gdrive.sh" \
+      '.mcpServers = ((.mcpServers // {}) + {gdrive: {command: "bash", args: [$script]}})' \
+      "$config_path" >"$tmp_file"; then
+      rm -f "$tmp_file"
+      printf "Warning: skipping invalid JSON in %s\n" "$config_path" >&2
+      return 0
+    fi
+  else
+    if ! jq -n --arg script "$SCRIPT_DIR/mcp-gdrive.sh" \
+      '{mcpServers: {gdrive: {command: "bash", args: [$script]}}}' >"$tmp_file"; then
+      rm -f "$tmp_file"
+      printf "Warning: failed to generate %s\n" "$config_path" >&2
+      return 0
+    fi
+  fi
+  mv "$tmp_file" "$config_path"
+}
+
+if [[ "$(uname -s)" == "Linux" ]] && command -v jq >/dev/null 2>&1; then
+  ensure_gdrive_mcp "$gemini_config_dir/mcp_config.json"
+  for t3_config_dir in "$HOME"/.t3/userdata/providers/antigravity/*/config; do
+    [ -d "$t3_config_dir" ] || continue
+    ensure_gdrive_mcp "$t3_config_dir/mcp_config.json"
+  done
+fi
+
 printf "Antigravity setup complete.\n"
